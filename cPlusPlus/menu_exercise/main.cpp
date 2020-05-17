@@ -2,21 +2,22 @@
 // Author: Marc-Antoine Lacroix
 
 #include <iostream>
+#include <string>
 #include <vector>
 
 using namespace std;
 
 char display_options() {
 // this function displays the menu options
+    
+    string menu_options [7] = {"P - Print numbers","A - Add a number","M - Display mean of the numbers",\
+                            "S - Display the smallest number","L - Display the largest number","Q - Quit \n",\
+                            "\nPlease make your choice: "};
 
+    for (int i = 0;i < sizeof(menu_options)/sizeof(menu_options[0]); ++i) {
+        cout << menu_options[i] << endl;
+    }
     char choice;
-    cout << " \nP - Print numbers" << endl;
-    cout << "A - Add a number" << endl;
-    cout << "M - Display mean of the numbers" << endl;
-    cout << "S - Display the smallest number" << endl;
-    cout << "L - Display the largest number" << endl;
-    cout << "Q - Quit \n" << endl;
-    cout << "\nPlease make your choice: ";
     cin >> choice;
 
     return choice;
