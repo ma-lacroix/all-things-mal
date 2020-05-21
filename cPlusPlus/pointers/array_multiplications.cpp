@@ -1,7 +1,6 @@
 // exercise: create 2 arrays in the heap and multiply each element from the first one with the second
 
 #include <iostream>
-#include <string> 
 
 using namespace std;
 
