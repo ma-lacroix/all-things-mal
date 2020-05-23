@@ -16,10 +16,11 @@ int *gen_array(size_t size) {
 
 void display_array(int *ar, size_t size) {
 // displays the array elements
+    cout << "[ ";
     for (size_t i=0;i<size;++i){
         cout << ar[i] << " ";
     }
-    cout << endl;
+    cout << "]"<< endl;
 }
 
 void *apply_all(int *ar1, size_t size1, int *ar2, size_t size2) {
