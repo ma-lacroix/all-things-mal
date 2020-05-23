@@ -37,6 +37,7 @@ void *apply_all(int *ar1, size_t size1, int *ar2, size_t size2) {
     }
 
     display_array(final_array,final_size);
+    delete [] final_array;
     return 0;
 }
 
