@@ -3,20 +3,24 @@
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
 #include <string>
+#include <vector>
 
-class Player {
+class Game {
 
 private:
-    int age;
-    std::string name;
+    vector<std::string> index;
+    vector<std::string> name;
+    vector<std::string> type;
+    vector<int> year_release;    
+    vector<int> score;
 
 public:
-    int a;
-    std::string n;
-    std::string get_name();
-    void set_name(std::string n);
-    int get_age();
-    void set_age(int a);
+    
+    void add_new_game();
+    void print_games();
+    
+    
+    
 
 };
 
