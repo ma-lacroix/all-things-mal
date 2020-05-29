@@ -25,7 +25,7 @@ int main() {
 
     vector<string> name,type;
     vector<int> ind,year_release,score;
-    char selection;
+    char selection ='E';
     Game example;
 
     cout << "Welcome to your game inventory management system! " << endl;

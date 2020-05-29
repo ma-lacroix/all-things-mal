@@ -15,13 +15,13 @@ private:
     std::vector<int> year_release;    
     std::vector<int> score;
 
-public: 
+public:
+    Game(); // trouble with initializing variables in the constructor
     void add_new_game(std::vector<int>&,std::vector<std::string>&,std::vector<std::string>&,std::vector<int>&,std::vector<int>&);
     void print_games(std::vector<int>,std::vector<std::string>,std::vector<std::string>,std::vector<int>,std::vector<int>);
 };
 
-// std::vector<std::string> name,type;
-// std::vector<int> ind,year_release,score;
+// Game::Game()
 
 int number_games() {
     int num;
