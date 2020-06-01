@@ -11,7 +11,7 @@ int *gen_array(size_t size) {
     for (size_t i = 0; i < size; ++i) {
         *(heap_storage+i) = rand() % 30;
     }
-    return heap_storage;
+    return heap_storage;    
 }
 
 void display_array(int *ar, size_t size) {
