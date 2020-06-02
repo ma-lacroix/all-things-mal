@@ -44,7 +44,7 @@ void Player::change_money(int value) {
 }
 
 void Player::print_statement() {
-    std::cout << get_name() << ", you currently have " << get_money() << " tokens." << std::endl << std::endl;
+    std::cout << "\n" << get_name() << ", you currently have " << get_money() << " tokens." << std::endl << std::endl;
 }
 
 void Player::set_score(int value) {
@@ -59,7 +59,7 @@ void Player::set_bid() {
         set_bid();
     }
     else {
-        std::cout << "Bid placed. " << std::endl;
+        std::cout << "Bid placed. \n" << std::endl;
     }
 }
 
