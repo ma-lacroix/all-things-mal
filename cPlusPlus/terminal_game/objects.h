@@ -8,6 +8,7 @@
 #include <vector>
 
 class Objects {
+
 private:
     std::vector<int> y;
     std::vector<int> x;
@@ -18,7 +19,7 @@ public:
     Objects(const Objects &source);
     ~Objects();
     
-    //functions
+    //function prototypes
     std::vector<int> get_y() {return y;};
     std::vector<int> get_x() {return x;};
     void push_y(int new_y);
