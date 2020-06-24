@@ -33,6 +33,7 @@ public:
     //function prototypes
     void update_y_shape(int y, int i);
     void update_x_shape(int x, int i);
+    void reset_position(std::vector<int> y_init, std::vector<int> x_init, int i);
 
 };
 
@@ -58,6 +59,11 @@ void Piece::update_y_shape(int y, int i) {
 
 void Piece::update_x_shape(int x, int i) {
     x_shape[i] += x;
+}
+
+void Piece::reset_position(std::vector<int> y_init, std::vector<int> x_init, int i) {
+    x_shape[i] = x_init[i];
+    y_shape[i] = y_init[i];
 }
 
 Piece::~Piece() {}
