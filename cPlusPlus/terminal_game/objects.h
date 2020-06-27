@@ -22,6 +22,7 @@ public:
     //function prototypes
     std::vector<int> get_y() {return y;};
     std::vector<int> get_x() {return x;};
+    void reset(std::vector<int>,std::vector<int>);
     void push_y(int new_y);
     void push_x(int new_x);
 };
@@ -40,6 +41,11 @@ void Objects::push_y(int new_y){
 void Objects::push_x(int new_x){
 // if a piece falls at the bottom of the board - update the x coordinates of fallen objects
     x.push_back(new_x);
+}
+
+void Objects::reset(std::vector<int>new_y,std::vector<int>new_x) {
+    y = new_y;
+    x = new_x;
 }
 
 Objects::~Objects() {}

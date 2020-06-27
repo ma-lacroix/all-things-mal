@@ -60,13 +60,6 @@ void update_coordinates(vector<int> vec_y, vector<int> vec_x, int size_y, int si
     int x {p.get_x_shape()[i]};
 
     switch(key) {
-        case 65:
-            // up key
-            p.update_y_shape(-1,i);
-            // if (y>1 && !collision(vec_y,vec_x,y-1,x)) {
-            //     y-=1;
-            // }
-            break;
         case 66:
             // down key
             if (max_y<size_y-2 && !collision(vec_y,vec_x,y+1,x)) {
@@ -81,7 +74,7 @@ void update_coordinates(vector<int> vec_y, vector<int> vec_x, int size_y, int si
             break; 
         case 68:
             // left key
-            if (min_x>1 && !collision(vec_y,vec_x,y,x-1)) {
+            if (min_x>1 && !collision(vec_y,vec_x,y,min_x-1)) {
                 p.update_x_shape(-1,i);
             }
             break;
@@ -91,92 +84,109 @@ void update_coordinates(vector<int> vec_y, vector<int> vec_x, int size_y, int si
 }
 
 int main()
-{
-    int key;
-    int size_x {17};
-    int size_y {15};
-    int x_start {1};
-    int y_start {3};
-    int x {x_start};
-    int y {y_start};
-    char ch1 [2] {"#"};
-    char ch2 [2] {"@"};
+{   
+    char selection {} ;
     
-    // L-shaped object
-    Piece l_shape({y_start,y_start,y_start-1,y_start-2},
-                    {x_start+1,x_start,x_start,x_start},
-                    {y,y,y-1,y-2},{x+1,x,x,x});
+    do { 
+        // this part to be rendered using ncurses instead
+        cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" << endl;
+        cout << "---***--- Welcome to Tetris! ---***---" << endl;
+        cout << "Please enter your choice followed by ENTER:" << endl;
+        cout << "Enter 's' to start a game" << endl;
+        cout << "Enter 'q' to quit the game" << endl;
+        cin >> selection;
+        if (toupper(selection)=='S') {
+            
+            int size_x {17};
+            int size_y {17};
+            int x_start {8};
+            int y_start {3};
+            int x {x_start};
+            int y {y_start};
+            char ch1 [2] {"#"};
+            char ch2 [2] {"*"};
+            
+            // S-shaped object
+            Piece s_shape({y_start+1,y_start,y_start,y_start-1},
+                            {x_start+1,x_start+1,x_start,x_start},
+                            {y+1,y,y,y-1},{x+1,x+1,x,x});
 
-    // S-shaped object
-    Piece s_shape({y_start+1,y_start,y_start,y_start-1},
-                    {x_start+1,x_start+1,x_start,x_start},
-                    {y+1,y,y,y-1},{x+1,x+1,x,x});
-    
-    // Block-shaped object
-    Piece b_shape({y_start+1,y_start+1,y_start,y_start},
-                    {x_start+1,x_start,x_start+1,x_start},
-                    {y+1,y+1,y,y},{x+1,x,x+1,x});
+            // L-shaped object
+            Piece l_shape({y_start,y_start,y_start-1,y_start-2},
+                            {x_start+1,x_start,x_start,x_start},
+                            {y,y,y-1,y-2},{x+1,x,x,x});
+            
+            // Block-shaped object
+            Piece b_shape({y_start-2,y_start-2,y_start-1,y_start-1},
+                            {x_start+1,x_start,x_start+1,x_start},
+                            {y-1,y-1,y,y},{x+1,x,x+1,x});
 
-    vector<Piece> fall_pieces {l_shape,s_shape,b_shape};
-    int j {1};
+            vector<Piece> fall_pieces {s_shape,l_shape,b_shape};            
+            int j {rand()%3}; // Pieces vector index initialization
 
-    Objects blocks({size_y-1},{size_x-1}); // won't work if no blocks are pre-defined
+            Objects blocks({size_y-1},{size_x-1}); // 
 
-    // initializing stuff:
-    init_ncurses();
+            // initializing game window
+            init_ncurses();
+            int key;
+            WINDOW* game_window = newwin(size_y,size_x,y,x);
+            refresh();
+            clear();
+            printw("Tetris - 'q' to quit\n");
 
-    WINDOW* game_window = newwin(size_y,size_x,y,x);
-    refresh();
-    printw("Press any arrow key to start");
-    getch();
-    clear();
-
-    // // game loop: 
-    printw("Tetris in the making\n");
-
-    while((key=getch())!=113) { // 113 is code for "q" or "quit"
-        
-        wclear(game_window);
-        
-        vector<int> v1 {fall_pieces[j].get_y_shape()};
-        vector<int> v2 {fall_pieces[j].get_x_shape()};
-        int max_y {*max_element(v1.begin(),v1.end())};
-        int max_x {*max_element(v2.begin(),v2.end())};
-        int min_x {*min_element(v2.begin(),v2.end())};
-
-        /* draw board */
-        wborder(game_window,(int)'|',(int)'|',(int)' ',(int)'-',(int)'+',(int)'+',(int)'+',(int)'+');
-        
-        /* cursor position */
-        for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i){
-            wmove(game_window,fall_pieces[j].get_y_shape()[i],fall_pieces[j].get_x_shape()[i]);
-            wprintw(game_window,ch1); 
-        }
-        /* print static objects */
-        for (size_t i=0;i<size(blocks.get_y());++i) {
-            wmove(game_window,blocks.get_y()[i],blocks.get_x()[i]);
-            wprintw(game_window,ch2);
-        }
-        for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
-            update_coordinates(blocks.get_y(),blocks.get_x(),size_y,size_x,fall_pieces[j],i,max_y,max_x,min_x,key);
-        }
-        
-        /* collision detection */
-        for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
-            if (check_bottom(size_y,fall_pieces[j],i,blocks.get_y(),blocks.get_x())) {
+            // game loop: 
+            while((key=getch())!=113) { // 113 is code for "q" or "quit"
+                wclear(game_window);
+                
+                vector<int> v1 {fall_pieces[j].get_y_shape()};
+                vector<int> v2 {fall_pieces[j].get_x_shape()};
+                int max_y {*max_element(v1.begin(),v1.end())};
+                int max_x {*max_element(v2.begin(),v2.end())};
+                int min_x {*min_element(v2.begin(),v2.end())};
+                
+                /* draw board */
+                wborder(game_window,(int)'|',(int)'|',(int)' ',(int)'-',(int)'+',(int)'+',(int)'+',(int)'+');
+                
+                /* cursor position */
+                for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i){
+                    wmove(game_window,fall_pieces[j].get_y_shape()[i],fall_pieces[j].get_x_shape()[i]);
+                    wprintw(game_window,ch1); 
+                }
+                /* print static objects */
+                for (size_t i=0;i<size(blocks.get_y());++i) {
+                    wmove(game_window,blocks.get_y()[i],blocks.get_x()[i]);
+                    wprintw(game_window,ch2);
+                }
                 for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
-                    blocks.push_x(fall_pieces[j].get_x_shape()[i]);
-                    blocks.push_y(fall_pieces[j].get_y_shape()[i]);
-                    int next_j {rand()%2}; // to determine the next piece
-                    fall_pieces[j].reset_position(fall_pieces[next_j].get_y_init(),fall_pieces[next_j].get_x_init(),i);
-                    j = next_j; 
-                    wrefresh(game_window);
-                } 
-            } else {wrefresh(game_window);}
+                    update_coordinates(blocks.get_y(),blocks.get_x(),size_y,size_x,fall_pieces[j],i,max_y,max_x,min_x,key);
+                }
+                
+                /* collision detection */
+                for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
+                    if (check_bottom(size_y,fall_pieces[j],i,blocks.get_y(),blocks.get_x())) {
+                        // if true, push the positions of the piece to the objects board and reset its position
+                        for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
+                            blocks.push_x(fall_pieces[j].get_x_shape()[i]);
+                            blocks.push_y(fall_pieces[j].get_y_shape()[i]);
+                        }
+                        int next_j {rand()%3}; // to determine the next piece
+                        for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
+                            fall_pieces[j].reset_position(fall_pieces[next_j].get_y_init(),fall_pieces[next_j].get_x_init(),i);
+                            wrefresh(game_window);
+                        }
+                        j = next_j;
+                        break; 
+                    } else {wrefresh(game_window);}
+                }
+            }
+            delwin(game_window);
+            blocks.reset({size_y-1},{size_x-1}); // resetting board 
+            endwin();                  
+        } else {
+            cout << "\nPlease enter a valid choice." << endl;
         }
-    }
-    delwin(game_window);
-    endwin();                  
+
+    } while (toupper(selection)!='Q');
 
     return 0;
 }
