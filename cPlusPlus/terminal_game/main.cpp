@@ -97,10 +97,10 @@ int main()
         cin >> selection;
         if (toupper(selection)=='S') {
             
-            int size_x {17};
-            int size_y {17};
-            int x_start {8};
-            int y_start {3};
+            const int size_x {10};
+            const int size_y {15};
+            const int x_start {size_x/2};
+            const int y_start {3};
             int x {x_start};
             int y {y_start};
             char ch1 [2] {"#"};
@@ -120,9 +120,14 @@ int main()
             Piece b_shape({y_start-2,y_start-2,y_start-1,y_start-1},
                             {x_start+1,x_start,x_start+1,x_start},
                             {y-1,y-1,y,y},{x+1,x,x+1,x});
+            
+            Piece m_shape({y_start-3,y_start-2,y_start-1,y_start},
+                            {x_start,x_start,x_start,x_start},
+                            {y-3,y-2,y-1,y},{x,x,x,x});
 
-            vector<Piece> fall_pieces {s_shape,l_shape,b_shape};            
-            int j {rand()%3}; // Pieces vector index initialization
+            vector<Piece> fall_pieces {s_shape,l_shape,b_shape,m_shape};            
+            // int j {rand()%4};
+            int j {3}; // Pieces vector index initialization
 
             Objects blocks({size_y-1},{size_x-1}); // 
 
@@ -169,12 +174,15 @@ int main()
                             blocks.push_x(fall_pieces[j].get_x_shape()[i]);
                             blocks.push_y(fall_pieces[j].get_y_shape()[i]);
                         }
-                        int next_j {rand()%3}; // to determine the next piece
+                        // int next_j {rand()%4};
+                        int next_j {3}; // to determine the next piece
                         for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
                             fall_pieces[j].reset_position(fall_pieces[next_j].get_y_init(),fall_pieces[next_j].get_x_init(),i);
                             wrefresh(game_window);
                         }
                         j = next_j;
+                        // check if a line is complete
+                        blocks.erase_line(size_x); 
                         break; 
                     } else {wrefresh(game_window);}
                 }
