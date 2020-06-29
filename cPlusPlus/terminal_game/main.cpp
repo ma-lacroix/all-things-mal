@@ -1,4 +1,5 @@
-// making a Tetris-style game
+// making Tetris-style in the terminal using Ncurses library on Mac
+// author: Marc-Antoine Lacroix
 
 #include <iostream>
 #include <string>
@@ -95,9 +96,10 @@ int main()
         cout << "Enter 's' to start a game" << endl;
         cout << "Enter 'q' to quit the game" << endl;
         cin >> selection;
+        
         if (toupper(selection)=='S') {
             
-            const int size_x {10};
+            const int size_x {8};
             const int size_y {15};
             const int x_start {size_x/2};
             const int y_start {3};
@@ -137,7 +139,7 @@ int main()
             WINDOW* game_window = newwin(size_y,size_x,y,x);
             refresh();
             clear();
-            printw("Tetris - 'q' to quit\n");
+            printw("Tetris - 'q' to quit - any arrow key to start\n");
 
             // game loop: 
             while((key=getch())!=113) { // 113 is code for "q" or "quit"
@@ -157,6 +159,10 @@ int main()
                     wmove(game_window,fall_pieces[j].get_y_shape()[i],fall_pieces[j].get_x_shape()[i]);
                     wprintw(game_window,ch1); 
                 }
+                
+                /* look for complete lines */
+                blocks.erase_line(size_y,size_x); 
+                
                 /* print static objects */
                 for (size_t i=0;i<size(blocks.get_y());++i) {
                     wmove(game_window,blocks.get_y()[i],blocks.get_x()[i]);
@@ -181,8 +187,6 @@ int main()
                             wrefresh(game_window);
                         }
                         j = next_j;
-                        // check if a line is complete
-                        blocks.erase_line(size_x); 
                         break; 
                     } else {wrefresh(game_window);}
                 }

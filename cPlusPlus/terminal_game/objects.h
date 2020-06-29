@@ -23,9 +23,9 @@ public:
     std::vector<int> get_y() {return y;};
     std::vector<int> get_x() {return x;};
     void reset(std::vector<int>,std::vector<int>);
-    void erase_line(int);
-    void push_y(int new_y);
-    void push_x(int new_x);
+    void erase_line(int,int);
+    void push_y(int);
+    void push_x(int);
 };
 
 Objects::Objects()
@@ -41,28 +41,38 @@ void Objects::reset(std::vector<int>new_y,std::vector<int>new_x) {
     x = new_x;
 }
 
-void Objects::erase_line(int max){
-// when a line is complete, remove it from the board
-    int counter {0};
-    std::vector<int> new_y;
-    std::vector<int> new_x;
+// example of y and x for debugging purposes
+// y {1,1,1,3,3,2,2,1,1,1}
+// x {1,2,3,1,2,1,2,4,5,6}
 
-    for (int j {0};j<size(y);++j) {
-        for (size_t i {0};i<size(y);++i){
+void Objects::erase_line(int size_y,int size_x) {
+// when a line is complete, remove it from the board
+    
+    int counter {0};
+    std::vector<size_t> temp_vec {};
+    for (int j {0};j<(size_y-2);++j) {
+        for (size_t i {0};i<size(y);++i) {
             if (y[i]==j) {
-                counter++;    
+                ++counter;
+                if(counter==(size_x-2)) {
+                    temp_vec.push_back(j);    
+                    }
+                }
             }
-        if (counter==max-2){ // size x of playable surface
-            for (size_t k {0};i<size(y);++k){
-                if (y[k]==j){
+        counter = 0;
+        }
+    if (size(temp_vec)>0) {
+        for (size_t l {0};l<size(temp_vec);++l) {
+            for (size_t k {0};k<size(y);++k){
+                if (y[k]==temp_vec[l]) {
                     y.erase(y.begin()+k);
                     x.erase(x.begin()+k);
                     }
                 }
             }
         }
-        counter = 0;
-    }
+    temp_vec.clear();
+    
 }
 
 void Objects::push_y(int new_y){
