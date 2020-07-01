@@ -99,14 +99,14 @@ int main()
         
         if (toupper(selection)=='S') {
             
-            const int size_x {8};
+            const int size_x {7};
             const int size_y {15};
             const int x_start {size_x/2};
             const int y_start {3};
             int x {x_start};
             int y {y_start};
-            char ch1 [2] {"#"};
-            char ch2 [2] {"*"};
+            char ch1 [2] {"#"}; // moving blocks
+            char ch2 [2] {"*"}; // fallen blocks
             
             // S-shaped object
             Piece s_shape({y_start+1,y_start,y_start,y_start-1},
@@ -123,13 +123,14 @@ int main()
                             {x_start+1,x_start,x_start+1,x_start},
                             {y-1,y-1,y,y},{x+1,x,x+1,x});
             
+            // Long straight block
             Piece m_shape({y_start-3,y_start-2,y_start-1,y_start},
                             {x_start,x_start,x_start,x_start},
                             {y-3,y-2,y-1,y},{x,x,x,x});
 
             vector<Piece> fall_pieces {s_shape,l_shape,b_shape,m_shape};            
-            // int j {rand()%4};
-            int j {3}; // Pieces vector index initialization
+            int j {rand()%4};
+            // int j {3}; // Pieces vector index initialization
 
             Objects blocks({size_y-1},{size_x-1}); // 
 
@@ -180,8 +181,8 @@ int main()
                             blocks.push_x(fall_pieces[j].get_x_shape()[i]);
                             blocks.push_y(fall_pieces[j].get_y_shape()[i]);
                         }
-                        // int next_j {rand()%4};
-                        int next_j {3}; // to determine the next piece
+                        int next_j {rand()%4};
+                        // int next_j {3}; // to determine the next piece
                         for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
                             fall_pieces[j].reset_position(fall_pieces[next_j].get_y_init(),fall_pieces[next_j].get_x_init(),i);
                             wrefresh(game_window);

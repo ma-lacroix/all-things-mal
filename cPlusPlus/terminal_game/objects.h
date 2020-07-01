@@ -50,7 +50,7 @@ void Objects::erase_line(int size_y,int size_x) {
     
     int counter {0};
     std::vector<size_t> temp_vec {};
-    for (int j {0};j<(size_y-2);++j) {
+    for (int j {0};j<(size_y-1);++j) {
         for (size_t i {0};i<size(y);++i) {
             if (y[i]==j) {
                 ++counter;
@@ -63,16 +63,19 @@ void Objects::erase_line(int size_y,int size_x) {
         }
     if (size(temp_vec)>0) {
         for (size_t l {0};l<size(temp_vec);++l) {
-            for (size_t k {0};k<size(y);++k){
+            for (size_t k {size(y)-1};k>0;--k){
                 if (y[k]==temp_vec[l]) {
                     y.erase(y.begin()+k);
                     x.erase(x.begin()+k);
                     }
                 }
+            if (y[0]==temp_vec[l]) {
+                y.erase(y.begin());
+                x.erase(x.begin());
+                }
             }
         }
     temp_vec.clear();
-    
 }
 
 void Objects::push_y(int new_y){
