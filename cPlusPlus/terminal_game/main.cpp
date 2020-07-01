@@ -34,7 +34,6 @@ bool collision(vector<int> vec_y, vector<int> vec_x, int y, int x) {
 
 bool check_bottom(int size_y,Piece &p, int i, vector<int> vec_y, vector<int> vec_x) {
 // checks to see if the object has reached the bottom of the board or collides with another underneath
-// this function should be joined with another one
 
     int check {0};
     int y {p.get_y_shape()[i]};
@@ -55,7 +54,6 @@ void update_coordinates(vector<int> vec_y, vector<int> vec_x, int size_y, int si
                         int max_y, int max_x, int min_x, int key) {
 // updates the position of the character in the game window 
 // the if conditions insure you can't go overboard
-// if conditions will have to be updated as objects get bigger and have more coordinates
     
     int y {p.get_y_shape()[i]};
     int x {p.get_x_shape()[i]};
@@ -99,8 +97,8 @@ int main()
         
         if (toupper(selection)=='S') {
             
-            const int size_x {7};
-            const int size_y {15};
+            const int size_x {9};
+            const int size_y {17};
             const int x_start {size_x/2};
             const int y_start {3};
             int x {x_start};
