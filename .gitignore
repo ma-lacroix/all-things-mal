@@ -1,0 +1,14 @@
+.DS_Store
+.txt
+.env
+
+# c++
+*.slo
+*.lo
+*.o
+*.obj
+
+# Executables
+*.exe
+*.out
+*.app
