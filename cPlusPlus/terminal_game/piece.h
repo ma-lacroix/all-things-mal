@@ -16,6 +16,7 @@ private:
     std::vector<int> x_init {};
     std::vector<int> y_shape {};
     std::vector<int> x_shape {};
+    int r_status {};
 
 public:
     //constructors
@@ -29,10 +30,12 @@ public:
     std::vector<int> get_x_init() {return x_init;};
     std::vector<int> get_y_shape() {return y_shape;};
     std::vector<int> get_x_shape() {return x_shape;};
+    int get_r_status() {return r_status;};
 
     //function prototypes
     void update_y_shape(int y, int i);
     void update_x_shape(int x, int i);
+    void update_r_status(int x);
     void reset_position(std::vector<int> y_init, std::vector<int> x_init, int i);
 
 };
@@ -41,14 +44,16 @@ Piece::Piece()
     :y_init{3,3,2,1},
     x_init{2,1,1,1},
     y_shape{3,3,2,1},
-    x_shape{2,1,1,1} {}
+    x_shape{2,1,1,1},
+    r_status{0} {}
 
 Piece::Piece(std::vector<int> y_init,std::vector<int> x_init, 
             std::vector<int> y_shape,std::vector<int> x_shape)
     :y_init{y_init},
     x_init{x_init},
     y_shape{y_shape},
-    x_shape{x_shape} {}
+    x_shape{x_shape},
+    r_status{0} {}
 
 Piece::Piece(const Piece &source)
        : Piece {source.y_init, source.x_init, source.y_shape, source.x_shape}  {}
@@ -59,6 +64,10 @@ void Piece::update_y_shape(int y, int i) {
 
 void Piece::update_x_shape(int x, int i) {
     x_shape[i] += x;
+}
+
+void Piece::update_r_status(int x) {
+    r_status += x;
 }
 
 void Piece::reset_position(std::vector<int> y_init, std::vector<int> x_init, int i) {
