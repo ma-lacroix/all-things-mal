@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <time.h>
 #include <ncurses.h>
 #include "objects.h"
 #include "piece.h"
@@ -11,7 +12,7 @@
 using namespace std;
 
 void init_ncurses() {
-/* ncurses initialisation stuff */
+// ncurses initialisation stuff 
     initscr(); 
     nodelay(stdscr, TRUE);
     noecho(); 
@@ -52,9 +53,8 @@ bool check_bottom(int size_y,Piece &p, int i, vector<int> vec_y, vector<int> vec
 }
 
 vector<int> piece_rotation(Piece &p,int i){
-// calculates the new position of each piece element when rotated
+// calculates the new position of each piece element when rotated - Kudos to OneLoneCoder for mathematics
     vector<int> new_positions {};
-    // generate this part dynamically based off location on the board
     int rotate_index [16][2]{
         {0,0},{0,1},{0,2},{0,3},
         {1,0},{1,1},{1,2},{1,3},
@@ -63,13 +63,10 @@ vector<int> piece_rotation(Piece &p,int i){
     };
     vector<int> y {p.get_rot_y()};
     vector<int> x {p.get_rot_x()};
-    // int r_status {p.get_r_status()+1};
-    int r_index_1 = (y[i])*4 +x[i]; // 0 degrees
+    int r_index_1 = (y[i])*4 +x[i]; // current position
     int r_index_2 = 12+(y[i])-((x[i])*4); // 90 degrees
-    // int r_index_3 = 15-((y[i]-y_start)*4)-((x[i]-x_start)); // 180 degrees
-    // int r_index_4 = 3+(y[i]-y_start)*((x[i]-x_start)*4); // 270 degrees
-    new_positions.push_back(rotate_index[r_index_2][0]-rotate_index[r_index_1][0]);
-    new_positions.push_back(rotate_index[r_index_2][1]-rotate_index[r_index_1][1]);
+    new_positions.push_back(rotate_index[r_index_2][0]-rotate_index[r_index_1][0]); // movement of y
+    new_positions.push_back(rotate_index[r_index_2][1]-rotate_index[r_index_1][1]); // movement of x
     
     return new_positions;
 }
@@ -88,6 +85,7 @@ void update_coordinates(vector<int> vec_y, vector<int> vec_x, int size_y, int si
             // space key - rotation of the piece
             {
                 vector<int> new_positions = piece_rotation(p,i);
+                if (!collision(vec_y,vec_x,y+new_positions[0],x) && !collision(vec_y,vec_x,y,max_x+new_positions[1]))
                 p.update_rot_y(new_positions[0],i);
                 p.update_rot_x(new_positions[1],i);
                 p.update_y_shape(new_positions[0],i);
@@ -135,8 +133,9 @@ int main()
         
         if (toupper(selection)=='S') {
             
-            const int size_x {10};
-            const int size_y {18};
+            // initialize board size and cursor initial position
+            const int size_x {11};
+            const int size_y {19};
             const int x_start {size_x/2-1};
             const int y_start {2};
             int x {x_start};
@@ -169,8 +168,7 @@ int main()
                             {0,1,2,3},{1,1,1,1});          
 
             vector<Piece> fall_pieces {s_shape,l_shape,b_shape,m_shape};            
-            // int j {rand()%4};
-            int j {0}; // Pieces vector index initialization
+            int j {rand()%4}; // Pieces vector index initialization
 
             Objects blocks({size_y-1},{size_x-1}); // s
 
@@ -181,7 +179,11 @@ int main()
             refresh();
             clear();
             printw("Tetris!!! - any arrow key to start- spacebar to rotate pieces - 'q' to quit\n");
-
+            
+            int n {1}; // every n seconds move pieces downwards
+            time_t start, end;
+            start=time(0);
+            
             // game loop: 
             while((key=getch())!=113) { // 113 is code for "q" or "quit"
                 wclear(game_window);
@@ -201,7 +203,6 @@ int main()
                     wmove(game_window,fall_pieces[j].get_y_shape()[i],fall_pieces[j].get_x_shape()[i]);
                     wprintw(game_window,ch1); 
                 }
-                
                 /* look for complete lines */
                 blocks.erase_line(size_y,size_x); 
                 
@@ -210,8 +211,19 @@ int main()
                     wmove(game_window,blocks.get_y()[i],blocks.get_x()[i]);
                     wprintw(game_window,ch2);
                 }
-                for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
-                    update_coordinates(blocks.get_y(),blocks.get_x(),size_y,size_x,fall_pieces[j],i,max_y,max_x,min_y,min_x,key);
+                
+                if(time(0)-start==n) {
+                    for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
+                        update_coordinates(blocks.get_y(),blocks.get_x(),size_y,size_x,fall_pieces[j],
+                                        i,max_y,max_x,min_y,min_x,66);
+                        start=start+n;
+                    }
+                }
+                else {
+                    for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
+                        update_coordinates(blocks.get_y(),blocks.get_x(),size_y,size_x,fall_pieces[j],
+                                        i,max_y,max_x,min_y,min_x,key);
+                    }
                 }
                 
                 /* collision detection */
@@ -222,8 +234,8 @@ int main()
                         for (size_t i = 0;i<size(fall_pieces[j].get_y_shape());++i) {
                             blocks.push_x(fall_pieces[j].get_x_shape()[i]);
                             blocks.push_y(fall_pieces[j].get_y_shape()[i]);
-                            fall_pieces[j].reset_rotation(fall_pieces[j].get_y_init(),fall_pieces[j].get_x_init(),y_start,x_start,i);
                             fall_pieces[j].reset_position(fall_pieces[next_j].get_y_init(),fall_pieces[next_j].get_x_init(),i);
+                            fall_pieces[j].reset_rotation(fall_pieces[next_j].get_y_init(),fall_pieces[next_j].get_x_init(),y_start,x_start,i);
                             wrefresh(game_window);
                         }
                         

@@ -12,17 +12,18 @@ class Piece {
 
 private:
 
-    std::vector<int> y_init {};
+    std::vector<int> y_init {}; // initial position of the piece
     std::vector<int> x_init {};
-    std::vector<int> y_shape {};
+    std::vector<int> y_shape {}; // current position of the piece
     std::vector<int> x_shape {};
-    std::vector<int> rot_y {};
+    std::vector<int> rot_y {}; // 4x4 matrix used to rotate the piece
     std::vector<int> rot_x {};
 
 public:
     //constructors
     Piece();
-    Piece(std::vector<int>,std::vector<int>, std::vector<int>,std::vector<int>,std::vector<int>,std::vector<int>);
+    Piece(std::vector<int>,std::vector<int>, std::vector<int>,std::vector<int>,
+                        std::vector<int>,std::vector<int>);
     Piece(const Piece &source);
     ~Piece();
     
