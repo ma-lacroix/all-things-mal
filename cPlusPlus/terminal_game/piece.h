@@ -1,5 +1,5 @@
 // class Piece header file - defines the actual playing falling pieces on the game board
-// each piece contains 4 coordinates in 2 vectors
+// each piece contains 6 coordinates in 3 vectors: initial positions, actual positions and 4x4 matrix defining rotation status
 
 #ifndef _PIECE_H_
 #define _PIECE_H_
