@@ -134,8 +134,8 @@ int main()
         if (toupper(selection)=='S') {
             
             // initialize board size and cursor initial position
-            const int size_x {11};
-            const int size_y {19};
+            const int size_x {9};
+            const int size_y {18};
             const int x_start {size_x/2-1};
             const int y_start {2};
             int x {x_start};
