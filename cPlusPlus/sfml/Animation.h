@@ -1,5 +1,8 @@
 // Animation class header file
 
+#ifndef _ANIMATION_H_
+#define _ANIMATION_H_
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
@@ -31,7 +34,7 @@ Animation::Animation(sf::Texture* texture,sf::Vector2u imageCount, float switchT
 }
 
 Animation::~Animation(){
-    std::cout << "Destructor called" << std::endl;
+    std::cout << "Animation destructor called" << std::endl;
 }
 
 void Animation::Update(int row, float deltatime, bool faceRight){
@@ -58,3 +61,5 @@ void Animation::Update(int row, float deltatime, bool faceRight){
         uvRect.width = -abs(uvRect.width);
     }
 }
+
+#endif
