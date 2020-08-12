@@ -41,7 +41,7 @@ Player::Player(sf::Texture* texture,sf::Vector2u imageCount, float switchTime,fl
         faceRight = true;
         body.setSize(sf::Vector2f(100.0f, 150.0f));
         body.setOrigin(body.getSize() / 2.0f);
-        body.setPosition(206.0f, 206.0f);
+        body.setPosition(0.0f, 0.0f);
         body.setTexture(texture);
     }
 
@@ -68,16 +68,25 @@ void Player::Update(float deltaTime){
 
     velocity.y += gravity * deltaTime;
 
-    // animation
-    if (velocity.x == 0.0f){
+    // animation texture
+    if (velocity.x == 0.0f && velocity.y > 0.0f){
         row = 0;
     }
     else{
-        row = 1;
-        if (velocity.x > 0.0f) {
+        if (velocity.x > 0.0f && velocity.y > 0.0f) {
+            row = 1;
             faceRight = true;
         }
-        else {
+        else if (velocity.x < 0.0f && velocity.y > 0.0f) {
+            row = 1;
+            faceRight = false;
+        }
+        if (velocity.x > 0.0f && velocity.y < 0.0f) {
+            row = 2;
+            faceRight = true;
+        }
+        else if (velocity.x < 0.0f && velocity.y < 0.0f) {
+            row = 2;
             faceRight = false;
         }
     }

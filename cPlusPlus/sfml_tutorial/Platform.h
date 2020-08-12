@@ -24,6 +24,7 @@ Platform::Platform(sf::Texture* texture,sf::Vector2f size, sf::Vector2f position
     body.setOrigin(size / 2.0f);
     body.setTexture(texture);
     body.setPosition(position);
+    // body.setTextureRect({0, 0, 100, 100});
 };
 
 Platform::~Platform() {
