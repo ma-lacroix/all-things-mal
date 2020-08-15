@@ -1,41 +1,40 @@
-/*
+/*############
 
-This code is heavily inspired by an SFML tutorial available on Youtube: https://www.youtube.com/c/HilzeVonck
-Credit goes to https://hilzevonck.com/
+    A jump and run game using SFML C++ library.
+    Author: Marc-Antoine Lacroix
 
-This code is for the purposes of learning the SFML c++ library. There will be lots of comments and notes!
+    massive WIP!!!!
 
-*/
+############*/
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
+// #include "animation.h"
+#include "player.h"
+
+void load_texture(sf::Texture* some_texture,std::string textureFile){
+// loads a texture file
+    if(!some_texture->loadFromFile(textureFile)){
+        std::cout << "Couldn't load " << textureFile << std::endl;
+    }else{
+        std::cout << "File loaded succesfully" << std::endl;
+    }
+}
 
 int main() {
     
     // initialising game window
     float SCREEN_WIDTH {512.0};
     float SCREEN_HEIGHT {512.0};
-
-    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH,SCREEN_HEIGHT),"Robot game",sf::Style::Close | sf::Style::Resize);
+    sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH,SCREEN_HEIGHT),"Mr Harry",sf::Style::Close | sf::Style::Resize);
+    
+    // textures and animations - to be put into a class
     std::string textureFile {"hero.png"};
     sf::Texture playerTexture;
-
-    if(!playerTexture.loadFromFile(textureFile)){
-        std::cout << "Couldn't load " << textureFile << std::endl;
-    }
-    sf::RectangleShape player(sf::Vector2f(100.0f,100.0f));
-    player.setPosition(206.0f,206.0f);
-    player.setTexture(&playerTexture);
-
-    sf::Vector2u textureSize = playerTexture.getSize();
-    textureSize.x /= 8;
-    textureSize.y /= 5;
-
-    player.setTextureRect(sf::IntRect(0,0,textureSize.x,textureSize.y));
-    
-    // The deltatime keeps track of each frame
+    load_texture(&playerTexture,textureFile);
+    Player main_player(&playerTexture,0.3f,0.3f,{8,5});
     float deltaTime = 0.0f;
     sf::Clock clock;
 
@@ -70,9 +69,9 @@ int main() {
             }
             
         }
-
         window.clear(sf::Color(110,110,100));
-        window.draw(player);
+        main_player.Update(deltaTime);
+        main_player.Draw(window);
         window.display();
     }
 
