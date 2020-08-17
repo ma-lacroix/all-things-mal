@@ -30,12 +30,12 @@ int main() {
     float SCREEN_HEIGHT {512.0};
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH,SCREEN_HEIGHT),"Mr Harry",sf::Style::Close | sf::Style::Resize);
     
-    // textures and animations - to be put into a class
+    // main sprite
     std::string textureFile {"hero.png"};
     sf::Texture playerTexture;
     load_texture(&playerTexture,textureFile);
     Player main_player(&playerTexture,0.3f,0.3f,{8,5});
-    float deltaTime = 0.0f;
+    float deltaTime {0.0f};
     sf::Clock clock;
 
     // game loop
@@ -61,7 +61,7 @@ int main() {
                 break;
             case sf::Event::TextEntered:
                 if (evnt.text.unicode < 128){
-                    printf("Key entered: %c\n",evnt.text.unicode);
+                    // printf("Key entered: %c\n",evnt.text.unicode);
                 }
                 break;
             default:
