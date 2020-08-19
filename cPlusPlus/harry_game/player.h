@@ -2,31 +2,35 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <math.h>
 
 class Player {
 private:
-    float speed;
     sf::Vector2u imageCount;
     sf::Vector2u currentImage;
-    sf::Vector2u velocity;
+    sf::Vector2f velocity;
+    bool lookRight;
     float switchTime;
     float totalTime;
-    bool lookRight;
+    float speed;
+    float jumpHeight;
+    unsigned int row;
 
 public:
-    Player(sf::Texture* textureFile,float speed,float switchtime,sf::Vector2u imageCount);
+    Player(sf::Texture* textureFile,float speed,float switchtime,float jumpHeight,sf::Vector2u imageCount);
     ~Player();
     sf::RectangleShape main_sprite;
     void Update(float deltaTime);
-    void Update_Animation(float deltaTime);
+    void Update_Animation(float deltaTime, int row);
     void Draw(sf::RenderWindow&);
     sf::IntRect textureSize;
 };
 
-Player::Player(sf::Texture* textureFile,float speed,float switchTime,sf::Vector2u imageCount) 
+Player::Player(sf::Texture* textureFile,float speed,float switchTime,float jumpHeight,sf::Vector2u imageCount) 
     // : Animation() // when animations are enabled
     {
     this->speed = speed;
+    this->jumpHeight = jumpHeight;
     this->switchTime = switchTime;
     this->imageCount = imageCount;
     lookRight = true;
@@ -47,47 +51,76 @@ Player::~Player(){
 
 void Player::Update(float deltaTime){
 // updates the sprite's position on screen  
-    Update_Animation(deltaTime);
+    float gravity {981.0f};
+    bool canJump {true};
+    float floor {260.0f};
+    
+    // temporary floor for the sprite to walk on
+    if(main_sprite.getPosition().y < floor){
+        canJump = false;
+        velocity.y += (gravity * deltaTime);
+    }else{
+        canJump = true;
+        velocity.y = 0.0f;
+    }
+
+    velocity.x = 0.0f;
+
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A)){
-        main_sprite.move(-speed,0.0f);
+    // go left
+        velocity.x -= speed;
         lookRight = false;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D)){
-        main_sprite.move(speed,0.0f);
+    // go right
+        velocity.x += speed;
         lookRight = true;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::S)){
-        main_sprite.move(0.0f,speed);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && canJump){
+    // jump
+        velocity.y = -sqrtf(gravity * jumpHeight);
+        canJump = false;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)){
-        main_sprite.move(0.0f,-speed);
+    if(velocity.x==0.0f && velocity.y==0.0f){
+        row=0;
+    }else if(velocity.x!=0.0f && velocity.y==0.0f){
+        row=1;
+    }else{
+        row=3;
     }
+
+    Update_Animation(deltaTime, row);
+    main_sprite.move(velocity*deltaTime);
 }
 
-void Player::Update_Animation(float deltaTime){
+
+void Player::Update_Animation(float deltaTime, int row){
 // updates the sprite animation based on the clock time
-    currentImage.y = 0;
+    currentImage.y = row;
     totalTime += deltaTime;
     if(totalTime >= switchTime){
         currentImage.x++;
         totalTime -= switchTime;
-        if (currentImage.x >= imageCount.x){
+        // to match the sprite map
+        if(row==0 && currentImage.x >= imageCount.x){
+            currentImage.x = 0;
+        }else if(row==1 && currentImage.x >=6){
+            currentImage.x = 0;
+        }else if(row==3 && currentImage.x >=3){
             currentImage.x = 0;
         }
     }
     textureSize.top = currentImage.y * textureSize.height;
     
     if (lookRight){
-        // textureSize.left = currentImage.x * textureSize.width;
-        // textureSize.width = abs(textureSize.width);
-        main_sprite.setScale(1.0f,1.0f);
+        textureSize.left = currentImage.x * abs(textureSize.width);
+        textureSize.width = abs(textureSize.width);
     }
     else{
-        // textureSize.left = (currentImage.x+1) * textureSize.width;
-        // textureSize.width = -(textureSize.width);
-        main_sprite.setScale(-1.0f,1.0f);
+        textureSize.left = (currentImage.x+1) * abs(textureSize.width);
+        textureSize.width = -abs(textureSize.width);
     }
-    main_sprite.setTextureRect(textureSize);
+     main_sprite.setTextureRect(textureSize);
 }
 
 void Player::Draw(sf::RenderWindow& window){
