@@ -128,7 +128,8 @@ int main() {
         sf::Vector2f direction;
         for(Platform& platform: platforms){
             if (platform.GetCollider().CheckCollision(player.GetCollider(),direction,1.0f)){
-                player.OnCollision(direction);
+                player.
+                OnCollision(direction);
             }
         }
         
