@@ -4,7 +4,7 @@
     A jump and run game using SFML C++ library.
     Author: Marc-Antoine Lacroix
 
-     WIP obviously!
+    WIP
 
 ########################
 */

@@ -1,11 +1,16 @@
 // class handling the player and its movements
 
+#ifndef _PLAYER_H_
+#define _PLAYER_H_
+
 #include <SFML/Graphics.hpp>
+#include "level.h"
 #include <iostream>
 #include <math.h>
 
 class Player {
 private:
+    Level level;
     sf::Vector2u imageCount;
     sf::Vector2u currentImage;
     sf::Vector2f velocity;
@@ -37,6 +42,7 @@ Player::Player(sf::Texture* textureFile,float speed,float switchTime,float jumpH
     this->jumpHeight = jumpHeight;
     this->switchTime = switchTime;
     this->imageCount = imageCount; 
+    Level();
     lookRight = true;
     totalTime = 0.0f;
     currentImage = {0,0};
@@ -56,18 +62,13 @@ Player::~Player(){
 void Player::Update(float deltaTime){
 // updates the sprite's position on screen  
 
-    // game board coordinates
-    float floor {350.0f};
-    float left_b {100.0f};
-    float right_b {10000.0f};
-
     // jump data points
     float gravity {981.0f};
     bool canJump {true};
     velocity.x = 0.0f;
 
     // temporary floor for the sprite to walk on
-    if(main_sprite.getPosition().y < floor){
+    if(main_sprite.getPosition().y < level.getFloor()){
         canJump = false;
         velocity.y += (gravity * deltaTime);
     }else{
@@ -76,12 +77,12 @@ void Player::Update(float deltaTime){
     }
     // temporary game boundaries
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && main_sprite.getPosition().x > left_b){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && main_sprite.getPosition().x > level.getLeft_b()){
     // go left
         velocity.x -= speed;
         lookRight = false;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && main_sprite.getPosition().x < right_b){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && main_sprite.getPosition().x < level.getRight_b()){
     // go right
         velocity.x += speed;
         lookRight = true;
@@ -103,7 +104,6 @@ void Player::Update(float deltaTime){
     Update_Animation(deltaTime, row);
     main_sprite.move(velocity*deltaTime);
 }
-
 
 void Player::Update_Animation(float deltaTime, int row){
 // updates the sprite animation based on the clock time
@@ -137,3 +137,5 @@ void Player::Update_Animation(float deltaTime, int row){
 void Player::Draw(sf::RenderWindow& window){
     window.draw(main_sprite);
 }
+
+#endif
