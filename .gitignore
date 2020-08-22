@@ -1,6 +1,7 @@
 .DS_Store
 .txt
 .env
+.vscode
 
 # c++
 *.slo
@@ -12,3 +13,4 @@
 *.exe
 *.out
 *.app
+*
