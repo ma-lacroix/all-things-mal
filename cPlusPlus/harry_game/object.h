@@ -5,28 +5,29 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "collider.h"
 
 class Object {
 private:
-
+    sf::RectangleShape some_shape;
 public:
     Object(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f position);
     ~Object();
-    sf::RectangleShape main_sprite;
     void Draw(sf::RenderWindow& window);
+    Collider GetCollider() {return Collider(some_shape);};
 };
 
 Object::Object(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f position){
-    main_sprite.setSize(objectSize);
-    main_sprite.setPosition(position);
-    main_sprite.setTexture(textureFile);
+    some_shape.setSize(objectSize);
+    some_shape.setPosition(position);
+    some_shape.setTexture(textureFile);
 }
 
 Object::~Object(){
 }
 
 void Object::Draw(sf::RenderWindow& window){
-    window.draw(main_sprite);
+    window.draw(some_shape);
 }
 
 #endif

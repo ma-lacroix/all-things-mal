@@ -4,6 +4,7 @@
 #define _PLAYER_H_
 
 #include <SFML/Graphics.hpp>
+#include "collider.h"
 #include "level.h"
 #include <iostream>
 #include <math.h>
@@ -20,17 +21,21 @@ private:
     float speed;
     float jumpHeight;
     unsigned int row;
+    float gravity;
+    bool canJump;
 
 public:
     Player(sf::Texture* textureFile,float speed,float switchtime,float jumpHeight,
                 sf::Vector2u imageCount);
     ~Player();
-    sf::RectangleShape main_sprite;
     void Update(float deltaTime);
     void Update_Animation(float deltaTime, int row);
     void Draw(sf::RenderWindow&);
-    sf::Vector2f getPosition() {return main_sprite.getPosition();};
+    void OnCollision(sf::Vector2f direction);
+    Collider GetCollider() { return Collider(main_sprite);};
     
+    sf::RectangleShape main_sprite;
+    sf::Vector2f getPosition() {return main_sprite.getPosition();};
     sf::IntRect textureSize;
 };
 
@@ -42,10 +47,11 @@ Player::Player(sf::Texture* textureFile,float speed,float switchTime,float jumpH
     this->jumpHeight = jumpHeight;
     this->switchTime = switchTime;
     this->imageCount = imageCount; 
-    Level();
     lookRight = true;
     totalTime = 0.0f;
     currentImage = {0,0};
+    gravity = 981.0f;
+    canJump = true;
     textureSize.width = textureFile->getSize().x/imageCount.x;
     textureSize.height = textureFile->getSize().y/imageCount.y;
     std::cout << "x: " << textureSize.width << " y: " << textureSize.height << std::endl; 
@@ -61,21 +67,18 @@ Player::~Player(){
 
 void Player::Update(float deltaTime){
 // updates the sprite's position on screen  
-
-    // jump data points
-    float gravity {981.0f};
-    bool canJump {true};
+    
     velocity.x = 0.0f;
-
+    
     // temporary floor for the sprite to walk on
-    if(main_sprite.getPosition().y < level.getFloor()){
-        canJump = false;
+    if(main_sprite.getPosition().y < level.getFloor() && canJump == true){
+        velocity.y = 0.0f;
+    }else if(main_sprite.getPosition().y < level.getFloor() && canJump == false){
         velocity.y += (gravity * deltaTime);
     }else{
         canJump = true;
         velocity.y = 0.0f;
     }
-    // temporary game boundaries
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && main_sprite.getPosition().x > level.getLeft_b()){
     // go left
@@ -92,7 +95,7 @@ void Player::Update(float deltaTime){
         velocity.y = -sqrtf(gravity * jumpHeight);
         canJump = false;
     }
-
+    
     if(velocity.x==0.0f && velocity.y==0.0f){
         row=0;
     }else if(velocity.x!=0.0f && velocity.y==0.0f){
@@ -136,6 +139,28 @@ void Player::Update_Animation(float deltaTime, int row){
 
 void Player::Draw(sf::RenderWindow& window){
     window.draw(main_sprite);
+}
+
+void Player::OnCollision(sf::Vector2f direction){
+
+    //collision on the left
+    if (direction.x < 0.0f){
+        velocity.x = 0.0f;
+    }
+    //collision on the right
+    else if (direction.x > 0.0f){
+        velocity.x = 0.0f;
+    }
+    //collision on the bottom
+    if (direction.y < 0.0f){
+        velocity.y = 0.0f;
+        canJump = true;
+    }
+    //collision on the top
+    else if (direction.y > 0.0f){
+        velocity.y = 0.0f;
+    }
+    
 }
 
 #endif

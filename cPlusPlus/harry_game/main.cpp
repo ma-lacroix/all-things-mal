@@ -71,7 +71,6 @@ int main() {
     trashCans.push_back(trashCan1);
     trashCans.push_back(trashCan2);
     trashCans.push_back(trashCan3);
-    
 
     float deltaTime {0.0f};
     sf::Clock clock;
@@ -107,12 +106,19 @@ int main() {
             }
             
         }
+
         view.setCenter(main_player.getPosition().x+300.0f,main_player.getPosition().y);
         window.clear(sf::Color(110,110,100));
         window.setView(view);
         window.draw(background);
         window.draw(floor_texture);
-        
+        sf::Vector2f direction;
+
+        for(auto trashCan: trashCans){
+            if (trashCan.GetCollider().CheckCollision(main_player.GetCollider(),direction,1.0f)){
+                main_player.OnCollision(direction);
+            }
+        }
         main_player.Update(deltaTime);
         for(auto trashCan: trashCans){
             trashCan.Draw(window);
