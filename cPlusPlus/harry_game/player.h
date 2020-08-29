@@ -57,8 +57,9 @@ Player::Player(sf::Texture* textureFile,float speed,float switchTime,float jumpH
     std::cout << "x: " << textureSize.width << " y: " << textureSize.height << std::endl; 
     main_sprite.setSize(sf::Vector2f(100.0f, 100.0f));
     // main_sprite.setOrigin(main_sprite.getSize() / 2.0f);
-    main_sprite.setPosition(206.0f,206.0f);
+    main_sprite.setPosition(200.0f,200.0f);
     main_sprite.setTexture(textureFile);
+    main_sprite.setOutlineThickness(1);
 }
 
 Player::~Player(){
@@ -67,18 +68,8 @@ Player::~Player(){
 
 void Player::Update(float deltaTime){
 // updates the sprite's position on screen  
-    
+    // printf("PosX: %f, PosY: %f\n",main_sprite.getPosition().x,main_sprite.getPosition().y);
     velocity.x = 0.0f;
-    
-    // temporary floor for the sprite to walk on
-    if(main_sprite.getPosition().y < level.getFloor() && canJump == true){
-        velocity.y = 0.0f;
-    }else if(main_sprite.getPosition().y < level.getFloor() && canJump == false){
-        velocity.y += (gravity * deltaTime);
-    }else{
-        canJump = true;
-        velocity.y = 0.0f;
-    }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && main_sprite.getPosition().x > level.getLeft_b()){
     // go left
@@ -96,9 +87,11 @@ void Player::Update(float deltaTime){
         canJump = false;
     }
     
-    if(velocity.x==0.0f && velocity.y==0.0f){
-        row=0;
-    }else if(velocity.x!=0.0f && velocity.y==0.0f){
+    velocity.y += (gravity * deltaTime);
+
+    if (velocity.x == 0.0f && canJump == true){
+        row = 0;
+    }else if(velocity.x!=0.0f && canJump == true){
         row=1;
     }else{
         row=3;
@@ -160,7 +153,6 @@ void Player::OnCollision(sf::Vector2f direction){
     else if (direction.y > 0.0f){
         velocity.y = 0.0f;
     }
-    
 }
 
 #endif

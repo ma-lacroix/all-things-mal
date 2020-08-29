@@ -21,6 +21,7 @@ Object::Object(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f po
     some_shape.setSize(objectSize);
     some_shape.setPosition(position);
     some_shape.setTexture(textureFile);
+    some_shape.setOutlineThickness(1);
 }
 
 Object::~Object(){

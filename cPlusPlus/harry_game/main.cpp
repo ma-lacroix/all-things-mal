@@ -48,11 +48,12 @@ int main() {
     background.setColor(sf::Color(255, 255, 255, 110));
 
     // floor 
-    float floor_Y {440.0f};
-    sf::RectangleShape floor_texture;
-    floor_texture.setPosition(0.0f,floor_Y);
-    floor_texture.setSize(sf::Vector2f(1000000.0f,1000000.0f));
-    floor_texture.setFillColor(sf::Color(48,33,33));
+    std::string floorFile {"floor.png"};
+    sf::Texture floor_texture;
+    floor_texture.setRepeated(true);
+    floor_texture.isRepeated();
+    load_texture(&floor_texture,floorFile);
+    Object floor(&floor_texture,{1000.0f,80.0f},{0.0f,445.0f});
 
     // main sprite
     std::string textureFile {"hero.png"};
@@ -61,16 +62,19 @@ int main() {
     Player main_player(&playerTexture,200.0f,0.2f,200.0f,{8,5});
 
     // trash cans
-    std::vector<Object> trashCans;
+    std::vector<Object> objects;
     std::string trashFile {"trash_can.png"};
     sf::Texture trashTexture;
     load_texture(&trashTexture,trashFile);
-    Object trashCan1(&trashTexture,{50.0f,50.0f},{330.0f,395.0f});
-    Object trashCan2(&trashTexture,{50.0f,50.0f},{900.0f,395.0f});
-    Object trashCan3(&trashTexture,{50.0f,50.0f},{1300.0f,395.0f});
-    trashCans.push_back(trashCan1);
-    trashCans.push_back(trashCan2);
-    trashCans.push_back(trashCan3);
+    // Object trashCan1(&trashTexture,{40.0f,50.0f},{330.0f,395.0f});
+    // Object trashCan2(&trashTexture,{40.0f,50.0f},{900.0f,395.0f});
+    // Object trashCan3(&trashTexture,{40.0f,50.0f},{1300.0f,395.0f});
+    
+    // load game objects to vector
+    // objects.push_back(trashCan1);
+    // objects.push_back(trashCan2);
+    // objects.push_back(trashCan3);
+    objects.push_back(floor);
 
     float deltaTime {0.0f};
     sf::Clock clock;
@@ -106,25 +110,26 @@ int main() {
             }
             
         }
-
+        main_player.Update(deltaTime);
         view.setCenter(main_player.getPosition().x+300.0f,main_player.getPosition().y);
         window.clear(sf::Color(110,110,100));
         window.setView(view);
         window.draw(background);
-        window.draw(floor_texture);
+        
+        
+        // collision detection
         sf::Vector2f direction;
-
-        for(auto trashCan: trashCans){
-            if (trashCan.GetCollider().CheckCollision(main_player.GetCollider(),direction,1.0f)){
+        for(auto object: objects){
+            if (object.GetCollider().CheckCollision(main_player.GetCollider(),direction,1.0f)){
                 main_player.OnCollision(direction);
             }
         }
-        main_player.Update(deltaTime);
-        for(auto trashCan: trashCans){
-            trashCan.Draw(window);
+        for(auto object: objects){
+            object.Draw(window);
         }
         main_player.Draw(window);
         window.display();
+        
     }
 
     return 0;
