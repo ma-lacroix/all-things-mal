@@ -54,6 +54,7 @@ int main() {
     floor_texture.isRepeated();
     load_texture(&floor_texture,floorFile);
     Object floor(&floor_texture,{1000.0f,80.0f},{0.0f,445.0f});
+    Object floor2(&floor_texture,{300.0f,80.0f},{100.0f,230.0f});
 
     // main sprite
     std::string textureFile {"hero.png"};
@@ -66,7 +67,7 @@ int main() {
     std::string trashFile {"trash_can.png"};
     sf::Texture trashTexture;
     load_texture(&trashTexture,trashFile);
-    // Object trashCan1(&trashTexture,{40.0f,50.0f},{330.0f,395.0f});
+    // Object trashCan1(&trashTexture,{60.0f,80.0f},{330.0f,375.0f});
     // Object trashCan2(&trashTexture,{40.0f,50.0f},{900.0f,395.0f});
     // Object trashCan3(&trashTexture,{40.0f,50.0f},{1300.0f,395.0f});
     
@@ -75,6 +76,7 @@ int main() {
     // objects.push_back(trashCan2);
     // objects.push_back(trashCan3);
     objects.push_back(floor);
+    objects.push_back(floor2);
 
     float deltaTime {0.0f};
     sf::Clock clock;
