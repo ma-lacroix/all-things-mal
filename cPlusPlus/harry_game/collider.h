@@ -10,95 +10,89 @@
 class Collider {
 
 private:
-    sf::RectangleShape& some_shape;
+    sf::RectangleShape& body;
 
 public:
-    Collider(sf::RectangleShape& some_shape);
+    Collider(sf::RectangleShape &body);
     ~Collider();
-    bool CheckCollision(Collider main_sprite, sf::Vector2f& direction, float rebound);
-    Collider GetCollider() {return Collider(some_shape);};
-    void Move(float dx, float dy) {some_shape.move(dx,dy);};
-    sf::Vector2f GetPosition() {return some_shape.getPosition();};
-    sf::Vector2f GetSize() {return some_shape.getSize();};
+
+    bool CheckCollision(Collider other, sf::Vector2f& direction, float rebound);
+
+public:
+    void Move(float dx, float dy) {body.move(dx,dy);};
+    sf::Vector2f GetPosition() {return body.getPosition();};
+    sf::Vector2f GetHalfSize() {return body.getSize() / 2.0f;};
 
 };
 
-Collider::Collider(sf::RectangleShape& some_shape):
-    some_shape(some_shape) {}
+Collider::Collider(sf::RectangleShape& body):
+    body(body) {}
 
 Collider::~Collider() {
     // std::cout << "Collider destructor called" << std::endl;
 }
 
-bool Collider::CheckCollision(Collider main_sprite, sf::Vector2f& direction, float rebound){
+bool Collider::CheckCollision(Collider other, sf::Vector2f& direction, float rebound){
 
-    sf::Vector2f main_spritePosition = main_sprite.GetPosition();
-    sf::Vector2f main_spriteSize = main_sprite.GetSize()+main_spritePosition;
-    sf::Vector2f ObjectPosition = GetPosition();
-    sf::Vector2f ObjectSize = GetSize()+ObjectPosition;
+    sf::Vector2f otherPosition = other.GetPosition();
+    sf::Vector2f otherHalfSize = other.GetHalfSize();
+    sf::Vector2f thisPosition = GetPosition();
+    sf::Vector2f thisHalfSize = GetHalfSize();
     
-    float deltax = main_spritePosition.x - ObjectPosition.x;
-    float deltay = main_spritePosition.y - ObjectPosition.y;
-    float intersectX = fabs(deltax) - (main_sprite.GetSize().x + GetSize().x)/2.0f;
-    float intersectY = fabs(deltay) - (main_sprite.GetSize().y + GetSize().y)/2.0f;
+    float deltax = otherPosition.x - thisPosition.x - fabs(otherHalfSize.x - thisHalfSize.x);
+    float deltay = otherPosition.y - thisPosition.y;
+    float intersectX = fabs(deltax) - (otherHalfSize.x + thisHalfSize.x);
+    float intersectY = fabs(deltay) - (otherHalfSize.y + thisHalfSize.y);
 
-    // collision at the bottom
-    if(main_spriteSize.y > ObjectPosition.y && main_spritePosition.y < ObjectPosition.y){
-        if(main_spritePosition.x < ObjectSize.x && 
-            main_spriteSize.x > ObjectPosition.x &&
-            main_spriteSize.x > ObjectSize.x){
-                main_sprite.Move(0.0f,intersectY);
+    printf("Px: %f, Py: %f\n",otherPosition.x,otherPosition.y);
+    printf("Ox: %f, Oy: %f\n",thisPosition.x,thisPosition.y);
+    printf("Dx: %f, Dy: %f\n",deltax,deltay);
+    printf("PHx: %f, PHy: %f\n",otherHalfSize.x,otherHalfSize.y);
+    printf("OHx: %f, OHy: %f\n",thisHalfSize.x,thisHalfSize.y);
+    printf("IntX: %f, IntY: %f\n",intersectX,intersectY);
+    std::cout << std::endl;
+
+    if (intersectX < 0.0f && intersectY < 0.0f){
+        rebound = std::min(std::max(rebound, 0.0f),1.0f);
+
+        if(intersectX > intersectY) {
+            if (deltax > 0.0f){
+                Move(intersectX*(1.0f-rebound),0.0f);
+                other.Move(-intersectX * rebound, 0.0f);
+                direction.x = 1.0f;
+                direction.y = 0.0f;
+            }
+            else
+            {
+                Move(-intersectX*(1.0f-rebound),0.0f);
+                other.Move(intersectX * rebound, 0.0f);
+                direction.x = -1.0f;
+                direction.y = 0.0f;
+            }
+            
+        }
+        else {
+            if (deltay > 0.0f){
+                Move(0.0f,intersectY*(1.0f-rebound));
+                other.Move(0.0f,-intersectY * rebound);
+                direction.x = 0.0f;
+                direction.y = 1.0f;
+            }
+            else
+            {
+                Move(0.0f,-intersectY*(1.0f-rebound));
+                other.Move(0.0f,intersectY * rebound);
                 direction.x = 0.0f;
                 direction.y = -1.0f;
-                return true;
+            }
+            
         }
-        if(main_spritePosition.x > ObjectPosition.x && 
-            main_spriteSize.x > ObjectPosition.x &&
-            main_spriteSize.x < ObjectSize.x){
-                main_sprite.Move(0.0f,intersectY);
-                direction.x = 0.0f;
-                direction.y = -1.0f;
-                return true;
-        }
-        if(main_spritePosition.x < ObjectPosition.x && 
-            main_spriteSize.x > ObjectPosition.x &&
-            main_spriteSize.x < ObjectSize.x){
-                main_sprite.Move(0.0f,intersectY);
-                direction.x = 0.0f;
-                direction.y = -1.0f;
-                return true;
-        }
-        return false;
+
+        return true;
     }
-    // collision at the top
-    if(main_spritePosition.y < ObjectSize.y && main_spriteSize.y > ObjectSize.y){
-        if(main_spritePosition.x < ObjectSize.x && 
-        main_spriteSize.x > ObjectPosition.x &&
-        main_spriteSize.x > ObjectSize.x){
-                main_sprite.Move(0.0f,-intersectY);
-                direction.x = 0.0f;
-                direction.y = 1.0f;
-                return true;
-        }
-        if(main_spritePosition.x > ObjectPosition.x && 
-            main_spriteSize.x > ObjectPosition.x &&
-            main_spriteSize.x < ObjectSize.x){
-                main_sprite.Move(0.0f,-intersectY);
-                direction.x = 0.0f;
-                direction.y = 1.0f;
-                return true;
-        }
-        if(main_spritePosition.x < ObjectPosition.x && 
-            main_spriteSize.x > ObjectPosition.x &&
-            main_spriteSize.x < ObjectSize.x){
-                main_sprite.Move(0.0f,-intersectY);
-                direction.x = 0.0f;
-                direction.y = 1.0f;
-                return true;
-        }
-        return false;
-    }
+
     return false;
+
 }
 
 #endif

@@ -53,8 +53,9 @@ int main() {
     floor_texture.setRepeated(true);
     floor_texture.isRepeated();
     load_texture(&floor_texture,floorFile);
-    Object floor(&floor_texture,{1000.0f,80.0f},{0.0f,445.0f});
-    Object floor2(&floor_texture,{300.0f,80.0f},{100.0f,230.0f});
+    Object floor(&floor_texture,{600.0f,90.0f},{120.0f,270.0f});
+    Object floor2(&floor_texture,{90.0f,90.0f},{300.0f,170.0f});
+    Object floor3(&floor_texture,{90.0f,90.0f},{400.0f,80.0f});
 
     // main sprite
     std::string textureFile {"hero.png"};
@@ -77,6 +78,7 @@ int main() {
     // objects.push_back(trashCan3);
     objects.push_back(floor);
     objects.push_back(floor2);
+    objects.push_back(floor3);
 
     float deltaTime {0.0f};
     sf::Clock clock;
@@ -126,6 +128,8 @@ int main() {
                 main_player.OnCollision(direction);
             }
         }
+        // printf("Dx: %f, Dy: %f\n",direction.x,direction.y);
+
         for(auto object: objects){
             object.Draw(window);
         }
