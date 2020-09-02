@@ -44,14 +44,6 @@ bool Collider::CheckCollision(Collider other, sf::Vector2f& direction, float reb
     float intersectX = fabs(deltax) - (otherHalfSize.x + thisHalfSize.x);
     float intersectY = fabs(deltay) - (otherHalfSize.y + thisHalfSize.y);
 
-    printf("Px: %f, Py: %f\n",otherPosition.x,otherPosition.y);
-    printf("Ox: %f, Oy: %f\n",thisPosition.x,thisPosition.y);
-    printf("Dx: %f, Dy: %f\n",deltax,deltay);
-    printf("PHx: %f, PHy: %f\n",otherHalfSize.x,otherHalfSize.y);
-    printf("OHx: %f, OHy: %f\n",thisHalfSize.x,thisHalfSize.y);
-    printf("IntX: %f, IntY: %f\n",intersectX,intersectY);
-    std::cout << std::endl;
-
     if (intersectX < 0.0f && intersectY < 0.0f){
         rebound = std::min(std::max(rebound, 0.0f),1.0f);
 

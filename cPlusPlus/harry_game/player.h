@@ -6,8 +6,10 @@
 #include <SFML/Graphics.hpp>
 #include "collider.h"
 #include "level.h"
+#include "bullet.h"
 #include <iostream>
 #include <math.h>
+#include <vector>
 
 class Player {
 private:
@@ -16,6 +18,7 @@ private:
     sf::Vector2u currentImage;
     sf::Vector2f velocity;
     bool lookRight;
+    bool shooting;
     float switchTime;
     float totalTime;
     float speed;
@@ -23,15 +26,17 @@ private:
     unsigned int row;
     float gravity;
     bool canJump;
+    std::vector<Bullet*> bullets;
 
 public:
     Player(sf::Texture* textureFile,float speed,float switchtime,float jumpHeight,
                 sf::Vector2u imageCount);
     ~Player();
-    void Update(float deltaTime);
+    void Update(float deltaTime, int &shootTimer);
     void Update_Animation(float deltaTime, int row);
     void Draw(sf::RenderWindow&);
     void OnCollision(sf::Vector2f direction);
+    std::vector<Bullet*> getBullets() {return bullets;};
     Collider GetCollider() { return Collider(main_sprite);};
     
     sf::RectangleShape main_sprite;
@@ -52,6 +57,7 @@ Player::Player(sf::Texture* textureFile,float speed,float switchTime,float jumpH
     currentImage = {0,0};
     gravity = 981.0f;
     canJump = true;
+    shooting = false;
     textureSize.width = textureFile->getSize().x/imageCount.x;
     textureSize.height = textureFile->getSize().y/imageCount.y;
     std::cout << "x: " << textureSize.width << " y: " << textureSize.height << std::endl; 
@@ -66,18 +72,20 @@ Player::~Player(){
     std::cout << "Player destructor called" << std::endl;
 };
 
-void Player::Update(float deltaTime){
+void Player::Update(float deltaTime, int &shootTimer){
 // updates the sprite's position on screen  
     // printf("PosX: %f, PosY: %f\n",main_sprite.getPosition().x,main_sprite.getPosition().y);
     velocity.x = 0.0f;
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && main_sprite.getPosition().x > level.getLeft_b()){
     // go left
+        shooting = false;
         velocity.x -= speed;
         lookRight = false;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && main_sprite.getPosition().x < level.getRight_b()){
     // go right
+        shooting = false;
         velocity.x += speed;
         lookRight = true;
     }
@@ -85,20 +93,41 @@ void Player::Update(float deltaTime){
     // jump
         velocity.y = -sqrtf(gravity * jumpHeight);
         canJump = false;
+        shooting = false;
     }
-    
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && shootTimer >= 50){
+    // attack
+        canJump = false;
+        shooting = true;
+        shootTimer = 0;
+        sf::Vector2f bulletpos;
+        float bspeed;
+        bulletpos = main_sprite.getPosition()+main_sprite.getSize()/2.0f;
+        if(lookRight){
+            bspeed = 1000.0f;
+        }else{
+            bspeed = -1000.0f;
+        }
+        bullets.push_back(new Bullet(4.0f,bulletpos,{bspeed,0.0f}));
+    }
+
     velocity.y += (gravity * deltaTime);
 
-    if (velocity.x == 0.0f && canJump == true){
+    if(velocity.x == 0.0f && canJump==true){
         row = 0;
-    }else if(velocity.x!=0.0f && canJump == true){
+    }else if(velocity.x!=0.0f && canJump==true){
         row=1;
     }else{
         row=3;
     }
-
+    if(bullets.size()>0){
+        for(auto bullet: bullets){
+            bullet->Update(deltaTime);
+        }
+    }
     Update_Animation(deltaTime, row);
     main_sprite.move(velocity*deltaTime);
+    
 }
 
 void Player::Update_Animation(float deltaTime, int row){

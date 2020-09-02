@@ -15,6 +15,7 @@
 #include <vector>
 #include "player.h"
 #include "object.h"
+#include "bullet.h"
 
 void load_texture(sf::Texture* some_texture,std::string textureFile){
 // loads a texture file
@@ -54,8 +55,8 @@ int main() {
     floor_texture.isRepeated();
     load_texture(&floor_texture,floorFile);
     Object floor(&floor_texture,{600.0f,90.0f},{120.0f,270.0f});
-    Object floor2(&floor_texture,{90.0f,90.0f},{300.0f,170.0f});
-    Object floor3(&floor_texture,{90.0f,90.0f},{400.0f,80.0f});
+    Object floor2(&floor_texture,{90.0f,90.0f},{400.0f,175.0f});
+    Object floor3(&floor_texture,{90.0f,90.0f},{500.0f,95.0f});
 
     // main sprite
     std::string textureFile {"hero.png"};
@@ -63,11 +64,13 @@ int main() {
     load_texture(&playerTexture,textureFile);
     Player main_player(&playerTexture,200.0f,0.2f,200.0f,{8,5});
 
-    // trash cans
+    
     std::vector<Object> objects;
-    std::string trashFile {"trash_can.png"};
-    sf::Texture trashTexture;
-    load_texture(&trashTexture,trashFile);
+    
+    // trash cans
+    // std::string trashFile {"trash_can.png"};
+    // sf::Texture trashTexture;
+    // load_texture(&trashTexture,trashFile);
     // Object trashCan1(&trashTexture,{60.0f,80.0f},{330.0f,375.0f});
     // Object trashCan2(&trashTexture,{40.0f,50.0f},{900.0f,395.0f});
     // Object trashCan3(&trashTexture,{40.0f,50.0f},{1300.0f,395.0f});
@@ -81,6 +84,7 @@ int main() {
     objects.push_back(floor3);
 
     float deltaTime {0.0f};
+    int shootTimer {0};
     sf::Clock clock;
 
     // game loop
@@ -91,6 +95,9 @@ int main() {
         // fix for window dragging
         if(deltaTime > 1.0f / 20.0f){
             deltaTime = 1.0f / 20.0f;
+        }
+        if(shootTimer < 50){
+            shootTimer++;
         }
 
         // this part handles events related to the actual game window like closing or resizing. 
@@ -114,12 +121,12 @@ int main() {
             }
             
         }
-        main_player.Update(deltaTime);
-        view.setCenter(main_player.getPosition().x+300.0f,main_player.getPosition().y);
+
+        main_player.Update(deltaTime,shootTimer);
+        view.setCenter(main_player.getPosition().x+200.0f,main_player.getPosition().y);
         window.clear(sf::Color(110,110,100));
         window.setView(view);
         window.draw(background);
-        
         
         // collision detection
         sf::Vector2f direction;
@@ -128,10 +135,13 @@ int main() {
                 main_player.OnCollision(direction);
             }
         }
-        // printf("Dx: %f, Dy: %f\n",direction.x,direction.y);
 
+        // drawing game objects
         for(auto object: objects){
             object.Draw(window);
+        }
+        for(auto bullet: main_player.getBullets()){
+            bullet->Draw(window);
         }
         main_player.Draw(window);
         window.display();
