@@ -16,6 +16,7 @@ public:
     Collider(sf::RectangleShape &body);
     ~Collider();
 
+    bool CheckCollision(Collider other);
     bool CheckCollision(Collider other, sf::Vector2f& direction, float rebound);
 
 public:
@@ -32,7 +33,28 @@ Collider::~Collider() {
     // std::cout << "Collider destructor called" << std::endl;
 }
 
+bool Collider::CheckCollision(Collider other){
+// for bullet collision
+
+    sf::Vector2f otherPosition = other.GetPosition();
+    sf::Vector2f otherHalfSize = other.GetHalfSize();
+    sf::Vector2f thisPosition = GetPosition();
+    sf::Vector2f thisHalfSize = GetHalfSize();
+    
+    float deltax = otherPosition.x - thisPosition.x - fabs(otherHalfSize.x - thisHalfSize.x);
+    float deltay = otherPosition.y - thisPosition.y;
+    float intersectX = fabs(deltax) - (otherHalfSize.x + thisHalfSize.x);
+    float intersectY = fabs(deltay) - (otherHalfSize.y + thisHalfSize.y);
+
+    if (intersectX < 0.0f && intersectY < 0.0f){
+        return true;
+    }else{
+        return false;
+    }
+}
+
 bool Collider::CheckCollision(Collider other, sf::Vector2f& direction, float rebound){
+// for player collision
 
     sf::Vector2f otherPosition = other.GetPosition();
     sf::Vector2f otherHalfSize = other.GetHalfSize();

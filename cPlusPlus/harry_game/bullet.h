@@ -6,23 +6,27 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include "collider.h"
 
 class Bullet {
 
 private:
-    sf::CircleShape some_shape;
+    sf::RectangleShape some_shape;
     sf::Vector2f movement_speed;
 
 public:
-    Bullet(float radius, sf::Vector2f position, sf::Vector2f movement_speed);
+    Bullet(sf::Vector2f position, sf::Vector2f movement_speed);
     ~Bullet();
-    float getPosition() {return some_shape.getPosition().x;};
     void Update(float deltatime);
+    void Stop();
     void Draw(sf::RenderWindow& window);
+    Collider GetCollider() { return Collider(some_shape);};
+    
+    float getPosition() {return some_shape.getPosition().x;};
 };
 
-Bullet::Bullet(float radius, sf::Vector2f position, sf::Vector2f movement_speed){
-    some_shape.setRadius(radius);
+Bullet::Bullet(sf::Vector2f position, sf::Vector2f movement_speed){
+    some_shape.setSize({15.0f,7.0f});
     some_shape.setPosition(position);
     some_shape.setFillColor(sf::Color::White);
     this->movement_speed = movement_speed;
@@ -34,6 +38,10 @@ Bullet::~Bullet(){
 
 void Bullet::Update(float deltatime){
     some_shape.move(movement_speed*deltatime);
+}
+
+void Bullet::Stop(){
+    some_shape.move({0,0});
 }
 
 void Bullet::Draw(sf::RenderWindow& window){

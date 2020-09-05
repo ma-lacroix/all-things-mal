@@ -41,7 +41,7 @@ int main() {
     sf::View view(sf::Vector2f(0.0f,0.0f),sf::Vector2f(SCREEN_HEIGHT,SCREEN_WIDTH));
 
     // background
-    std::string backgroundFile {"sunset.png"};
+    std::string backgroundFile {"assets/sunset.png"};
     sf::Texture backgroundTexture;
     load_texture(&backgroundTexture,backgroundFile);
     sf::Sprite background(backgroundTexture);
@@ -49,7 +49,7 @@ int main() {
     background.setColor(sf::Color(255, 255, 255, 110));
 
     // floor 
-    std::string floorFile {"floor.png"};
+    std::string floorFile {"assets/floor.png"};
     sf::Texture floor_texture;
     floor_texture.setRepeated(true);
     floor_texture.isRepeated();
@@ -59,7 +59,7 @@ int main() {
     Object floor3(&floor_texture,{90.0f,90.0f},{500.0f,95.0f});
 
     // main sprite
-    std::string textureFile {"hero.png"};
+    std::string textureFile {"assets/hero.png"};
     sf::Texture playerTexture;
     load_texture(&playerTexture,textureFile);
     Player main_player(&playerTexture,200.0f,0.2f,200.0f,{8,5});
@@ -95,7 +95,7 @@ int main() {
         // fix for window dragging
         if(deltaTime > 1.0f / 20.0f){
             deltaTime = 1.0f / 20.0f;
-        }
+        }  
         if(shootTimer < 50){
             shootTimer++;
         }
@@ -122,7 +122,7 @@ int main() {
             
         }
 
-        main_player.Update(deltaTime,shootTimer);
+        main_player.Update(deltaTime,shootTimer,objects);
         view.setCenter(main_player.getPosition().x+200.0f,main_player.getPosition().y);
         window.clear(sf::Color(110,110,100));
         window.setView(view);
