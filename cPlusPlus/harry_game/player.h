@@ -66,7 +66,7 @@ Player::Player(sf::Texture* textureFile,float speed,float switchTime,float jumpH
     // main_sprite.setOrigin(main_sprite.getSize() / 2.0f);
     main_sprite.setPosition(200.0f,200.0f);
     main_sprite.setTexture(textureFile);
-    main_sprite.setOutlineThickness(1);
+    // main_sprite.setOutlineThickness(1);
 }
 
 Player::~Player(){
@@ -93,9 +93,11 @@ void Player::ManageBullets(float deltaTime, int MaxBullets, std::vector<Object> 
         for(auto bullet: bullets){
             bool collided {false};
             for(auto object: objects){
-                if (object.GetCollider().CheckCollision(bullet->GetCollider())){
+                if(object.Clipping()){
+                    if (object.GetCollider().CheckCollision(bullet->GetCollider())){
                     collided = true;
                     break;          
+                    }
                 }
             }
             if(collided){

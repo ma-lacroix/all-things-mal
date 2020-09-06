@@ -40,48 +40,65 @@ int main() {
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH,SCREEN_HEIGHT),"Mr Harry",sf::Style::Close | sf::Style::Resize);
     sf::View view(sf::Vector2f(0.0f,0.0f),sf::Vector2f(SCREEN_HEIGHT,SCREEN_WIDTH));
 
+    // main sprite & player
+    std::string textureFile {"assets/hero.png"};
+    sf::Texture playerTexture;
+    load_texture(&playerTexture,textureFile);
+    Player main_player(&playerTexture,200.0f,0.2f,200.0f,{8,5});
+    
     // background
     std::string backgroundFile {"assets/sunset.png"};
     sf::Texture backgroundTexture;
     load_texture(&backgroundTexture,backgroundFile);
     sf::Sprite background(backgroundTexture);
-    background.setPosition(-500.0f,-500.f);
+    background.setPosition(-500.0f,-700.f);
     background.setColor(sf::Color(255, 255, 255, 110));
 
-    // floor 
+    // floors 
     std::string floorFile {"assets/floor.png"};
     sf::Texture floor_texture;
     floor_texture.setRepeated(true);
     floor_texture.isRepeated();
     load_texture(&floor_texture,floorFile);
-    Object floor(&floor_texture,{600.0f,90.0f},{120.0f,270.0f});
-    Object floor2(&floor_texture,{90.0f,90.0f},{400.0f,175.0f});
-    Object floor3(&floor_texture,{90.0f,90.0f},{500.0f,95.0f});
+    Object floor(&floor_texture,{3000.0f,100.0f},{100.0f,250.0f},true);
+    Object floor2(&floor_texture,{90.0f,90.0f},{400.0f,160.0f},true);
+    Object floor3(&floor_texture,{90.0f,90.0f},{1150.0f,160.0f},true);
+    Object floor4(&floor_texture,{90.0f,120.0f},{1240.0f,130.0f},true);
 
-    // main sprite
-    std::string textureFile {"assets/hero.png"};
-    sf::Texture playerTexture;
-    load_texture(&playerTexture,textureFile);
-    Player main_player(&playerTexture,200.0f,0.2f,200.0f,{8,5});
+    //house
+    std::string houseFile {"assets/house1.png"};
+    sf::Texture house_texture;
+    load_texture(&house_texture,houseFile);
+    Object house(&house_texture,{200.0f,200.0f},{650.0f,55.0f},false);
+    Object house2(&house_texture,{200.0f,200.0f},{950.0f,55.0f},false);
 
+    //building
+    std::string buildingFile {"assets/building.png"};
+    sf::Texture building_texture;
+    load_texture(&building_texture,buildingFile);
+    Object building(&building_texture,{250.0f,400.0f},{1400.0f,-140.0f},false);
+    Object building2(&building_texture,{250.0f,400.0f},{1800.0f,-140.0f},false);
+    
+    //lamp
+    std::string lampFile {"assets/lamp.png"};
+    sf::Texture lamp_texture;
+    load_texture(&lamp_texture,lampFile);
+    Object lamp(&lamp_texture,{50.0f,100.0f},{900.0f,150.0f},false);
+    Object lamp2(&lamp_texture,{50.0f,100.0f},{1600.0f,150.0f},false);
+    Object lamp3(&lamp_texture,{50.0f,100.0f},{80.0f,150.0f},false);
     
     std::vector<Object> objects;
-    
-    // trash cans
-    // std::string trashFile {"trash_can.png"};
-    // sf::Texture trashTexture;
-    // load_texture(&trashTexture,trashFile);
-    // Object trashCan1(&trashTexture,{60.0f,80.0f},{330.0f,375.0f});
-    // Object trashCan2(&trashTexture,{40.0f,50.0f},{900.0f,395.0f});
-    // Object trashCan3(&trashTexture,{40.0f,50.0f},{1300.0f,395.0f});
-    
-    // load game objects to vector
-    // objects.push_back(trashCan1);
-    // objects.push_back(trashCan2);
-    // objects.push_back(trashCan3);
     objects.push_back(floor);
     objects.push_back(floor2);
     objects.push_back(floor3);
+    objects.push_back(floor4);
+    objects.push_back(house);
+    objects.push_back(house2);
+    objects.push_back(lamp);
+    objects.push_back(lamp2);
+    objects.push_back(lamp3);
+    objects.push_back(building);
+    objects.push_back(building2);
 
     float deltaTime {0.0f};
     int shootTimer {0};
@@ -131,8 +148,10 @@ int main() {
         // collision detection
         sf::Vector2f direction;
         for(auto object: objects){
-            if (object.GetCollider().CheckCollision(main_player.GetCollider(),direction,1.0f)){
+            if(object.Clipping()){
+                if (object.GetCollider().CheckCollision(main_player.GetCollider(),direction,1.0f)){
                 main_player.OnCollision(direction);
+                }
             }
         }
 

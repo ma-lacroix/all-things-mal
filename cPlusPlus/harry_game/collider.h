@@ -42,7 +42,7 @@ bool Collider::CheckCollision(Collider other){
     sf::Vector2f thisHalfSize = GetHalfSize();
     
     float deltax = otherPosition.x - thisPosition.x - fabs(otherHalfSize.x - thisHalfSize.x);
-    float deltay = otherPosition.y - thisPosition.y;
+    float deltay = otherPosition.y - thisPosition.y - fabs(otherHalfSize.y - thisHalfSize.y);
     float intersectX = fabs(deltax) - (otherHalfSize.x + thisHalfSize.x);
     float intersectY = fabs(deltay) - (otherHalfSize.y + thisHalfSize.y);
 
