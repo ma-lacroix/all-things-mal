@@ -15,6 +15,7 @@
 #include <vector>
 #include "player.h"
 #include "object.h"
+#include "enemy.h"
 #include "bullet.h"
 
 void load_texture(sf::Texture* some_texture,std::string textureFile){
@@ -39,6 +40,7 @@ int main() {
     static const float VIEW_HEIGHT = SCREEN_HEIGHT;
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH,SCREEN_HEIGHT),"Mr Harry",sf::Style::Close | sf::Style::Resize);
     sf::View view(sf::Vector2f(0.0f,0.0f),sf::Vector2f(SCREEN_HEIGHT,SCREEN_WIDTH));
+    sf::View HUD(sf::Vector2f(0.0f,0.0f),sf::Vector2f(SCREEN_HEIGHT,SCREEN_WIDTH));
 
     // main sprite & player
     std::string textureFile {"assets/hero.png"};
@@ -46,6 +48,18 @@ int main() {
     load_texture(&playerTexture,textureFile);
     Player main_player(&playerTexture,200.0f,0.2f,200.0f,{8,5});
     
+    // enemy
+    std::string alienFile {"assets/alien.png"};
+    sf::Texture alienTexture;
+    load_texture(&alienTexture,alienFile);
+    Enemy alien(&alienTexture,{100.0f,150.0f},{500.0f,40.0f},true,4,{3,2},0.2f);
+
+    // hud elements
+    std::string healthFile {"assets/health.png"};
+    sf::Texture healthbarTexture;
+    load_texture(&healthbarTexture,healthFile);
+    Object healthBar(&healthbarTexture,{200.0f,50.0f},{-360.0f,-360.0f},false);
+
     // background
     std::string backgroundFile {"assets/sunset.png"};
     sf::Texture backgroundTexture;
@@ -140,6 +154,7 @@ int main() {
         }
 
         main_player.Update(deltaTime,shootTimer,objects);
+        alien.Update(deltaTime);
         view.setCenter(main_player.getPosition().x+200.0f,main_player.getPosition().y);
         window.clear(sf::Color(110,110,100));
         window.setView(view);
@@ -162,7 +177,12 @@ int main() {
         for(auto bullet: main_player.getBullets()){
             bullet->Draw(window);
         }
+        alien.Draw(window);
         main_player.Draw(window);
+
+        window.setView(HUD);
+        healthBar.Draw(window);
+
         window.display();
         
     }
