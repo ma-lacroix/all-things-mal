@@ -20,6 +20,7 @@ public:
     void Update(float deltatime);
     void Stop();
     void Draw(sf::RenderWindow& window);
+    int getSpeed() {return movement_speed.x;};
     Collider GetCollider() { return Collider(some_shape);};
     
     float getPosition() {return some_shape.getPosition().x;};
@@ -42,6 +43,7 @@ void Bullet::Update(float deltatime){
 
 void Bullet::Stop(){
     some_shape.move({0,0});
+    movement_speed.x = 0;
 }
 
 void Bullet::Draw(sf::RenderWindow& window){

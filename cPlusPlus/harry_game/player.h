@@ -11,6 +11,7 @@
 #include "level.h"
 #include "bullet.h"
 #include "object.h"
+#include "enemy.h"
 
 class Player {
 private:
@@ -32,12 +33,12 @@ public:
     Player(sf::Texture* textureFile,float speed,float switchtime,float jumpHeight,
                 sf::Vector2u imageCount);
     ~Player();
-    void Update(float deltaTime, int &shootTimer, std::vector<Object> &objects);
+    void Update(float deltaTime, int &shootTimer, std::vector<Object> &objects, Enemy &enemy);
     void Update_Animation(float deltaTime, int row);
     void Draw(sf::RenderWindow&);
     void OnCollision(sf::Vector2f direction);
     void ShootBullet(int &shootTimer);
-    void ManageBullets(float deltaTime,int MaxBullets,std::vector<Object> &objects);
+    void ManageBullets(float deltaTime,int MaxBullets,std::vector<Object> &objects, Enemy &enemy);
     std::vector<Bullet*> getBullets() {return bullets;};
     Collider GetCollider() { return Collider(main_sprite);};
     
@@ -87,32 +88,43 @@ void Player::ShootBullet(int &shootTimer){
     bullets.push_back(new Bullet(bulletpos,{bspeed,0.0f}));
 }
 
-void Player::ManageBullets(float deltaTime, int MaxBullets, std::vector<Object> &objects){
+void Player::ManageBullets(float deltaTime, int MaxBullets, std::vector<Object> &objects, Enemy &enemy){
 // Handles the bullet movements and memory allocated to bullet objects creation
     if(bullets.size()>0){
         for(auto bullet: bullets){
             bool collided {false};
-            for(auto object: objects){
-                if(object.Clipping()){
-                    if (object.GetCollider().CheckCollision(bullet->GetCollider())){
-                    collided = true;
-                    break;          
+            bool en {false};
+            if(enemy.GetCollider().CheckCollision(bullet->GetCollider()) && enemy.Get_Status()){
+                collided = true;
+                en = true;
+            }else{
+                for(auto object: objects){
+                    if(object.Clipping()){
+                        if (object.GetCollider().CheckCollision(bullet->GetCollider())){
+                        collided = true;
+                        break;          
+                        }
                     }
                 }
             }
-            if(collided){
+            if(en && collided){
+                if(bullet->getSpeed()>0){
+                    enemy.Update_Health();
+                }
+                bullet->Stop();
+            }else if(collided){
                 bullet->Stop();
             }else{
                 bullet->Update(deltaTime);
             }
         }
-    }
+    } 
     if(bullets.size()>MaxBullets){
         bullets.erase(bullets.begin());
     }
 }
 
-void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objects){
+void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objects, Enemy &enemy){
 // updates the sprite's position on screen  
 
     velocity.x = 0.0f;
@@ -147,7 +159,7 @@ void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objec
         row=3;
     }
     
-    ManageBullets(deltaTime,8,objects);
+    ManageBullets(deltaTime,8,objects,enemy);
     Update_Animation(deltaTime,row);
     main_sprite.move(velocity*deltaTime);
     
