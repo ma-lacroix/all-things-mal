@@ -83,7 +83,7 @@ int main() {
     std::string houseFile {"assets/house1.png"};
     sf::Texture house_texture;
     load_texture(&house_texture,houseFile);
-    Object house(&house_texture,{200.0f,200.0f},{650.0f,55.0f},false);
+    Object house(&house_texture,{200.0f,200.0f},{550.0f,55.0f},false);
     Object house2(&house_texture,{200.0f,200.0f},{950.0f,55.0f},false);
 
     //building

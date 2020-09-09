@@ -107,9 +107,11 @@ void Player::ManageBullets(float deltaTime, int MaxBullets, std::vector<Object> 
                     }
                 }
             }
+            
             if(en && collided){
                 if(bullet->getSpeed()>0){
                     enemy.Update_Health();
+                    bullet->makeTransparent();
                 }
                 bullet->Stop();
             }else if(collided){

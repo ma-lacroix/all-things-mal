@@ -22,8 +22,8 @@ public:
     void Draw(sf::RenderWindow& window);
     int getSpeed() {return movement_speed.x;};
     Collider GetCollider() { return Collider(some_shape);};
-    
     float getPosition() {return some_shape.getPosition().x;};
+    void makeTransparent();
 };
 
 Bullet::Bullet(sf::Vector2f position, sf::Vector2f movement_speed){
@@ -44,6 +44,10 @@ void Bullet::Update(float deltatime){
 void Bullet::Stop(){
     some_shape.move({0,0});
     movement_speed.x = 0;
+}
+
+void Bullet::makeTransparent(){
+    some_shape.setFillColor(sf::Color(255,255,255,0));
 }
 
 void Bullet::Draw(sf::RenderWindow& window){

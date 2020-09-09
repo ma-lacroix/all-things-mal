@@ -15,6 +15,7 @@ private:
     int healthPoints;
     float switchTime;
     float totalTime;
+    float positionx;
     sf::Vector2u imageCount;
     sf::Vector2u currentImage;
 
@@ -31,6 +32,7 @@ public:
     sf::RectangleShape main_enemy;
     sf::Vector2f getPosition() {return main_enemy.getPosition();};
     sf::IntRect textureSize;
+    Collider GetCollider() { return Collider(main_enemy);};
 };
 
 Enemy::Enemy(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f position, 
@@ -39,7 +41,8 @@ Enemy::Enemy(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f posi
     this->healthPoints = healthPoints;
     this->imageCount = imageCount;
     this->switchTime = switchTime;
-    lookRight = true;
+    this->positionx = position.x;
+    lookRight = false;
     alive = true;
     currentImage = {0,0};
     textureSize.width = textureFile->getSize().x/imageCount.x;
@@ -103,7 +106,25 @@ void Enemy::Update_Health(){
 }
 
 void Enemy::Update_Position(float deltatime){
-    sf::Vector2f velocity {-20.0f,0.0f};
+    
+    sf::Vector2f velocity {0.0f,0.0f};
+    
+    if(lookRight){
+        if(main_enemy.getPosition().x > positionx*1.2f){
+            lookRight = false;
+            velocity.x = -90.0f;
+        }else{
+            velocity.x = 90.0f;
+        }
+    }else{
+        if(main_enemy.getPosition().x < positionx/1.2f){
+            lookRight = true;
+            velocity.x = 90.0f;
+        }else{
+            velocity.x = -90.0f;
+        }
+    }
+    
     main_enemy.move(deltatime*velocity);
 }
 
