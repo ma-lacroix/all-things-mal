@@ -17,6 +17,7 @@
 #include "object.h"
 #include "enemy.h"
 #include "bullet.h"
+#include "health.h"
 
 void load_texture(sf::Texture* some_texture,std::string textureFile){
 // loads a texture file
@@ -58,7 +59,7 @@ int main() {
     std::string healthFile {"assets/health.png"};
     sf::Texture healthbarTexture;
     load_texture(&healthbarTexture,healthFile);
-    Object healthBar(&healthbarTexture,{200.0f,50.0f},{-360.0f,-360.0f},false);
+    Health healthbar(&healthbarTexture,{1,4});
 
     // background
     std::string backgroundFile {"assets/sunset.png"};
@@ -116,6 +117,8 @@ int main() {
 
     float deltaTime {0.0f};
     int shootTimer {0};
+    int healthTimer {0};
+    int damageTimer {100};
     sf::Clock clock;
 
     // game loop
@@ -128,7 +131,12 @@ int main() {
             deltaTime = 1.0f / 20.0f;
         }  
         if(shootTimer < 50){
+        // delays the rendering of bullets
             shootTimer++;
+        }
+        if(healthTimer < 500){
+        // delays the health loss effect from ennemies
+            healthTimer++;
         }
 
         // this part handles events related to the actual game window like closing or resizing. 
@@ -177,15 +185,24 @@ int main() {
         for(auto bullet: main_player.getBullets()){
             bullet->Draw(window);
         }
-        
+
         if(alien->Get_Status()){
+            if(alien->GetCollider().CheckCollision(main_player.GetCollider()) && healthTimer == 500){
+                healthTimer = 0;
+                int dam {1};
+                main_player.updateHealthPoints(dam);
+                main_player.activateHit();
+                healthbar.updateHealth(dam);
+            }else if (healthTimer==500){
+                main_player.deactivateHit();
+            }
             alien->Draw(window);
         }
+        
         main_player.Draw(window);
-
+        
         window.setView(HUD);
-        healthBar.Draw(window);
-
+        healthbar.Draw(window);
         window.display();
         
     }

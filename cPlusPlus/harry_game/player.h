@@ -20,11 +20,13 @@ private:
     sf::Vector2u currentImage;
     sf::Vector2f velocity;
     bool lookRight;
+    bool hit;
     float switchTime;
     float totalTime;
     float speed;
     float jumpHeight;
     unsigned int row;
+    unsigned int healthPoints;
     float gravity;
     bool canJump;
     std::vector<Bullet*> bullets;
@@ -39,8 +41,13 @@ public:
     void OnCollision(sf::Vector2f direction);
     void ShootBullet(int &shootTimer);
     void ManageBullets(float deltaTime,int MaxBullets,std::vector<Object> &objects, Enemy &enemy);
+    void updateHealthPoints(int loss);
+    void activateHit() {hit = true;};
+    void deactivateHit() {hit = false;};
+    void takingHit();
     std::vector<Bullet*> getBullets() {return bullets;};
     Collider GetCollider() { return Collider(main_sprite);};
+    int GetHealthPoints() {return healthPoints;};
     
     sf::RectangleShape main_sprite;
     sf::Vector2f getPosition() {return main_sprite.getPosition();};
@@ -60,6 +67,8 @@ Player::Player(sf::Texture* textureFile,float speed,float switchTime,float jumpH
     currentImage = {0,0};
     gravity = 981.0f;
     canJump = true;
+    healthPoints = 4;
+    hit = false;
     textureSize.width = textureFile->getSize().x/imageCount.x;
     textureSize.height = textureFile->getSize().y/imageCount.y;
     std::cout << "x: " << textureSize.width << " y: " << textureSize.height << std::endl; 
@@ -162,7 +171,12 @@ void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objec
     }
     
     ManageBullets(deltaTime,8,objects,enemy);
-    Update_Animation(deltaTime,row);
+
+    if(hit){
+        takingHit();    
+    }else{
+        Update_Animation(deltaTime,row);
+    }
     main_sprite.move(velocity*deltaTime);
     
 }
@@ -219,6 +233,26 @@ void Player::OnCollision(sf::Vector2f direction){
     else if (direction.y > 0.0f){
         velocity.y = 0.0f;
     }
+}
+
+void Player::takingHit(){
+    
+    // main_sprite.setPosition({main_sprite.getPosition().x-i,
+    //                         main_sprite.getPosition().y});
+    
+    if (lookRight){
+        textureSize.left = 4 * abs(textureSize.width);
+        textureSize.width = abs(textureSize.width);
+    }
+    else{
+        textureSize.left = 4 * abs(textureSize.width);
+        textureSize.width = -abs(textureSize.width);
+    }
+    main_sprite.setTextureRect(textureSize);
+}
+
+void Player::updateHealthPoints(int loss){
+    healthPoints-=loss;
 }
 
 #endif
