@@ -27,13 +27,14 @@ private:
     float jumpHeight;
     unsigned int row;
     unsigned int healthPoints;
+    unsigned int shootrefresh;
     float gravity;
     bool canJump;
     std::vector<Bullet*> bullets;
 
 public:
     Player(sf::Texture* textureFile,float speed,float switchtime,float jumpHeight,
-                sf::Vector2u imageCount);
+                sf::Vector2u imageCount, int shootrefresh);
     ~Player();
     void Update(float deltaTime, int &shootTimer, std::vector<Object> &objects, Enemy &enemy);
     void Update_Animation(float deltaTime, int row);
@@ -55,13 +56,14 @@ public:
 };
 
 Player::Player(sf::Texture* textureFile,float speed,float switchTime,float jumpHeight,
-                sf::Vector2u imageCount) 
+                sf::Vector2u imageCount, int shootrefresh) 
     // : Animation() // when animations are enabled
     {
     this->speed = speed;
     this->jumpHeight = jumpHeight;
     this->switchTime = switchTime;
     this->imageCount = imageCount; 
+    this->shootrefresh = shootrefresh;
     lookRight = true;
     totalTime = 0.0f;
     currentImage = {0,0};
@@ -118,7 +120,7 @@ void Player::ManageBullets(float deltaTime, int MaxBullets, std::vector<Object> 
             }
             
             if(en && collided){
-                if(bullet->getSpeed()>0){
+                if(bullet->getSpeed()!=0){
                     enemy.Update_Health();
                     bullet->makeTransparent();
                 }
@@ -155,7 +157,7 @@ void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objec
         velocity.y = -sqrtf(gravity * jumpHeight);
         canJump = false;
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && shootTimer >= 50){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && shootTimer >= shootrefresh){
     // attack
         ShootBullet(shootTimer);
     }
@@ -175,6 +177,7 @@ void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objec
     if(hit){
         takingHit();    
     }else{
+        main_sprite.setFillColor(sf::Color::White);
         Update_Animation(deltaTime,row);
     }
     main_sprite.move(velocity*deltaTime);
@@ -237,16 +240,19 @@ void Player::OnCollision(sf::Vector2f direction){
 
 void Player::takingHit(){
     
-    // main_sprite.setPosition({main_sprite.getPosition().x-i,
-    //                         main_sprite.getPosition().y});
-    
+    main_sprite.setFillColor(sf::Color::Red);
+    textureSize.top = 3 * textureSize.height; 
     if (lookRight){
-        textureSize.left = 4 * abs(textureSize.width);
+        textureSize.left = 3 * abs(textureSize.width);
         textureSize.width = abs(textureSize.width);
+        main_sprite.setPosition({main_sprite.getPosition().x-2.0f,
+                            main_sprite.getPosition().y});
     }
     else{
         textureSize.left = 4 * abs(textureSize.width);
         textureSize.width = -abs(textureSize.width);
+        main_sprite.setPosition({main_sprite.getPosition().x+2.0f,
+                            main_sprite.getPosition().y});
     }
     main_sprite.setTextureRect(textureSize);
 }

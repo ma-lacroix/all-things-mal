@@ -112,12 +112,12 @@ void Enemy::Update_Position(float deltatime){
     if(lookRight){
         if(main_enemy.getPosition().x > positionx*1.2f){
             lookRight = false;
-            velocity.x = -90.0f;
+            velocity.x = -100.0f;
         }else{
-            velocity.x = 90.0f;
+            velocity.x = 100.0f;
         }
     }else{
-        if(main_enemy.getPosition().x < positionx/1.2f){
+        if(main_enemy.getPosition().x < positionx/1.4f){
             lookRight = true;
             velocity.x = 90.0f;
         }else{

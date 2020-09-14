@@ -4,7 +4,7 @@
     A jump and run game using SFML C++ library.
     Author: Marc-Antoine Lacroix
 
-    WIP
+    All images and sprite maps: opengameart.org 
 
 ########################
 */
@@ -35,6 +35,15 @@ void resizedView(const sf::RenderWindow& window, sf::View& view, const float vie
 
 int main() {
     
+    // timers
+    float deltaTime {0.0f};
+    int shootrefresh {100};
+    int shootTimer {0};
+    int healthrefresh {300};
+    int healthTimer {0};
+    int damageTimer {100};
+    sf::Clock clock;
+
     // initialising game window & view
     float SCREEN_WIDTH {800.0};
     float SCREEN_HEIGHT {800.0};
@@ -47,13 +56,14 @@ int main() {
     std::string textureFile {"assets/hero.png"};
     sf::Texture playerTexture;
     load_texture(&playerTexture,textureFile);
-    Player main_player(&playerTexture,200.0f,0.2f,200.0f,{8,5});
+    Player main_player(&playerTexture,200.0f,0.2f,200.0f,{8,5},shootrefresh);
     
     // enemy
     std::string alienFile {"assets/alien.png"};
     sf::Texture alienTexture;
     load_texture(&alienTexture,alienFile);
     Enemy* alien = new Enemy(&alienTexture,{100.0f,150.0f},{800.0f,100.0f},true,20,{3,2},0.2f);
+    Enemy* alien2 = new Enemy(&alienTexture,{140.0f,200.0f},{1700.0f,100.0f},true,20,{3,2},0.2f);
 
     // hud elements
     std::string healthFile {"assets/health.png"};
@@ -69,7 +79,7 @@ int main() {
     background.setPosition(-500.0f,-700.f);
     background.setColor(sf::Color(255, 255, 255, 110));
 
-    // floors 
+    // floors
     std::string floorFile {"assets/floor.png"};
     sf::Texture floor_texture;
     floor_texture.setRepeated(true);
@@ -115,12 +125,6 @@ int main() {
     objects.push_back(building);
     objects.push_back(building2);
 
-    float deltaTime {0.0f};
-    int shootTimer {0};
-    int healthTimer {0};
-    int damageTimer {100};
-    sf::Clock clock;
-
     // game loop
     while (window.isOpen()){
         
@@ -130,11 +134,11 @@ int main() {
         if(deltaTime > 1.0f / 20.0f){
             deltaTime = 1.0f / 20.0f;
         }  
-        if(shootTimer < 50){
+        if(shootTimer < shootrefresh){
         // delays the rendering of bullets
             shootTimer++;
         }
-        if(healthTimer < 500){
+        if(healthTimer < healthrefresh){
         // delays the health loss effect from ennemies
             healthTimer++;
         }
@@ -187,13 +191,13 @@ int main() {
         }
 
         if(alien->Get_Status()){
-            if(alien->GetCollider().CheckCollision(main_player.GetCollider()) && healthTimer == 500){
+            if(alien->GetCollider().CheckCollision(main_player.GetCollider()) && healthTimer == healthrefresh){
                 healthTimer = 0;
                 int dam {1};
                 main_player.updateHealthPoints(dam);
                 main_player.activateHit();
                 healthbar.updateHealth(dam);
-            }else if (healthTimer==500){
+            }else if (healthTimer==healthrefresh){
                 main_player.deactivateHit();
             }
             alien->Draw(window);
