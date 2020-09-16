@@ -103,6 +103,7 @@ void Enemy::Update_Animation(float deltaTime, int row){
 
 void Enemy::Update_Health(){
     --healthPoints;
+    main_enemy.setFillColor(sf::Color(155+(healthPoints*5),55+(healthPoints*10),55+(healthPoints*10)));
 }
 
 void Enemy::Update_Position(float deltatime){

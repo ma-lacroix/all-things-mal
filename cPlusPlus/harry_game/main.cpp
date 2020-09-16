@@ -18,20 +18,10 @@
 #include "enemy.h"
 #include "bullet.h"
 #include "health.h"
-
-void load_texture(sf::Texture* some_texture,std::string textureFile){
-// loads a texture file
-    if(!some_texture->loadFromFile(textureFile)){
-        std::cout << "Couldn't load " << textureFile << std::endl;
-    }else{
-        std::cout << "File loaded succesfully" << std::endl;
-    }
-}
-
-void resizedView(const sf::RenderWindow& window, sf::View& view, const float view_height) {
-    float aspectRatio = float(window.getSize().x)/float(window.getSize().y);
-    view.setSize(view_height * aspectRatio,view_height);
-}
+ 
+void load_texture(sf::Texture* some_texture,std::string textureFile);
+void resizedView(const sf::RenderWindow& window, sf::View& view, const float view_height);
+void enemy_detection(Enemy* alien, Player &main_player, Health &healthbar, int &healthTimer, int &healthrefresh, sf::RenderWindow &window);
 
 int main() {
     
@@ -63,7 +53,9 @@ int main() {
     sf::Texture alienTexture;
     load_texture(&alienTexture,alienFile);
     Enemy* alien = new Enemy(&alienTexture,{100.0f,150.0f},{800.0f,100.0f},true,20,{3,2},0.2f);
-    Enemy* alien2 = new Enemy(&alienTexture,{140.0f,200.0f},{1700.0f,100.0f},true,20,{3,2},0.2f);
+    Enemy* alien2 = new Enemy(&alienTexture,{140.0f,200.0f},{1800.0f,60.0f},true,20,{3,2},0.2f);
+    Enemy* alien3 = new Enemy(&alienTexture,{250.0f,400.0f},{3000.0f,-100.0f},true,20,{3,2},0.2f);
+    Enemy* nu = nullptr;
 
     // hud elements
     std::string healthFile {"assets/health.png"};
@@ -85,7 +77,7 @@ int main() {
     floor_texture.setRepeated(true);
     floor_texture.isRepeated();
     load_texture(&floor_texture,floorFile);
-    Object floor(&floor_texture,{3000.0f,100.0f},{100.0f,250.0f},true);
+    Object floor(&floor_texture,{5000.0f,100.0f},{100.0f,250.0f},true);
     Object floor2(&floor_texture,{90.0f,90.0f},{400.0f,160.0f},true);
     Object floor3(&floor_texture,{90.0f,90.0f},{1150.0f,160.0f},true);
     Object floor4(&floor_texture,{90.0f,120.0f},{1240.0f,130.0f},true);
@@ -165,8 +157,19 @@ int main() {
             
         }
         
-        alien->Update(deltaTime);
-        main_player.Update(deltaTime,shootTimer,objects,*alien);
+        float cur_pos {main_player.getPosition().x};
+        if(cur_pos < 1000.0f && alien->Get_Status()){
+            alien->Update(deltaTime);
+            main_player.Update(deltaTime,shootTimer,objects,*alien);
+        }else if(cur_pos < 2500.0f && alien2->Get_Status()){
+            alien2->Update(deltaTime);
+            main_player.Update(deltaTime,shootTimer,objects,*alien2);
+        }else if(alien3->Get_Status()){
+            alien3->Update(deltaTime);
+            main_player.Update(deltaTime,shootTimer,objects,*alien3);
+        }else{
+            main_player.Update(deltaTime,shootTimer,objects);
+        }
         view.setCenter(main_player.getPosition().x+200.0f,main_player.getPosition().y);
         window.clear(sf::Color(110,110,100));
         window.setView(view);
@@ -189,18 +192,13 @@ int main() {
         for(auto bullet: main_player.getBullets()){
             bullet->Draw(window);
         }
-
-        if(alien->Get_Status()){
-            if(alien->GetCollider().CheckCollision(main_player.GetCollider()) && healthTimer == healthrefresh){
-                healthTimer = 0;
-                int dam {1};
-                main_player.updateHealthPoints(dam);
-                main_player.activateHit();
-                healthbar.updateHealth(dam);
-            }else if (healthTimer==healthrefresh){
-                main_player.deactivateHit();
-            }
-            alien->Draw(window);
+        
+        if(cur_pos < 1000.0f && alien->Get_Status()){
+            enemy_detection(alien,main_player,healthbar,healthTimer,healthrefresh,window);
+        }else if(cur_pos < 2500.0f && alien2->Get_Status()){
+            enemy_detection(alien2,main_player,healthbar,healthTimer,healthrefresh,window);
+        }else if(alien3->Get_Status()){
+            enemy_detection(alien3,main_player,healthbar,healthTimer,healthrefresh,window);
         }
         
         main_player.Draw(window);
@@ -213,3 +211,32 @@ int main() {
 
     return 0;
 }
+
+void resizedView(const sf::RenderWindow& window, sf::View& view, const float view_height) {
+    float aspectRatio = float(window.getSize().x)/float(window.getSize().y);
+    view.setSize(view_height * aspectRatio,view_height);
+}
+
+void load_texture(sf::Texture* some_texture,std::string textureFile){
+// loads a texture file
+    if(!some_texture->loadFromFile(textureFile)){
+        std::cout << "Couldn't load " << textureFile << std::endl;
+    }else{
+        std::cout << "File loaded succesfully" << std::endl;
+    }
+}
+
+void enemy_detection(Enemy* alien, Player &main_player, Health &healthbar, int &healthTimer, int &healthrefresh, sf::RenderWindow &window){
+// ennemy collision detection
+    if(alien->GetCollider().CheckCollision(main_player.GetCollider()) && healthTimer == healthrefresh){
+        healthTimer = 0;
+        int dam {1};
+        main_player.updateHealthPoints(dam);
+        main_player.activateHit();
+        healthbar.updateHealth(dam);
+    }else if (healthTimer==healthrefresh){
+        main_player.deactivateHit();
+    }
+    alien->Draw(window);
+}
+        

@@ -37,6 +37,7 @@ public:
                 sf::Vector2u imageCount, int shootrefresh);
     ~Player();
     void Update(float deltaTime, int &shootTimer, std::vector<Object> &objects, Enemy &enemy);
+    void Update(float deltaTime, int &shootTimer, std::vector<Object> &objects);
     void Update_Animation(float deltaTime, int row);
     void Draw(sf::RenderWindow&);
     void OnCollision(sf::Vector2f direction);
@@ -180,6 +181,42 @@ void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objec
         main_sprite.setFillColor(sf::Color::White);
         Update_Animation(deltaTime,row);
     }
+    main_sprite.move(velocity*deltaTime);
+    
+}
+
+void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objects){
+// updates the sprite's position on screen  
+
+    velocity.x = 0.0f;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && main_sprite.getPosition().x > level.getLeft_b()){
+    // go left
+        velocity.x -= speed;
+        lookRight = false;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && main_sprite.getPosition().x < level.getRight_b()){
+    // go right
+        velocity.x += speed;
+        lookRight = true;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && canJump){
+    // jump
+        velocity.y = -sqrtf(gravity * jumpHeight);
+        canJump = false;
+    }
+
+    velocity.y += (gravity * deltaTime);
+
+    if(velocity.x == 0.0f && canJump==true){
+        row = 0;
+    }else if(velocity.x!=0.0f && canJump==true){
+        row=1;
+    }else{
+        row=3;
+    }
+    
+    Update_Animation(deltaTime,row);
     main_sprite.move(velocity*deltaTime);
     
 }
