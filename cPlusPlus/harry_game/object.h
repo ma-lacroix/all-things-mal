@@ -16,6 +16,7 @@ public:
     ~Object();
     void Draw(sf::RenderWindow& window);
     bool Clipping() {return clipping;};
+    sf::RectangleShape GetRect() {return some_shape;};
     Collider GetCollider() {return Collider(some_shape);};
 };
 

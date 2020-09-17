@@ -53,7 +53,7 @@ int main() {
     sf::Texture alienTexture;
     load_texture(&alienTexture,alienFile);
     Enemy* alien = new Enemy(&alienTexture,{100.0f,150.0f},{800.0f,100.0f},true,20,{3,2},0.2f);
-    Enemy* alien2 = new Enemy(&alienTexture,{140.0f,200.0f},{1800.0f,60.0f},true,20,{3,2},0.2f);
+    Enemy* alien2 = new Enemy(&alienTexture,{140.0f,200.0f},{2000.0f,60.0f},true,20,{3,2},0.2f);
     Enemy* alien3 = new Enemy(&alienTexture,{250.0f,400.0f},{3000.0f,-100.0f},true,20,{3,2},0.2f);
     Enemy* nu = nullptr;
 
@@ -62,6 +62,14 @@ int main() {
     sf::Texture healthbarTexture;
     load_texture(&healthbarTexture,healthFile);
     Health healthbar(&healthbarTexture,{1,4});
+
+    // game over
+    std::string goFile {"assets/gameover.png"};
+    sf::Texture goTexture;
+    load_texture(&goTexture,goFile);
+    sf::RectangleShape go;
+    go.setTexture(&goTexture);
+
 
     // background
     std::string backgroundFile {"assets/sunset.png"};
@@ -74,19 +82,29 @@ int main() {
     // floors
     std::string floorFile {"assets/floor.png"};
     sf::Texture floor_texture;
-    floor_texture.setRepeated(true);
-    floor_texture.isRepeated();
     load_texture(&floor_texture,floorFile);
     Object floor(&floor_texture,{5000.0f,100.0f},{100.0f,250.0f},true);
-    Object floor2(&floor_texture,{90.0f,90.0f},{400.0f,160.0f},true);
-    Object floor3(&floor_texture,{90.0f,90.0f},{1150.0f,160.0f},true);
-    Object floor4(&floor_texture,{90.0f,120.0f},{1240.0f,130.0f},true);
+    Object floor2(&floor_texture,{90.0f,90.0f},{350.0f,160.0f},true);
+    Object floor3(&floor_texture,{90.0f,140.0f},{440.0f,110.0f},true);
+    Object floor4(&floor_texture,{90.0f,90.0f},{1150.0f,160.0f},true);
+    Object floor5(&floor_texture,{90.0f,120.0f},{1240.0f,130.0f},true);
+    
+    // platforms
+    std::string platFile {"assets/bricks.png"};
+    sf::Texture platTexture;
+    platTexture.setRepeated(true);
+    platTexture.isRepeated();
+    load_texture(&platTexture,platFile);
+    Object platform(&platTexture,{90.0f,90.0f},{650.0f,50.0f},true);
+    Object platform2(&platTexture,{180.0f,90.0f},{1450.0f,50.0f},true);
+    platform.GetRect().setTextureRect({0,0,45,45});
+    platform2.GetRect().setTextureRect({0,0,90,90});
 
     //house
     std::string houseFile {"assets/house1.png"};
     sf::Texture house_texture;
     load_texture(&house_texture,houseFile);
-    Object house(&house_texture,{200.0f,200.0f},{550.0f,55.0f},false);
+    Object house(&house_texture,{200.0f,200.0f},{3000.0f,55.0f},false);
     Object house2(&house_texture,{200.0f,200.0f},{950.0f,55.0f},false);
 
     //building
@@ -95,6 +113,7 @@ int main() {
     load_texture(&building_texture,buildingFile);
     Object building(&building_texture,{250.0f,400.0f},{1400.0f,-140.0f},false);
     Object building2(&building_texture,{250.0f,400.0f},{1800.0f,-140.0f},false);
+    Object building3(&building_texture,{200.0f,370.0f},{2500.0f,-110.0f},false);
     
     //lamp
     std::string lampFile {"assets/lamp.png"};
@@ -109,6 +128,7 @@ int main() {
     objects.push_back(floor2);
     objects.push_back(floor3);
     objects.push_back(floor4);
+    objects.push_back(floor5);
     objects.push_back(house);
     objects.push_back(house2);
     objects.push_back(lamp);
@@ -116,6 +136,9 @@ int main() {
     objects.push_back(lamp3);
     objects.push_back(building);
     objects.push_back(building2);
+    objects.push_back(building3);
+    objects.push_back(platform);
+    objects.push_back(platform2);
 
     // game loop
     while (window.isOpen()){
@@ -158,7 +181,7 @@ int main() {
         }
         
         float cur_pos {main_player.getPosition().x};
-        if(cur_pos < 1000.0f && alien->Get_Status()){
+        if(cur_pos < 1300.0f && alien->Get_Status()){
             alien->Update(deltaTime);
             main_player.Update(deltaTime,shootTimer,objects,*alien);
         }else if(cur_pos < 2500.0f && alien2->Get_Status()){
@@ -170,42 +193,58 @@ int main() {
         }else{
             main_player.Update(deltaTime,shootTimer,objects);
         }
-        view.setCenter(main_player.getPosition().x+200.0f,main_player.getPosition().y);
-        window.clear(sf::Color(110,110,100));
-        window.setView(view);
-        window.draw(background);
-        
-        // collision detection
-        sf::Vector2f direction;
-        for(auto object: objects){
-            if(object.Clipping()){
-                if (object.GetCollider().CheckCollision(main_player.GetCollider(),direction,1.0f)){
-                main_player.OnCollision(direction);
+
+        if(main_player.GetHealthPoints() > 0){
+            view.setCenter(main_player.getPosition().x+200.0f,main_player.getPosition().y);
+            window.clear(sf::Color(110,110,100));
+            window.setView(view);
+            window.draw(background);
+            
+            // collision detection
+            sf::Vector2f direction;
+            for(auto object: objects){
+                if(object.Clipping()){
+                    if (object.GetCollider().CheckCollision(main_player.GetCollider(),direction,1.0f)){
+                    main_player.OnCollision(direction);
+                    }
                 }
             }
+
+            // drawing game objects
+            for(auto object: objects){
+                object.Draw(window);
+            }
+            for(auto bullet: main_player.getBullets()){
+                bullet->Draw(window);
+            }
+            
+            if(cur_pos < 1300.0f && alien->Get_Status()){
+                enemy_detection(alien,main_player,healthbar,healthTimer,healthrefresh,window);
+            }else if(cur_pos < 2500.0f && alien2->Get_Status()){
+                enemy_detection(alien2,main_player,healthbar,healthTimer,healthrefresh,window);
+            }else if(alien3->Get_Status()){
+                enemy_detection(alien3,main_player,healthbar,healthTimer,healthrefresh,window);
+            }
+            
+            main_player.Draw(window);
+            
+            window.setView(HUD);
+            healthbar.Draw(window);
+            window.display();
+
+        }else{
+            view.rotate(0.05f);
+            window.clear(sf::Color(110,110,100));
+            window.setView(view);
+            window.draw(background);
+            for(auto object: objects){
+                object.Draw(window);
+            }
+            main_player.Draw(window);
+            window.display();
         }
 
-        // drawing game objects
-        for(auto object: objects){
-            object.Draw(window);
-        }
-        for(auto bullet: main_player.getBullets()){
-            bullet->Draw(window);
-        }
         
-        if(cur_pos < 1000.0f && alien->Get_Status()){
-            enemy_detection(alien,main_player,healthbar,healthTimer,healthrefresh,window);
-        }else if(cur_pos < 2500.0f && alien2->Get_Status()){
-            enemy_detection(alien2,main_player,healthbar,healthTimer,healthrefresh,window);
-        }else if(alien3->Get_Status()){
-            enemy_detection(alien3,main_player,healthbar,healthTimer,healthrefresh,window);
-        }
-        
-        main_player.Draw(window);
-        
-        window.setView(HUD);
-        healthbar.Draw(window);
-        window.display();
         
     }
 

@@ -141,47 +141,55 @@ void Player::ManageBullets(float deltaTime, int MaxBullets, std::vector<Object> 
 void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objects, Enemy &enemy){
 // updates the sprite's position on screen  
 
-    velocity.x = 0.0f;
-
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && main_sprite.getPosition().x > level.getLeft_b()){
-    // go left
-        velocity.x -= speed;
-        lookRight = false;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && main_sprite.getPosition().x < level.getRight_b()){
-    // go right
-        velocity.x += speed;
-        lookRight = true;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && canJump){
-    // jump
-        velocity.y = -sqrtf(gravity * jumpHeight);
-        canJump = false;
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && shootTimer >= shootrefresh){
-    // attack
-        ShootBullet(shootTimer);
-    }
-
-    velocity.y += (gravity * deltaTime);
-
-    if(velocity.x == 0.0f && canJump==true){
-        row = 0;
-    }else if(velocity.x!=0.0f && canJump==true){
-        row=1;
+    if(healthPoints<1){
+        textureSize.top = 3 * textureSize.height; 
+        textureSize.left = 6 * abs(textureSize.width);
+        textureSize.width = abs(textureSize.width);
+        main_sprite.setTextureRect(textureSize);
     }else{
-        row=3;
-    }
-    
-    ManageBullets(deltaTime,8,objects,enemy);
+        velocity.x = 0.0f;
 
-    if(hit){
-        takingHit();    
-    }else{
-        main_sprite.setFillColor(sf::Color::White);
-        Update_Animation(deltaTime,row);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::A) && main_sprite.getPosition().x > level.getLeft_b()){
+        // go left
+            velocity.x -= speed;
+            lookRight = false;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::D) && main_sprite.getPosition().x < level.getRight_b()){
+        // go right
+            velocity.x += speed;
+            lookRight = true;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W) && canJump){
+        // jump
+            velocity.y = -sqrtf(gravity * jumpHeight);
+            canJump = false;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && shootTimer >= shootrefresh){
+        // attack
+            ShootBullet(shootTimer);
+        }
+
+        velocity.y += (gravity * deltaTime);
+
+        if(velocity.x == 0.0f && canJump==true){
+            row = 0;
+        }else if(velocity.x!=0.0f && canJump==true){
+            row=1;
+        }else{
+            row=3;
+        }
+        
+        ManageBullets(deltaTime,8,objects,enemy);
+
+        if(hit){
+            takingHit();    
+        }else{
+            main_sprite.setFillColor(sf::Color::White);
+            Update_Animation(deltaTime,row);
+        }
+        main_sprite.move(velocity*deltaTime);
+        
     }
-    main_sprite.move(velocity*deltaTime);
     
 }
 
