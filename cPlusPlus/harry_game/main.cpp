@@ -32,6 +32,7 @@ int main() {
     int healthrefresh {300};
     int healthTimer {0};
     int damageTimer {100};
+    int gameStartTimer {0};
     sf::Clock clock;
 
     // initialising game window & view
@@ -63,7 +64,15 @@ int main() {
     load_texture(&healthbarTexture,healthFile);
     Health healthbar(&healthbarTexture,{1,4});
 
-    // game over
+    // game start & over
+    std::string gsFile {"assets/gamestart.png"};
+    sf::Texture gsTexture;
+    load_texture(&gsTexture,gsFile);
+    sf::RectangleShape gs;
+    gs.setTexture(&gsTexture);
+    gs.setSize(sf::Vector2f{500.0f,100.0f});
+    gs.setPosition(sf::Vector2f{-250.0f,-250.0f});
+
     std::string goFile {"assets/gameover.png"};
     sf::Texture goTexture;
     load_texture(&goTexture,goFile);
@@ -72,7 +81,6 @@ int main() {
     go.setFillColor(sf::Color(40,0,0,160));
     go.setSize(sf::Vector2f{500.0f,500.0f});
     go.setPosition(sf::Vector2f{-250.0f,-250.0f});
-
 
     // background
     std::string backgroundFile {"assets/sunset.png"};
@@ -145,7 +153,7 @@ int main() {
 
     // game loop
     while (window.isOpen()){
-        
+
         deltaTime = clock.restart().asSeconds();
         
         // fix for window dragging
@@ -176,6 +184,8 @@ int main() {
             case sf::Event::KeyPressed:
                 if (evnt.key.code == sf::Keyboard::Escape)
                         window.close();
+                if (evnt.key.code == sf::Keyboard::R)                        
+                        main();
                 break;
             default:
                 break;
@@ -214,6 +224,7 @@ int main() {
             }
 
             // drawing game objects
+            
             for(auto object: objects){
                 object.Draw(window);
             }
@@ -232,6 +243,11 @@ int main() {
             main_player.Draw(window);
             
             window.setView(HUD);
+            if(gameStartTimer < 4000){
+                gameStartTimer++;
+                gs.setFillColor(sf::Color(255,255,255,250-gameStartTimer/16));
+                window.draw(gs);
+            }
             healthbar.Draw(window);
             window.display();
 
@@ -280,5 +296,4 @@ void enemy_detection(Enemy* alien, Player &main_player, Health &healthbar, int &
         main_player.deactivateHit();
     }
     alien->Draw(window);
-}
-        
+}        
