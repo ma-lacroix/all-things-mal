@@ -143,8 +143,9 @@ void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objec
 
     if(healthPoints<1){
         textureSize.top = 3 * textureSize.height; 
-        textureSize.left = 6 * abs(textureSize.width);
+        textureSize.left = 5 * abs(textureSize.width);
         textureSize.width = abs(textureSize.width);
+        main_sprite.setFillColor(sf::Color(255,255,255,60));
         main_sprite.setTextureRect(textureSize);
     }else{
         velocity.x = 0.0f;
@@ -194,7 +195,12 @@ void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objec
 }
 
 void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objects){
-// updates the sprite's position on screen  
+// function overloaded - updates the sprite's position on screen when no enemies are left in the level
+    
+    if(bullets.size()>0){
+    // gets rid of the last bullets
+        bullets.erase(bullets.begin());
+    }
 
     velocity.x = 0.0f;
 

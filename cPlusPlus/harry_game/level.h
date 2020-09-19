@@ -5,6 +5,8 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <vector>
+#include "object.h"
 
 class Level {
 private:
@@ -25,6 +27,6 @@ Level::Level(){
     left_b = -150.0f;
     right_b = 5000.0f;
 }
-Level::~Level(){};
+Level::~Level(){}
 
 #endif

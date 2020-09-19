@@ -17,6 +17,7 @@ public:
     void Draw(sf::RenderWindow& window);
     bool Clipping() {return clipping;};
     sf::RectangleShape GetRect() {return some_shape;};
+    void setGameOverColor();
     Collider GetCollider() {return Collider(some_shape);};
 };
 
@@ -33,6 +34,10 @@ Object::~Object(){
 
 void Object::Draw(sf::RenderWindow& window){
     window.draw(some_shape);
+}
+
+void Object::setGameOverColor(){
+    some_shape.setFillColor(sf::Color(200,200,200,20));
 }
 
 #endif

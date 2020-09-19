@@ -69,6 +69,9 @@ int main() {
     load_texture(&goTexture,goFile);
     sf::RectangleShape go;
     go.setTexture(&goTexture);
+    go.setFillColor(sf::Color(40,0,0,160));
+    go.setSize(sf::Vector2f{500.0f,500.0f});
+    go.setPosition(sf::Vector2f{-250.0f,-250.0f});
 
 
     // background
@@ -233,19 +236,19 @@ int main() {
             window.display();
 
         }else{
-            view.rotate(0.05f);
-            window.clear(sf::Color(110,110,100));
+            view.rotate(0.002f);
+            window.clear(sf::Color(255,200,200,50));
             window.setView(view);
             window.draw(background);
             for(auto object: objects){
+                object.setGameOverColor();
                 object.Draw(window);
             }
             main_player.Draw(window);
+            window.setView(HUD);
+            window.draw(go);
             window.display();
         }
-
-        
-        
     }
 
     return 0;
