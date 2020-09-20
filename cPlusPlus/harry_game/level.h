@@ -23,7 +23,7 @@ public:
 
 Level::Level(){
 // level boundaries set here for now
-    floor = 350.0f;
+    floor = 550.0f;
     left_b = -150.0f;
     right_b = 5000.0f;
 }

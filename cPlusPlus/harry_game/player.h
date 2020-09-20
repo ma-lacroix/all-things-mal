@@ -50,6 +50,7 @@ public:
     std::vector<Bullet*> getBullets() {return bullets;};
     Collider GetCollider() { return Collider(main_sprite);};
     int GetHealthPoints() {return healthPoints;};
+    bool HitStatus() {return hit;};
     
     sf::RectangleShape main_sprite;
     sf::Vector2f getPosition() {return main_sprite.getPosition();};
@@ -91,7 +92,7 @@ void Player::ShootBullet(int &shootTimer){
     shootTimer = 0;
     sf::Vector2f bulletpos;
     float bspeed;
-    bulletpos = main_sprite.getPosition()+main_sprite.getSize()/2.0f;
+    bulletpos = main_sprite.getPosition()+main_sprite.getSize()/2.4f;
     if(lookRight){
         bspeed = 1000.0f;
     }else{
@@ -141,6 +142,10 @@ void Player::ManageBullets(float deltaTime, int MaxBullets, std::vector<Object> 
 void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objects, Enemy &enemy){
 // updates the sprite's position on screen  
 
+    if(main_sprite.getPosition().y > level.getFloor()){
+        updateHealthPoints(1);
+    }
+
     if(healthPoints<1){
         textureSize.top = 3 * textureSize.height; 
         textureSize.left = 5 * abs(textureSize.width);
@@ -172,16 +177,21 @@ void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objec
 
         velocity.y += (gravity * deltaTime);
 
-        if(velocity.x == 0.0f && canJump==true){
+        if(velocity.x == 0.0f && canJump==true && shootTimer >= shootrefresh){
             row = 0;
-        }else if(velocity.x!=0.0f && canJump==true){
+        }else if(velocity.x == 0.0f && canJump==true && shootTimer < shootrefresh){
+            row = 4;
+        }else if(velocity.x!=0.0f && canJump==true && shootTimer >= shootrefresh){
             row=1;
+        }else if(velocity.x!=0.0f && canJump==true && shootTimer < shootrefresh){
+            row=2;
         }else{
             row=3;
         }
         
         ManageBullets(deltaTime,8,objects,enemy);
 
+        // state
         if(hit){
             takingHit();    
         }else{
@@ -197,6 +207,10 @@ void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objec
 void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objects){
 // function overloaded - updates the sprite's position on screen when no enemies are left in the level
     
+    if(main_sprite.getPosition().y > level.getFloor()){
+        updateHealthPoints(1);
+    }
+
     if(bullets.size()>0){
     // gets rid of the last bullets
         bullets.erase(bullets.begin());
@@ -247,7 +261,11 @@ void Player::Update_Animation(float deltaTime, int row){
             currentImage.x = 0;
         }else if(row==1 && currentImage.x >=6){
             currentImage.x = 0;
+        }else if(row==2 && currentImage.x >=6){
+            currentImage.x = 0;
         }else if(row==3 && currentImage.x >=3){
+            currentImage.x = 0;
+        }else if(row==4 && currentImage.x >=1){
             currentImage.x = 0;
         }
     }
@@ -290,19 +308,19 @@ void Player::OnCollision(sf::Vector2f direction){
 }
 
 void Player::takingHit(){
-    
+    float pushBack {1.0f};
     main_sprite.setFillColor(sf::Color::Red);
     textureSize.top = 3 * textureSize.height; 
     if (lookRight){
         textureSize.left = 3 * abs(textureSize.width);
         textureSize.width = abs(textureSize.width);
-        main_sprite.setPosition({main_sprite.getPosition().x-2.0f,
+        main_sprite.setPosition({main_sprite.getPosition().x-pushBack,
                             main_sprite.getPosition().y});
     }
     else{
         textureSize.left = 4 * abs(textureSize.width);
         textureSize.width = -abs(textureSize.width);
-        main_sprite.setPosition({main_sprite.getPosition().x+2.0f,
+        main_sprite.setPosition({main_sprite.getPosition().x+pushBack,
                             main_sprite.getPosition().y});
     }
     main_sprite.setTextureRect(textureSize);
