@@ -4,12 +4,15 @@
     A jump and run game using SFML C++ library.
     Author: Marc-Antoine Lacroix
 
-    All images and sprite maps: opengameart.org 
+    All images, sounds and sprite maps: opengameart.org 
+    Music: Clement Panchout
+    http://www.clementpanchout.com/
 
 ########################
 */
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -18,15 +21,22 @@
 #include "enemy.h"
 #include "bullet.h"
 #include "health.h"
+// #include "sound.h"
 
-void game(sf::RenderWindow&,sf::View,sf::View,float);
+void game(sf::Music&,sf::RenderWindow&,sf::View,sf::View,float);
 void load_texture(sf::Texture* some_texture,std::string textureFile);
+void load_sound(sf::SoundBuffer,sf::Sound,std::string);
 void resizedView(const sf::RenderWindow& window, sf::View& view, const float view_height);
-void enemy_detection(Enemy* alien, Player &main_player, Health &healthbar, int &healthTimer, int &healthrefresh, sf::RenderWindow &window);
+void enemy_detection(Enemy* alien, Player &main_player, Health &healthbar, int &healthTimer, int &healthrefresh, 
+                        sf::RenderWindow &window);
 
 int main() {
     
+    sf::Music main_song;
+    main_song.openFromFile("assets/ClementPanchout_Sweet70s.wav");
+
     // initialising game window & view
+
     float SCREEN_WIDTH {800.0};
     float SCREEN_HEIGHT {800.0};
     static const float VIEW_HEIGHT = SCREEN_HEIGHT;
@@ -34,7 +44,7 @@ int main() {
     sf::View view(sf::Vector2f(0.0f,0.0f),sf::Vector2f(SCREEN_HEIGHT,SCREEN_WIDTH));
     sf::View HUD(sf::Vector2f(0.0f,0.0f),sf::Vector2f(SCREEN_HEIGHT,SCREEN_WIDTH));
     
-    game(window,view,HUD,VIEW_HEIGHT);
+    game(main_song,window,view,HUD,VIEW_HEIGHT);
 
     return 0;
 }
@@ -44,7 +54,7 @@ void resizedView(const sf::RenderWindow& window, sf::View& view, const float vie
     view.setSize(view_height * aspectRatio,view_height);
 }
 
-void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT){
+void game(sf::Music& main_song,sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT){
 
     // timers
     float deltaTime {0.0f};
@@ -57,11 +67,53 @@ void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT)
     int gameEndTimer {0};
     sf::Clock clock;
 
+    main_song.setPitch(1.0f);
+    main_song.play();
+    
+    // sounds
+    sf::SoundBuffer buffer1;
+    sf::Sound pistol1;
+    std::string pistol1File {"assets/pistol1.wav"};
+    buffer1.loadFromFile(pistol1File);
+    pistol1.setBuffer(buffer1);
+    
+    sf::SoundBuffer buffer2;
+    sf::Sound pistol2;
+    std::string pistol2File {"assets/pistol2.wav"};
+    buffer2.loadFromFile(pistol2File);
+    pistol2.setBuffer(buffer2);
+
+    sf::SoundBuffer buffer3;
+    sf::Sound jump;
+    std::string jumpFile {"assets/jump.flac"};
+    buffer3.loadFromFile(jumpFile);
+    jump.setBuffer(buffer3);
+
+    sf::SoundBuffer buffer4;
+    sf::Sound grunt;
+    std::string gruntFile {"assets/ouch.flac"};
+    buffer4.loadFromFile(gruntFile);
+    grunt.setBuffer(buffer4);
+
+    sf::SoundBuffer buffer5;
+    sf::Sound monsterGrunt;
+    std::string monsterGruntFile {"assets/monsterHit.wav"};
+    buffer5.loadFromFile(monsterGruntFile);
+    monsterGrunt.setBuffer(buffer5);
+    monsterGrunt.setPitch(0.8f);
+
+    std::vector<sf::Sound> sounds;
+    sounds.push_back(pistol1);
+    sounds.push_back(pistol2);
+    sounds.push_back(jump);
+    sounds.push_back(grunt);
+    sounds.push_back(monsterGrunt);
+
     // main sprite & player
     std::string textureFile {"assets/hero.png"};
     sf::Texture playerTexture;
     load_texture(&playerTexture,textureFile);
-    Player main_player(&playerTexture,200.0f,0.2f,200.0f,{8,5},shootrefresh);
+    Player main_player(&playerTexture,200.0f,0.2f,200.0f,{8,5},shootrefresh,sounds);
     
     // enemy
     std::string alienFile {"assets/alien.png"};
@@ -181,6 +233,7 @@ void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT)
         // delays the rendering of bullets
             shootTimer++;
         }
+
         if(healthTimer < healthrefresh){
         // delays the health loss effect from ennemies
             healthTimer++;
@@ -201,8 +254,8 @@ void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT)
             case sf::Event::KeyPressed:
                 if (evnt.key.code == sf::Keyboard::Escape)
                         window.close();
-                if (evnt.key.code == sf::Keyboard::R)                 
-                        game(window,view,HUD,VIEW_HEIGHT);
+                if (evnt.key.code == sf::Keyboard::R)                
+                        game(main_song,window,view,HUD,VIEW_HEIGHT);
                 break;
             default:
                 break;
@@ -258,9 +311,9 @@ void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT)
                 bullet->Draw(window);
             }
             
-            if(cur_pos < 1300.0f && alien->Get_Status()){
+            if(cur_pos < 1500.0f && alien->Get_Status()){
                 enemy_detection(alien,main_player,healthbar,healthTimer,healthrefresh,window);
-            }else if(cur_pos < 2300.0f && alien2->Get_Status()){
+            }else if(cur_pos < 2700.0f && alien2->Get_Status()){
                 enemy_detection(alien2,main_player,healthbar,healthTimer,healthrefresh,window);
             }else if(alien3->Get_Status()){
                 enemy_detection(alien3,main_player,healthbar,healthTimer,healthrefresh,window);
@@ -281,6 +334,7 @@ void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT)
             if(gameEndTimer < 2000){
                 gameEndTimer++;
             }
+            main_song.setPitch(0.6f);
             view.rotate(0.004f);
             window.clear(sf::Color(255,200,200,50));
             window.setView(view);
@@ -305,6 +359,15 @@ void load_texture(sf::Texture* some_texture,std::string textureFile){
     }else{
         std::cout << "File loaded succesfully" << std::endl;
     }
+}
+
+void load_sound(sf::SoundBuffer buffer, sf::Sound sound, std::string soundFile){
+    if (!buffer.loadFromFile(soundFile)){
+        std::cout << "Sound not loaded correctly" << std::endl;
+    }else{
+        std::cout << "Sound loaded correctly" << std::endl;
+    }
+    sound.setBuffer(buffer);
 }
 
 void enemy_detection(Enemy* alien, Player &main_player, Health &healthbar, int &healthTimer, int &healthrefresh,

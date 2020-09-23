@@ -4,6 +4,7 @@
 #define _PLAYER_H_
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <math.h>
 #include <vector>
@@ -31,10 +32,11 @@ private:
     float gravity;
     bool canJump;
     std::vector<Bullet*> bullets;
+    std::vector<sf::Sound> sounds; 
 
 public:
     Player(sf::Texture* textureFile,float speed,float switchtime,float jumpHeight,
-                sf::Vector2u imageCount, int shootrefresh);
+                sf::Vector2u imageCount, int shootrefresh, std::vector<sf::Sound> sounds);
     ~Player();
     void Update(float deltaTime, int &shootTimer, std::vector<Object> &objects, Enemy &enemy);
     void Update(float deltaTime, int &shootTimer, std::vector<Object> &objects);
@@ -44,7 +46,7 @@ public:
     void ShootBullet(int &shootTimer);
     void ManageBullets(float deltaTime,int MaxBullets,std::vector<Object> &objects, Enemy &enemy);
     void updateHealthPoints(int loss);
-    void activateHit() {hit = true;};
+    void activateHit() {sounds.at(3).play(); hit = true;};
     void deactivateHit() {hit = false;};
     void takingHit();
     std::vector<Bullet*> getBullets() {return bullets;};
@@ -58,7 +60,7 @@ public:
 };
 
 Player::Player(sf::Texture* textureFile,float speed,float switchTime,float jumpHeight,
-                sf::Vector2u imageCount, int shootrefresh) 
+                sf::Vector2u imageCount, int shootrefresh, std::vector<sf::Sound> sounds) 
     // : Animation() // when animations are enabled
     {
     this->speed = speed;
@@ -66,6 +68,7 @@ Player::Player(sf::Texture* textureFile,float speed,float switchTime,float jumpH
     this->switchTime = switchTime;
     this->imageCount = imageCount; 
     this->shootrefresh = shootrefresh;
+    this->sounds = sounds;
     lookRight = true;
     totalTime = 0.0f;
     currentImage = {0,0};
@@ -98,6 +101,7 @@ void Player::ShootBullet(int &shootTimer){
     }else{
         bspeed = -1000.0f;
     }
+    sounds.at(0).play();
     bullets.push_back(new Bullet(bulletpos,{bspeed,0.0f}));
 }
 
@@ -123,6 +127,7 @@ void Player::ManageBullets(float deltaTime, int MaxBullets, std::vector<Object> 
             
             if(en && collided){
                 if(bullet->getSpeed()!=0){
+                    sounds.at(4).play();
                     enemy.Update_Health();
                     bullet->makeTransparent();
                 }
@@ -147,6 +152,7 @@ void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objec
     }
 
     if(healthPoints<1){
+        sounds.at(3).setPitch(0.8f);
         textureSize.top = 3 * textureSize.height; 
         textureSize.left = 5 * abs(textureSize.width);
         textureSize.width = abs(textureSize.width);
@@ -169,6 +175,7 @@ void Player::Update(float deltaTime, int &shootTimer, std::vector<Object> &objec
         // jump
             velocity.y = -sqrtf(gravity * jumpHeight);
             canJump = false;
+            sounds.at(2).play();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space) && shootTimer >= shootrefresh){
         // attack
