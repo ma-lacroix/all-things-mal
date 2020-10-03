@@ -1,7 +1,7 @@
 /*
 ########################
 
-    A jumping tree game.
+    A jumping tree game using SFML
     Author: Marc-Antoine Lacroix
 
 ########################

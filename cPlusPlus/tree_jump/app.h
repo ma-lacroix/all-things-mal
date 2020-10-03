@@ -3,7 +3,9 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include <iostream>
-#include "object.h"
+#include <vector>
+#include "branch.h"
+#include "player.h"
 
 struct app{
     void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT);  
@@ -22,7 +24,13 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     sf::Clock clock;
     sf::Vector2i mouseClickPos;
 
-    Object square1({200.0f,100.0f},{400.0f,400.0f});
+    Branch rect1({200.0f,50.0f},{100.0f,250.0f});
+    Branch rect2({200.0f,50.0f},{400.0f,400.0f});
+    Player player({100.0f,100.0f},{300.0f,700.0f});
+    std::vector<Branch> rects;
+    rects.push_back(rect1);
+    rects.push_back(rect2);
+    
 
     // game loop
     while (window.isOpen()){
@@ -48,19 +56,21 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
                     game(window,view,HUD,VIEW_HEIGHT);
                 break;
             case sf::Event::MouseButtonPressed:
-                std::cout << "the mouse button was pressed" << std::endl;
                 mouseClickPos = {evnt.mouseButton.x,evnt.mouseButton.y};
-                printf("x: %i, y: %i \n",mouseClickPos.x,mouseClickPos.y);
             case sf::Event::MouseButtonReleased:
-                std::cout << "the mouse button was released" << std::endl;
             default:
                 break;
             }
-        // draw objects
-        square1.updateColor(mouseClickPos);
+        
         window.clear(sf::Color(30,100,200));
         window.setView(view);
-        square1.Draw(window);
+        
+        // handle objects
+        for (auto rect: rects){
+            rect.updateColor(mouseClickPos);
+            rect.Draw(window);
+        }
+        player.Draw(window);
         window.display();
         }
     }
