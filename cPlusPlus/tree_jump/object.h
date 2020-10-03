@@ -13,7 +13,6 @@ public:
     // Object(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f position, bool clickable);
     Object(sf::Vector2f objectSize, sf::Vector2f position);
     ~Object();
-    void Draw(sf::RenderWindow&);
 };
 
 Object::Object(sf::Vector2f objectSize, sf::Vector2f position){
@@ -21,10 +20,6 @@ Object::Object(sf::Vector2f objectSize, sf::Vector2f position){
 }
 
 Object::~Object(){
-}
-
-void Object::Draw(sf::RenderWindow& window){
-    window.draw(shape);
 }
 
 #endif

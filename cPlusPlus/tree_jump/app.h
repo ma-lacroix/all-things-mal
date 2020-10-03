@@ -64,10 +64,13 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
         
         window.clear(sf::Color(30,100,200));
         window.setView(view);
+        player.State('S',mouseClickPos,deltaTime);
         
         // handle objects
         for (auto rect: rects){
-            rect.updateColor(mouseClickPos);
+            if(rect.updateColor(mouseClickPos)){
+                player.State('M',mouseClickPos,deltaTime);
+            }
             rect.Draw(window);
         }
         player.Draw(window);
