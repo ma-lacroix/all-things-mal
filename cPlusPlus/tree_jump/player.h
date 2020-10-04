@@ -5,6 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <math.h>
 #include "object.h"
 
 class Player: public Object {
@@ -12,45 +13,55 @@ private:
     sf::RectangleShape shape;
     sf::Vector2f velocity;
     float speed;
+    char playstate;
 public:
     // Player(sf::Texture* textureFile,sf::Vector2f PlayerSize, sf::Vector2f position, bool clickable);
     Player(sf::Vector2f, sf::Vector2f);
     ~Player();
     void Draw(sf::RenderWindow&);
-    void State(char,sf::Vector2i clickPos,float deltatime);
-    void Movement(sf::Vector2i,float deltatime);
+    void State(sf::Vector2f clickPos,float deltatime);
+    void Movement(sf::Vector2f,float deltatime);
     void Stop();
+    void updateState(char newState) {playstate = newState;};
 };
 
 Player::Player(sf::Vector2f objectSize, sf::Vector2f position)
     :Object(objectSize,position){
     shape.setPosition(position);
     shape.setSize(objectSize);
-    shape.setFillColor(sf::Color::Blue);
     shape.setOrigin(400.0f,400.0f);
-    speed = 20.0f;
+    speed = 200.0f;
+    playstate = 'S';
 }
 
 Player::~Player(){
 }
 
-void Player::State(char state,sf::Vector2i clickPos,float deltatime){
-    switch (state){
+void Player::State(sf::Vector2f clickPos,float deltatime){
+    switch (playstate){
     case 'M':
         Movement(clickPos,deltatime);
+        shape.setFillColor(sf::Color::Cyan);
         break;
     case 'S':
         Stop();
+        shape.setFillColor(sf::Color::Blue);
     default:
         break;
     }
 }
 
-void Player::Movement(sf::Vector2i clickPos,float deltatime){
-    velocity.x = -float(clickPos.x)*speed;
-    velocity.y = -float(clickPos.y)*speed;
-    shape.setFillColor(sf::Color::Cyan);
-    shape.move(velocity*deltatime);
+void Player::Movement(sf::Vector2f clickPos,float deltatime){
+    sf::Vector2f direction;
+    sf::Vector2f direction_norm;
+    direction.x = clickPos.x-shape.getPosition().x;
+    direction.y = clickPos.y-shape.getPosition().y;
+    direction_norm = direction / sqrtf(direction.x * direction.x + direction.y * direction.y);
+    if(abs(direction.x+direction.y)>0.07f){
+        shape.move(direction_norm*deltatime*speed);
+    }else{
+        updateState('S');
+    }
 }
 
 void Player::Stop(){

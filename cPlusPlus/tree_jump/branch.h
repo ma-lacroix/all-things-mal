@@ -15,7 +15,9 @@ public:
     // Branch(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f position, bool clickable);
     Branch(sf::Vector2f,sf::Vector2f);
     ~Branch();
-    bool updateColor(sf::Vector2i);
+    void updateColor();
+    bool Collision(sf::Vector2f);
+    void updateStatus(bool newStatus) {status = newStatus;};
     void Draw(sf::RenderWindow&);
 };
 
@@ -30,7 +32,15 @@ Branch::Branch(sf::Vector2f objectSize, sf::Vector2f position)
 Branch::~Branch(){
 }
 
-bool Branch::updateColor(sf::Vector2i clickPos){
+void Branch::updateColor(){
+    if(status){
+        shape.setFillColor(sf::Color::Red);
+    }else{
+        shape.setFillColor(sf::Color::Green);
+    }
+}
+
+bool Branch::Collision(sf::Vector2f clickPos){
     float lowX = shape.getPosition().x;
     float highX = shape.getPosition().x+shape.getSize().x;
     float lowY = shape.getPosition().y;
@@ -38,11 +48,9 @@ bool Branch::updateColor(sf::Vector2i clickPos){
 
     if(clickPos.x >= lowX & clickPos.x <= highX &
             clickPos.y >= lowY & clickPos.y <= highY){
-        shape.setFillColor(sf::Color::White);
-        status = true;
+        updateStatus(true);
     }else{
-        shape.setFillColor(sf::Color::Green);
-        status = false;
+        updateStatus(false);
     }
     return status;
 }

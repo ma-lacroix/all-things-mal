@@ -22,7 +22,7 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     // timers
     float deltaTime {0.0f};
     sf::Clock clock;
-    sf::Vector2i mouseClickPos;
+    sf::Vector2f mouseClickPos {0.0f,0.0f};
 
     Branch rect1({200.0f,50.0f},{100.0f,250.0f});
     Branch rect2({200.0f,50.0f},{400.0f,400.0f});
@@ -37,6 +37,7 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
 
         deltaTime = clock.restart().asSeconds();
         view.setCenter({0.0f,0.0f});
+
         // this part handles events related to the actual game window like closing or resizing. 
         sf::Event evnt;
         while(window.pollEvent(evnt)){
@@ -55,26 +56,36 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
                 if (evnt.key.code == sf::Keyboard::R)
                     game(window,view,HUD,VIEW_HEIGHT);
                 break;
-            case sf::Event::MouseButtonPressed:
-                mouseClickPos = {evnt.mouseButton.x,evnt.mouseButton.y};
-            case sf::Event::MouseButtonReleased:
             default:
                 break;
             }
+        }
         
+        // player.State('S',mouseClickPos,deltaTime);
+        // handle objects
+
         window.clear(sf::Color(30,100,200));
         window.setView(view);
-        player.State('S',mouseClickPos,deltaTime);
         
-        // handle objects
-        for (auto rect: rects){
-            if(rect.updateColor(mouseClickPos)){
-                player.State('M',mouseClickPos,deltaTime);
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+            mouseClickPos.x = float(sf::Mouse::getPosition(window).x);
+            mouseClickPos.y = float(sf::Mouse::getPosition(window).y);
+            for (auto rect: rects){
+                if(rect.Collision(mouseClickPos)){
+                    player.updateState('M');
+                    break;
+                }else{
+                    player.updateState('S');
+                }    
             }
-            rect.Draw(window);
         }
+        for (auto rect: rects){
+            rect.updateColor();
+            rect.Draw(window);
+            player.State(mouseClickPos,deltaTime);
+        }
+        
         player.Draw(window);
         window.display();
-        }
     }
 }
