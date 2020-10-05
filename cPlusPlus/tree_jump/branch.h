@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "object.h"
+#include "player.h"
 
 class Branch: public Object {
 private:
@@ -16,9 +17,10 @@ public:
     Branch(sf::Vector2f,sf::Vector2f);
     ~Branch();
     void updateColor();
+    void updatePosition(float);
     bool Collision(sf::Vector2f);
-    void updateStatus(bool newStatus) {status = newStatus;};
     void Draw(sf::RenderWindow&);
+    bool getStatus() {return status;};
 };
 
 Branch::Branch(sf::Vector2f objectSize, sf::Vector2f position)
@@ -26,6 +28,7 @@ Branch::Branch(sf::Vector2f objectSize, sf::Vector2f position)
     shape.setPosition(position);
     shape.setSize(objectSize);
     shape.setOrigin(400.0f,400.0f);
+    shape.setFillColor(sf::Color(100,100,100,110));
     bool status = false;
 }
 
@@ -33,11 +36,7 @@ Branch::~Branch(){
 }
 
 void Branch::updateColor(){
-    if(status){
-        shape.setFillColor(sf::Color::Red);
-    }else{
-        shape.setFillColor(sf::Color::Green);
-    }
+    shape.setFillColor(sf::Color(240,20,20,110));
 }
 
 bool Branch::Collision(sf::Vector2f clickPos){
@@ -48,9 +47,9 @@ bool Branch::Collision(sf::Vector2f clickPos){
 
     if(clickPos.x >= lowX & clickPos.x <= highX &
             clickPos.y >= lowY & clickPos.y <= highY){
-        updateStatus(true);
+        status = true;
     }else{
-        updateStatus(false);
+        status = false;
     }
     return status;
 }

@@ -24,12 +24,14 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     sf::Clock clock;
     sf::Vector2f mouseClickPos {0.0f,0.0f};
 
-    Branch rect1({200.0f,50.0f},{100.0f,250.0f});
-    Branch rect2({200.0f,50.0f},{400.0f,400.0f});
+    Branch rect1({200.0f,50.0f},{100.0f,150.0f});
+    Branch rect2({200.0f,50.0f},{400.0f,300.0f});
+    Branch rect3({200.0f,50.0f},{350.0f,600.0f});
     Player player({100.0f,100.0f},{300.0f,700.0f});
     std::vector<Branch> rects;
     rects.push_back(rect1);
     rects.push_back(rect2);
+    rects.push_back(rect3);
     
 
     // game loop
@@ -64,15 +66,16 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
         // player.State('S',mouseClickPos,deltaTime);
         // handle objects
 
-        window.clear(sf::Color(30,100,200));
+        window.clear(sf::Color(245,230,230));
         window.setView(view);
-        
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             mouseClickPos.x = float(sf::Mouse::getPosition(window).x);
             mouseClickPos.y = float(sf::Mouse::getPosition(window).y);
             for (auto rect: rects){
                 if(rect.Collision(mouseClickPos)){
                     player.updateState('M');
+                    rect.updateColor();
+                    rect.Draw(window);
                     break;
                 }else{
                     player.updateState('S');
@@ -80,11 +83,9 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
             }
         }
         for (auto rect: rects){
-            rect.updateColor();
             rect.Draw(window);
             player.State(mouseClickPos,deltaTime);
         }
-        
         player.Draw(window);
         window.display();
     }

@@ -18,11 +18,13 @@ public:
     // Player(sf::Texture* textureFile,sf::Vector2f PlayerSize, sf::Vector2f position, bool clickable);
     Player(sf::Vector2f, sf::Vector2f);
     ~Player();
-    void Draw(sf::RenderWindow&);
-    void State(sf::Vector2f clickPos,float deltatime);
-    void Movement(sf::Vector2f,float deltatime);
+    void State(sf::Vector2f,float);
+    void Movement(sf::Vector2f,float);
     void Stop();
+    void Draw(sf::RenderWindow&);
+    sf::Vector2f getPosition() {return shape.getPosition();};
     void updateState(char newState) {playstate = newState;};
+    char getPlaystate() {return playstate;};
 };
 
 Player::Player(sf::Vector2f objectSize, sf::Vector2f position)
@@ -54,8 +56,8 @@ void Player::State(sf::Vector2f clickPos,float deltatime){
 void Player::Movement(sf::Vector2f clickPos,float deltatime){
     sf::Vector2f direction;
     sf::Vector2f direction_norm;
-    direction.x = clickPos.x-shape.getPosition().x;
-    direction.y = clickPos.y-shape.getPosition().y;
+    direction.x = clickPos.x-(shape.getPosition().x+shape.getSize().x/2);
+    direction.y = clickPos.y-(shape.getPosition().y+shape.getSize().y);
     direction_norm = direction / sqrtf(direction.x * direction.x + direction.y * direction.y);
     if(abs(direction.x+direction.y)>0.07f){
         shape.move(direction_norm*deltatime*speed);
