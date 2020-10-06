@@ -1,7 +1,7 @@
 // struct that initialises the game, renders the game objects and the loop
 
 #include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
+// #include <SFML/Audio.hpp>
 #include <iostream>
 #include <vector>
 #include "branch.h"
@@ -22,8 +22,6 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     // timers
     float deltaTime {0.0f};
     sf::Clock clock;
-    sf::Vector2f mouseClickPos {0.0f,0.0f};
-
     Branch rect1({200.0f,50.0f},{100.0f,150.0f});
     Branch rect2({200.0f,50.0f},{400.0f,300.0f});
     Branch rect3({200.0f,50.0f},{350.0f,600.0f});
@@ -38,7 +36,7 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     while (window.isOpen()){
 
         deltaTime = clock.restart().asSeconds();
-        view.setCenter({0.0f,0.0f});
+        view.setCenter(VIEW_HEIGHT/2,player.getPosition().y-300.0f);
 
         // this part handles events related to the actual game window like closing or resizing. 
         sf::Event evnt;
@@ -69,22 +67,25 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
         window.clear(sf::Color(245,230,230));
         window.setView(view);
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-            mouseClickPos.x = float(sf::Mouse::getPosition(window).x);
-            mouseClickPos.y = float(sf::Mouse::getPosition(window).y);
-            for (auto rect: rects){
-                if(rect.Collision(mouseClickPos)){
-                    player.updateState('M');
-                    rect.updateColor();
-                    rect.Draw(window);
-                    break;
-                }else{
-                    player.updateState('S');
-                }    
-            }
+            player.setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
         }
         for (auto rect: rects){
+            if(rect.Collision(player.getClickPos())){
+                printf("R %f:%f\n",rect.getPosition().x,rect.getPosition().y);
+                printf("P %f:%f\n",player.getClickPos().x,player.getClickPos().y);
+                player.updateState('M');
+                rect.updateColor();
+                rect.Draw(window);
+                break;
+            }else{
+                player.updateState('S');
+            }    
+        }
+        
+        for (auto rect: rects){
+            rect.updatePosition(player.getVelocity().y);
             rect.Draw(window);
-            player.State(mouseClickPos,deltaTime);
+            player.State(deltaTime);
         }
         player.Draw(window);
         window.display();

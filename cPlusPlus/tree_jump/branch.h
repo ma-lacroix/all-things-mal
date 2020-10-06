@@ -21,18 +21,23 @@ public:
     bool Collision(sf::Vector2f);
     void Draw(sf::RenderWindow&);
     bool getStatus() {return status;};
+    sf::Vector2f getPosition() {return shape.getPosition();};
 };
 
 Branch::Branch(sf::Vector2f objectSize, sf::Vector2f position)
     :Object(objectSize,position){
     shape.setPosition(position);
     shape.setSize(objectSize);
-    shape.setOrigin(400.0f,400.0f);
+    // shape.setOrigin(400.0f,400.0f);
     shape.setFillColor(sf::Color(100,100,100,110));
     bool status = false;
 }
 
 Branch::~Branch(){
+}
+
+void Branch::updatePosition(float newPos){
+    shape.setPosition(shape.getPosition().x,shape.getPosition().y+newPos);
 }
 
 void Branch::updateColor(){

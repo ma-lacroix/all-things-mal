@@ -16,7 +16,7 @@ public:
 };
 
 Object::Object(sf::Vector2f objectSize, sf::Vector2f position){
-    shape.setOrigin(400.0f,400.0f);
+    // shape.setOrigin(400.0f,400.0f);
 }
 
 Object::~Object(){
