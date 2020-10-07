@@ -38,7 +38,7 @@ Player::Player(sf::Vector2f objectSize, sf::Vector2f position)
     // shape.setOrigin(400.0f,400.0f);
     velocity = {0.0f,0.0f};
     mouseClickPos = {0.0f,0.0f};
-    speed = 200.0f;
+    speed = 100.0f;
     playstate = 'S';
 }
 
@@ -66,12 +66,11 @@ void Player::Movement(float deltatime){
     direction.y = mouseClickPos.y-(shape.getPosition().y+shape.getSize().y);
     direction_norm = direction / sqrtf(direction.x * direction.x + direction.y * direction.y);
     velocity = direction_norm*deltatime*speed;
-    printf("D %f\n",direction_norm.x+direction_norm.y);
     if(abs(direction.x+direction.y)>0.7f){
         shape.move(velocity);
-        mouseClickPos+=velocity;
     }else{
         updateState('S');
+        mouseClickPos = {0.0f,0.0f};
     }
 }
 

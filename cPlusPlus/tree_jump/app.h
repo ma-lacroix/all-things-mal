@@ -22,21 +22,28 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     // timers
     float deltaTime {0.0f};
     sf::Clock clock;
-    Branch rect1({200.0f,50.0f},{100.0f,150.0f});
-    Branch rect2({200.0f,50.0f},{400.0f,300.0f});
-    Branch rect3({200.0f,50.0f},{350.0f,600.0f});
-    Player player({100.0f,100.0f},{300.0f,700.0f});
-    std::vector<Branch> rects;
+
+    // Tree branches
+    Branch* rect1 = new Branch({200.0f,50.0f},{100.0f,150.0f});
+    Branch* rect2 = new Branch({200.0f,50.0f},{400.0f,300.0f});
+    Branch* rect3 = new Branch({200.0f,50.0f},{150.0f,600.0f});
+    Branch* rect4 = new Branch({200.0f,50.0f},{250.0f,800.0f});
+    Branch* rect5 = new Branch({200.0f,50.0f},{90.0f,950.0f});
+    std::vector<Branch*> rects;
     rects.push_back(rect1);
     rects.push_back(rect2);
     rects.push_back(rect3);
-    
+    rects.push_back(rect4);
+    rects.push_back(rect5);
+
+    // main player
+    Player player({100.0f,100.0f},{300.0f,1100.0f});
 
     // game loop
     while (window.isOpen()){
 
         deltaTime = clock.restart().asSeconds();
-        view.setCenter(VIEW_HEIGHT/2,player.getPosition().y-300.0f);
+        view.setCenter(VIEW_HEIGHT/2,player.getPosition().y-100.0f);
 
         // this part handles events related to the actual game window like closing or resizing. 
         sf::Event evnt;
@@ -69,24 +76,23 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             player.setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
         }
+        
         for (auto rect: rects){
-            if(rect.Collision(player.getClickPos())){
-                printf("R %f:%f\n",rect.getPosition().x,rect.getPosition().y);
-                printf("P %f:%f\n",player.getClickPos().x,player.getClickPos().y);
-                player.updateState('M');
-                rect.updateColor();
-                rect.Draw(window);
-                break;
-            }else{
-                player.updateState('S');
-            }    
+            rect->updateColor(rect->Collision(player.getClickPos(),player.getVelocity().y));
+            rect->Draw(window);
         }
         
         for (auto rect: rects){
-            rect.updatePosition(player.getVelocity().y);
-            rect.Draw(window);
-            player.State(deltaTime);
+            if(rect->Collision(player.getClickPos(),player.getVelocity().y)){
+                player.updateState('M');
+                player.State(deltaTime);
+                break;
+            }else{
+                player.updateState('S');
+                player.State(deltaTime);
+            }
         }
+        
         player.Draw(window);
         window.display();
     }
