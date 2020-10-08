@@ -38,7 +38,7 @@ Player::Player(sf::Vector2f objectSize, sf::Vector2f position)
     // shape.setOrigin(400.0f,400.0f);
     velocity = {0.0f,0.0f};
     mouseClickPos = {0.0f,0.0f};
-    speed = 100.0f;
+    speed = 150.0f;
     playstate = 'S';
 }
 

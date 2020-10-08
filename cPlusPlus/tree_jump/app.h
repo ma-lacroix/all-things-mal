@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include "branch.h"
+#include "trunk.h"
 #include "player.h"
 
 struct app{
@@ -21,20 +22,32 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
 
     // timers
     float deltaTime {0.0f};
+    float Ycoord {0.0f};
     sf::Clock clock;
 
     // Tree branches
     Branch* rect1 = new Branch({200.0f,50.0f},{100.0f,150.0f});
-    Branch* rect2 = new Branch({200.0f,50.0f},{400.0f,300.0f});
-    Branch* rect3 = new Branch({200.0f,50.0f},{150.0f,600.0f});
+    Branch* rect2 = new Branch({300.0f,50.0f},{300.0f,300.0f});
+    Branch* rect3 = new Branch({200.0f,50.0f},{150.0f,550.0f});
     Branch* rect4 = new Branch({200.0f,50.0f},{250.0f,800.0f});
-    Branch* rect5 = new Branch({200.0f,50.0f},{90.0f,950.0f});
+    Branch* rect5 = new Branch({200.0f,50.0f},{90.0f,1000.0f});
     std::vector<Branch*> rects;
     rects.push_back(rect1);
     rects.push_back(rect2);
     rects.push_back(rect3);
     rects.push_back(rect4);
     rects.push_back(rect5);
+
+    // Tree trunk pieces
+    Trunk* trunk1 = new Trunk({100.0f,300.0f},{275.0f,800.0f});
+    Trunk* trunk2 = new Trunk({100.0f,300.0f},{285.0f,500.0f});
+    Trunk* trunk3 = new Trunk({100.0f,300.0f},{275.0f,200.0f});
+    Trunk* trunk4 = new Trunk({100.0f,300.0f},{285.0f,-100.0f});
+    std::vector<Trunk*> trunks;
+    trunks.push_back(trunk1);
+    trunks.push_back(trunk2);
+    trunks.push_back(trunk3);
+    trunks.push_back(trunk4);
 
     // main player
     Player player({100.0f,100.0f},{300.0f,1100.0f});
@@ -44,7 +57,8 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
 
         deltaTime = clock.restart().asSeconds();
         view.setCenter(VIEW_HEIGHT/2,player.getPosition().y-100.0f);
-
+        
+        
         // this part handles events related to the actual game window like closing or resizing. 
         sf::Event evnt;
         while(window.pollEvent(evnt)){
@@ -68,16 +82,22 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
             }
         }
         
-        // player.State('S',mouseClickPos,deltaTime);
         // handle objects
 
         window.clear(sf::Color(245,230,230));
         window.setView(view);
+        Ycoord = view.getCenter().y;
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             player.setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
         }
         
+        for (auto trunk: trunks){
+            trunk->updateYcoord(Ycoord);
+            trunk->Draw(window);
+        }
+
         for (auto rect: rects){
+            rect->updateYcoord(Ycoord);
             rect->updateColor(rect->Collision(player.getClickPos(),player.getVelocity().y));
             rect->Draw(window);
         }

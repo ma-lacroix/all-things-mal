@@ -17,6 +17,7 @@ public:
     Branch(sf::Vector2f,sf::Vector2f);
     ~Branch();
     void updateColor(bool);
+    void updateYcoord(float);
     bool Collision(sf::Vector2f, float);
     void Draw(sf::RenderWindow&);
     bool getStatus() {return status;};
@@ -38,8 +39,13 @@ void Branch::updateColor(bool value){
         shape.setFillColor(sf::Color(240,20,20,110));
     }else{
         shape.setFillColor(sf::Color(50,100,100,255));
+    }   
+}
+
+void Branch::updateYcoord(float Ycoord){
+    if(shape.getPosition().y-Ycoord > 400.0f){
+        shape.move(0.0f,-1200.0f);
     }
-    
 }
 
 bool Branch::Collision(sf::Vector2f clickPos, float Yoffset){
