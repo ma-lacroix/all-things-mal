@@ -14,14 +14,19 @@ private:
     sf::RectangleShape shape;
     sf::Vector2f velocity;
     sf::Vector2f mouseClickPos;
+    sf::Vector2f objectSize;
     float speed;
+    float angle;
     bool arm;
+    bool clickToRight;
     char playstate;
 public:
     // Player(sf::Texture* textureFile,sf::Vector2f PlayerSize, sf::Vector2f position, bool clickable);
     Player(sf::Vector2f,sf::Vector2f,float,bool);
     ~Player();
     void State(float);
+    void ifClickToRight();
+    void AdjustArm(sf::Vector2f);
     void Rotate();
     void Movement(float);
     void Stop();
@@ -38,12 +43,14 @@ Player::Player(sf::Vector2f objectSize, sf::Vector2f position, float speed, bool
     :Object(objectSize,position){
     shape.setPosition(position);
     shape.setSize(objectSize);
+    shape.setOrigin(objectSize.x/2,objectSize.y/2);
+    this->objectSize = objectSize;
     this->speed = speed;
     this->arm = arm;
-    // shape.setOrigin(400.0f,400.0f);
     velocity = {0.0f,0.0f};
     mouseClickPos = {0.0f,0.0f};
     playstate = 'S';
+    clickToRight = false;
 }
 
 Player::~Player(){
@@ -62,13 +69,31 @@ void Player::State(float deltatime){
     }
 }
 
+void Player::ifClickToRight(){    
+    if(mouseClickPos.x>shape.getPosition().x){
+        clickToRight = true;
+    }else{
+        clickToRight = false;
+    }
+}
+
+void Player::AdjustArm(sf::Vector2f Coords){
+    if(arm){
+    // Pythagoras theorem to determine hypotenuse
+        shape.setSize({-abs(sqrtf(powf(shape.getPosition().x-Coords.x,2)+powf(shape.getPosition().y-Coords.y,2))),
+                        objectSize.y});
+    }
+}
+
 void Player::Rotate(){
-    // Pythagoras theorem to determine angle of shape
+    // Pythagoras theorem to determine angle of shape using trigonometry
     if(arm){
         float a = mouseClickPos.y-shape.getPosition().y;
         float b = mouseClickPos.x-shape.getPosition().x;
-        float angle = atanf(a/b)*180/PI;
-        printf("angle: %f\n",angle);
+        angle = atanf(a/b)*180/PI;
+        if(!clickToRight){
+            angle+=180;
+        }
         shape.setRotation(angle);
     }
 }
@@ -76,8 +101,8 @@ void Player::Rotate(){
 void Player::Movement(float deltatime){
     sf::Vector2f direction;
     sf::Vector2f direction_norm;
-    direction.x = mouseClickPos.x-(shape.getPosition().x+shape.getSize().x/2);
-    direction.y = mouseClickPos.y-(shape.getPosition().y+shape.getSize().y);
+    direction.x = mouseClickPos.x-(shape.getPosition().x);
+    direction.y = mouseClickPos.y-(shape.getPosition().y);
     direction_norm = direction / sqrtf(direction.x * direction.x + direction.y * direction.y); // avoid speed changes
     velocity = direction_norm*deltatime*speed;
     if(abs(direction.x+direction.y)>0.7f){

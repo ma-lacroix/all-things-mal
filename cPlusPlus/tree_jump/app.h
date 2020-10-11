@@ -50,7 +50,7 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     trunks.push_back(trunk4);
 
     // main player & its arms
-    Player* player_arm = new Player({30.0f,60.0f},{300.0f,1100.0f},300.0f,true);
+    Player* player_arm = new Player({0.0f,40.0f},{300.0f,1100.0f},900.0f,true);
     Player* main_player = new Player({100.0f,100.0f},{300.0f,1100.0f},100.0f,false);
     std::vector<Player*> players;
     players.push_back(player_arm);
@@ -61,7 +61,6 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
 
         deltaTime = clock.restart().asSeconds();
         view.setCenter(VIEW_HEIGHT/2,main_player->getPosition().y-100.0f);
-        
         
         // this part handles events related to the actual game window like closing or resizing. 
         sf::Event evnt;
@@ -94,6 +93,7 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
             for (auto plr: players){
                 plr->setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
                 plr->Rotate();
+                plr->ifClickToRight();
             }
         }
         
@@ -109,15 +109,17 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
         }
         
         
-        for (auto rect: rects){
-            for (auto plr: players){
+        for (auto plr: players){
+            for (auto rect: rects){
                 if(rect->Collision(plr->getClickPos(),plr->getVelocity().y)){
                     plr->updateState('M');
+                    plr->AdjustArm(players.at(1)->getPosition());
                     plr->State(deltaTime);
                     plr->Draw(window);
                     break;
                 }else{
                     plr->updateState('S');
+                    plr->AdjustArm(players.at(1)->getPosition());
                     plr->State(deltaTime);
                     plr->Draw(window);
                 }
