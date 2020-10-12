@@ -1,10 +1,10 @@
 /*
-########################
+#######################################
 
     A jumping tree game using SFML
     Author: Marc-Antoine Lacroix
 
-########################
+#######################################
 */
 
 #include <SFML/Graphics.hpp>

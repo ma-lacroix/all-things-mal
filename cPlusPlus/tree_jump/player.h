@@ -114,7 +114,7 @@ void Player::Movement(float deltatime){
 }
 
 void Player::Stop(){
-    shape.setFillColor(sf::Color::Blue);
+    // shape.setFillColor(sf::Color::Blue);
 }
 
 void Player::Draw(sf::RenderWindow& window){

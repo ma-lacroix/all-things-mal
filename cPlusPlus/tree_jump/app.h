@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include "branch.h"
+#include "notes.h"
 #include "trunk.h"
 #include "player.h"
 
@@ -22,21 +23,26 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
 
     // timers
     float deltaTime {0.0f};
+    float totalTime {0.0f};
     float Ycoord {0.0f};
+    size_t rectsLen {0};
+    int i {1};
     sf::Clock clock;
 
     // Tree branches
-    Branch* rect1 = new Branch({200.0f,50.0f},{100.0f,150.0f});
-    Branch* rect2 = new Branch({300.0f,50.0f},{300.0f,300.0f});
+    Branch* rect1 = new Branch({200.0f,50.0f},{90.0f,1000.0f});
+    Branch* rect2 = new Branch({200.0f,50.0f},{250.0f,800.0f});
     Branch* rect3 = new Branch({200.0f,50.0f},{150.0f,600.0f});
-    Branch* rect4 = new Branch({200.0f,50.0f},{250.0f,800.0f});
-    Branch* rect5 = new Branch({200.0f,50.0f},{90.0f,1000.0f});
+    Branch* rect4 = new Branch({300.0f,50.0f},{300.0f,300.0f});
+    Branch* rect5 = new Branch({200.0f,50.0f},{100.0f,150.0f});
+    
     std::vector<Branch*> rects;
     rects.push_back(rect1);
     rects.push_back(rect2);
     rects.push_back(rect3);
     rects.push_back(rect4);
     rects.push_back(rect5);
+    rectsLen = rects.size();
 
     // Tree trunk pieces
     Trunk* trunk1 = new Trunk({100.0f,300.0f},{275.0f,800.0f});
@@ -49,6 +55,13 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     trunks.push_back(trunk3);
     trunks.push_back(trunk4);
 
+    // Music notes
+    Note* note1 = new Note({20.0f,40.0f},{145.0f,955.0f});
+    Note* note2 = new Note({20.0f,40.0f},{340.0f,755.0f});
+    std::vector<Note*> notes;
+    notes.push_back(note1);
+    notes.push_back(note2);
+
     // main player & its arms
     Player* player_arm = new Player({0.0f,40.0f},{300.0f,1100.0f},900.0f,true);
     Player* main_player = new Player({100.0f,100.0f},{300.0f,1100.0f},100.0f,false);
@@ -60,6 +73,7 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     while (window.isOpen()){
 
         deltaTime = clock.restart().asSeconds();
+        totalTime += deltaTime;
         view.setCenter(VIEW_HEIGHT/2,main_player->getPosition().y-100.0f);
         
         // this part handles events related to the actual game window like closing or resizing. 
@@ -109,21 +123,31 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
         }
         
         
-        for (auto plr: players){
-            for (auto rect: rects){
+        for (auto rect: rects){
+            for (auto plr: players){
                 if(rect->Collision(plr->getClickPos(),plr->getVelocity().y)){
                     plr->updateState('M');
-                    plr->AdjustArm(players.at(1)->getPosition());
+                    plr->AdjustArm(main_player->getPosition());
                     plr->State(deltaTime);
                     plr->Draw(window);
                     break;
                 }else{
                     plr->updateState('S');
-                    plr->AdjustArm(players.at(1)->getPosition());
+                    plr->AdjustArm(main_player->getPosition());
                     plr->State(deltaTime);
                     plr->Draw(window);
                 }
             }
+        }
+        for (auto note: notes){
+            if(i+1>rectsLen-1){
+                i=0;
+            }
+            note->Animate(totalTime);
+            if(note->MoveElsewhere(main_player->getPosition(),rects.at(i+1)->getPosition())){
+                ++i;
+            };
+            note->Draw(window);
         }
         window.display();
     }
