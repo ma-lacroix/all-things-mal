@@ -12,11 +12,21 @@
 struct app{
     void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT);  
     void resizedView(const sf::RenderWindow& window, sf::View& view, const float view_height);
+    void load_texture(sf::Texture* some_texture,std::string textureFile);
 };
 
 void app::resizedView(const sf::RenderWindow& window, sf::View& view, const float view_height) {
     float aspectRatio = float(window.getSize().x)/float(window.getSize().y);
     view.setSize(view_height * aspectRatio,view_height);
+}
+
+void app::load_texture(sf::Texture* some_texture,std::string textureFile){
+// loads a texture file
+    if(!some_texture->loadFromFile(textureFile)){
+        std::cout << "Couldn't load " << textureFile << std::endl;
+    }else{
+        std::cout << "File loaded succesfully" << std::endl;
+    }
 }
 
 void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT){
@@ -30,11 +40,15 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     sf::Clock clock;
 
     // Tree branches
-    Branch* rect1 = new Branch({200.0f,50.0f},{90.0f,1000.0f});
-    Branch* rect2 = new Branch({200.0f,50.0f},{250.0f,800.0f});
-    Branch* rect3 = new Branch({200.0f,50.0f},{150.0f,600.0f});
-    Branch* rect4 = new Branch({300.0f,50.0f},{300.0f,300.0f});
-    Branch* rect5 = new Branch({200.0f,50.0f},{100.0f,150.0f});
+    std::string branchFile {"v_assets/tree.png"};
+    sf::Texture branchTexture;
+    load_texture(&branchTexture,branchFile);
+
+    Branch* rect1 = new Branch(&branchTexture,{250.0f,100.0f},{590.0f,1000.0f});
+    Branch* rect2 = new Branch(&branchTexture,{250.0f,100.0f},{350.0f,800.0f});
+    Branch* rect3 = new Branch(&branchTexture,{250.0f,100.0f},{650.0f,600.0f});
+    Branch* rect4 = new Branch(&branchTexture,{350.0f,100.0f},{400.0f,300.0f});
+    Branch* rect5 = new Branch(&branchTexture,{250.0f,100.0f},{400.0f,150.0f});
     
     std::vector<Branch*> rects;
     rects.push_back(rect1);
@@ -45,10 +59,13 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     rectsLen = rects.size();
 
     // Tree trunk pieces
-    Trunk* trunk1 = new Trunk({100.0f,300.0f},{275.0f,800.0f});
-    Trunk* trunk2 = new Trunk({100.0f,300.0f},{285.0f,500.0f});
-    Trunk* trunk3 = new Trunk({100.0f,300.0f},{275.0f,200.0f});
-    Trunk* trunk4 = new Trunk({100.0f,300.0f},{285.0f,-100.0f});
+    std::string trunkFile {"v_assets/trunk.png"};
+    sf::Texture trunkTexture;
+    load_texture(&trunkTexture,trunkFile);
+    Trunk* trunk1 = new Trunk(&trunkTexture,{100.0f,300.0f},{575.0f,800.0f});
+    Trunk* trunk2 = new Trunk(&trunkTexture,{100.0f,300.0f},{585.0f,500.0f});
+    Trunk* trunk3 = new Trunk(&trunkTexture,{100.0f,300.0f},{575.0f,200.0f});
+    Trunk* trunk4 = new Trunk(&trunkTexture,{100.0f,300.0f},{585.0f,-100.0f});
     std::vector<Trunk*> trunks;
     trunks.push_back(trunk1);
     trunks.push_back(trunk2);
@@ -56,15 +73,25 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     trunks.push_back(trunk4);
 
     // Music notes
-    Note* note1 = new Note({20.0f,40.0f},{145.0f,955.0f});
-    Note* note2 = new Note({20.0f,40.0f},{340.0f,755.0f});
+    std::string noteFile {"v_assets/note.png"};
+    sf::Texture noteTexture;
+    load_texture(&noteTexture,noteFile);
+    Note* note1 = new Note(&noteTexture,{30.0f,50.0f},{700.0f,970.0f});
+    Note* note2 = new Note(&noteTexture,{30.0f,50.0f},{430.0f,770.0f});
     std::vector<Note*> notes;
     notes.push_back(note1);
     notes.push_back(note2);
 
     // main player & its arms
-    Player* player_arm = new Player({0.0f,40.0f},{300.0f,1100.0f},900.0f,true);
-    Player* main_player = new Player({100.0f,100.0f},{300.0f,1100.0f},100.0f,false);
+    std::string armFile {"v_assets/arm.png"};
+    sf::Texture armTexture;
+    load_texture(&armTexture,armFile);
+    std::string unicornFile {"v_assets/unicorn.png"};
+    sf::Texture unicornTexture;
+    load_texture(&unicornTexture,unicornFile);
+    Player* player_arm = new Player(&armTexture,{0.0f,40.0f},{600.0f,1100.0f},900.0f,true);
+    Player* main_player = new Player(&unicornTexture,{100.0f,100.0f},{600.0f,1100.0f},100.0f,false);
+    // Player* player_bird = new Player({50.0f,50.0f},{370.0f,900.0f},500.0f,false);
     std::vector<Player*> players;
     players.push_back(player_arm);
     players.push_back(main_player);
@@ -75,6 +102,7 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
         deltaTime = clock.restart().asSeconds();
         totalTime += deltaTime;
         view.setCenter(VIEW_HEIGHT/2,main_player->getPosition().y-100.0f);
+        view.setSize(800.0f,800.0f);
         
         // this part handles events related to the actual game window like closing or resizing. 
         sf::Event evnt;
@@ -105,9 +133,11 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
         Ycoord = view.getCenter().y;
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             for (auto plr: players){
-                plr->setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
-                plr->Rotate();
-                plr->ifClickToRight();
+                if(plr->getPlaystate()=='S'){
+                    plr->setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+                    plr->Rotate();
+                    plr->ifClickToRight();
+                }
             }
         }
         
@@ -139,16 +169,23 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
                 }
             }
         }
+        std::cout << main_player->getPlaystate() << std::endl;
+
         for (auto note: notes){
-            if(i+1>rectsLen-1){
+            if(i>=rectsLen){
                 i=0;
             }
             note->Animate(totalTime);
-            if(note->MoveElsewhere(main_player->getPosition(),rects.at(i+1)->getPosition())){
+            if(note->MoveElsewhere(main_player->getPosition(),rects.at(i)->getPosition())){
                 ++i;
             };
             note->Draw(window);
         }
+
+        // player_bird->BirdMovement(main_player->getPosition(),deltaTime);
+        // player_bird->Animate(main_player->getPosition(),totalTime);
+        // player_bird->Draw(window);
+
         window.display();
     }
 }

@@ -5,7 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include "object.h"
 #define PI 3.14159265
 
@@ -22,13 +22,15 @@ private:
     char playstate;
 public:
     // Player(sf::Texture* textureFile,sf::Vector2f PlayerSize, sf::Vector2f position, bool clickable);
-    Player(sf::Vector2f,sf::Vector2f,float,bool);
+    Player(sf::Texture* textureFile, sf::Vector2f,sf::Vector2f,float,bool);
     ~Player();
     void State(float);
     void ifClickToRight();
     void AdjustArm(sf::Vector2f);
+    void Animate(sf::Vector2f,float);
     void Rotate();
     void Movement(float);
+    void BirdMovement(sf::Vector2f,float);
     void Stop();
     void Draw(sf::RenderWindow&);
     void setMouseClickPos(sf::Vector2f newClick) {mouseClickPos = newClick;};
@@ -39,8 +41,8 @@ public:
     char getPlaystate() {return playstate;};
 };
 
-Player::Player(sf::Vector2f objectSize, sf::Vector2f position, float speed, bool arm)
-    :Object(objectSize,position){
+Player::Player(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f position, float speed, bool arm)
+    :Object(textureFile, objectSize,position){
     shape.setPosition(position);
     shape.setSize(objectSize);
     shape.setOrigin(objectSize.x/2,objectSize.y/2);
@@ -51,6 +53,7 @@ Player::Player(sf::Vector2f objectSize, sf::Vector2f position, float speed, bool
     mouseClickPos = {0.0f,0.0f};
     playstate = 'S';
     clickToRight = false;
+    shape.setTexture(textureFile);
 }
 
 Player::~Player(){
@@ -59,7 +62,7 @@ Player::~Player(){
 void Player::State(float deltatime){
     switch (playstate){
     case 'M':
-        shape.setFillColor(sf::Color::Cyan);
+        // shape.setFillColor(sf::Color::Cyan);
         Movement(deltatime);
         break;
     case 'S':
@@ -85,6 +88,13 @@ void Player::AdjustArm(sf::Vector2f Coords){
     }
 }
 
+void Player::Animate(sf::Vector2f plrPos,float totaltime){
+    float velocity1,velocity2;
+    velocity1 = std::sinf(totaltime*PI)+5.0f;
+    velocity2 = std::sinf(totaltime*PI);
+    shape.move(velocity1,-velocity2);
+}
+
 void Player::Rotate(){
     // Pythagoras theorem to determine angle of shape using trigonometry
     if(arm){
@@ -105,6 +115,21 @@ void Player::Movement(float deltatime){
     direction.y = mouseClickPos.y-(shape.getPosition().y);
     direction_norm = direction / sqrtf(direction.x * direction.x + direction.y * direction.y); // avoid speed changes
     velocity = direction_norm*deltatime*speed;
+    if(abs(direction.x+direction.y)>0.7f){
+        shape.move(velocity);
+    }else{
+        updateState('S');
+        mouseClickPos = {0.0f,0.0f};
+    }
+}
+
+void Player::BirdMovement(sf::Vector2f plrPos,float deltatime){
+    sf::Vector2f direction;
+    sf::Vector2f direction_norm;
+    direction.x = plrPos.x+130.0f-(shape.getPosition().x);
+    direction.y = plrPos.y-95.0f-(shape.getPosition().y);
+    // direction_norm = direction / sqrtf(direction.x * direction.x + direction.y * direction.y); // avoid speed changes
+    velocity = direction*deltatime*speed;
     if(abs(direction.x+direction.y)>0.7f){
         shape.move(velocity);
     }else{

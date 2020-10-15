@@ -13,24 +13,25 @@ private:
     bool status;
 public:
     // Trunk(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f position, bool clickable);
-    Trunk(sf::Vector2f,sf::Vector2f);
+    Trunk(sf::Texture*, sf::Vector2f,sf::Vector2f);
     ~Trunk();
     void updateYcoord(float);
     void Draw(sf::RenderWindow&);
 };
 
-Trunk::Trunk(sf::Vector2f objectSize, sf::Vector2f position)
-    :Object(objectSize,position){
+Trunk::Trunk(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f position)
+    :Object(textureFile,objectSize,position){
     shape.setPosition(position);
     shape.setSize(objectSize);
-    shape.setFillColor(sf::Color(90,90,90,200));
+    shape.setFillColor(sf::Color(210,105,30,150));
+    shape.setTexture(textureFile);
 }
 
 Trunk::~Trunk(){
 }
 
 void Trunk::updateYcoord(float Ycoord){
-    if(shape.getPosition().y-Ycoord > 400.0f){
+    if(shape.getPosition().y-Ycoord > 500.0f){
         shape.move(0.0f,-1200.0f);
     }
 }

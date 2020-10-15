@@ -14,7 +14,7 @@ private:
     bool status;
 public:
     // Branch(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f position, bool clickable);
-    Branch(sf::Vector2f,sf::Vector2f);
+    Branch(sf::Texture*, sf::Vector2f,sf::Vector2f);
     ~Branch();
     void updateColor(bool);
     void updateYcoord(float);
@@ -24,11 +24,12 @@ public:
     sf::Vector2f getPosition() {return shape.getPosition();};
 };
 
-Branch::Branch(sf::Vector2f objectSize, sf::Vector2f position)
-    :Object(objectSize,position){
+Branch::Branch(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f position)
+    :Object(textureFile,objectSize,position){
     shape.setPosition(position);
     shape.setSize(objectSize);
     bool status = false;
+    shape.setTexture(textureFile);
 }
 
 Branch::~Branch(){
@@ -36,14 +37,14 @@ Branch::~Branch(){
 
 void Branch::updateColor(bool value){
     if(value){
-        shape.setFillColor(sf::Color(240,20,20,110));
+        shape.setFillColor(sf::Color(255,255,255,110));
     }else{
-        shape.setFillColor(sf::Color(50,100,100,255));
+        shape.setFillColor(sf::Color(255,255,255,255));
     }   
 }
 
 void Branch::updateYcoord(float Ycoord){
-    if(shape.getPosition().y-Ycoord > 400.0f){
+    if(shape.getPosition().y-Ycoord > 500.0f){
         shape.move(0.0f,-1200.0f);
     }
 }

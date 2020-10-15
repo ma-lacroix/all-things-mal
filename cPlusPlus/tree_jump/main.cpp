@@ -17,8 +17,8 @@ int main() {
     // initialising game window & view
 
     app app;
-    float SCREEN_WIDTH {800.0};
-    float SCREEN_HEIGHT {800.0};
+    float SCREEN_WIDTH {1200.0};
+    float SCREEN_HEIGHT {1200.0};
     static const float VIEW_HEIGHT = SCREEN_HEIGHT;
     sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH,SCREEN_HEIGHT),"Tree jump",sf::Style::Close | sf::Style::Resize);
     sf::View view(sf::Vector2f(0.0f,0.0f),sf::Vector2f(SCREEN_HEIGHT,SCREEN_WIDTH));
