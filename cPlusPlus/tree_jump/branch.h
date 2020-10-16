@@ -12,9 +12,10 @@ class Branch: public Object {
 private:
     sf::RectangleShape shape;
     bool status;
+    sf::IntRect textureRect;
 public:
     // Branch(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f position, bool clickable);
-    Branch(sf::Texture*, sf::Vector2f,sf::Vector2f);
+    Branch(sf::Texture*, sf::Vector2f,sf::Vector2f,float);
     ~Branch();
     void updateColor(bool);
     void updateYcoord(float);
@@ -24,12 +25,22 @@ public:
     sf::Vector2f getPosition() {return shape.getPosition();};
 };
 
-Branch::Branch(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f position)
+Branch::Branch(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f position, float VIEW_WIDTH)
     :Object(textureFile,objectSize,position){
     shape.setPosition(position);
     shape.setSize(objectSize);
     bool status = false;
     shape.setTexture(textureFile);
+    textureRect.width = textureFile->getSize().x;
+    textureRect.height = textureFile->getSize().y;
+    if(position.x > VIEW_WIDTH/3){
+        // textureRect.left,
+        textureRect.width = abs(textureRect.width);
+    }else{
+        textureRect.left = abs(textureRect.width);
+        textureRect.width = -abs(textureRect.width);
+    }
+    shape.setTextureRect(textureRect);
 }
 
 Branch::~Branch(){

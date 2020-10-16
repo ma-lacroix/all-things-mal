@@ -37,7 +37,7 @@ public:
     sf::Vector2f getPosition() {return shape.getPosition();};
     sf::Vector2f getClickPos() {return mouseClickPos;};
     sf::Vector2f getVelocity() {return velocity;};
-    void updateState(char newState) {playstate = newState;};
+    void updateState(char newState) {std::cout << "Playstate updated" << std::endl; playstate = newState;};
     char getPlaystate() {return playstate;};
 };
 

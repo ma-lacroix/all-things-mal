@@ -10,14 +10,14 @@
 #include "player.h"
 
 struct app{
-    void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT);  
-    void resizedView(const sf::RenderWindow& window, sf::View& view, const float view_height);
+    void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_WIDTH);  
+    void resizedView(const sf::RenderWindow& window, sf::View& view, const float VIEW_WIDTH);
     void load_texture(sf::Texture* some_texture,std::string textureFile);
 };
 
-void app::resizedView(const sf::RenderWindow& window, sf::View& view, const float view_height) {
+void app::resizedView(const sf::RenderWindow& window, sf::View& view, const float VIEW_WIDTH) {
     float aspectRatio = float(window.getSize().x)/float(window.getSize().y);
-    view.setSize(view_height * aspectRatio,view_height);
+    view.setSize(VIEW_WIDTH * aspectRatio,VIEW_WIDTH);
 }
 
 void app::load_texture(sf::Texture* some_texture,std::string textureFile){
@@ -29,7 +29,7 @@ void app::load_texture(sf::Texture* some_texture,std::string textureFile){
     }
 }
 
-void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HEIGHT){
+void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_WIDTH){
 
     // timers
     float deltaTime {0.0f};
@@ -44,11 +44,11 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     sf::Texture branchTexture;
     load_texture(&branchTexture,branchFile);
 
-    Branch* rect1 = new Branch(&branchTexture,{250.0f,100.0f},{590.0f,1000.0f});
-    Branch* rect2 = new Branch(&branchTexture,{250.0f,100.0f},{350.0f,800.0f});
-    Branch* rect3 = new Branch(&branchTexture,{250.0f,100.0f},{650.0f,600.0f});
-    Branch* rect4 = new Branch(&branchTexture,{350.0f,100.0f},{400.0f,300.0f});
-    Branch* rect5 = new Branch(&branchTexture,{250.0f,100.0f},{400.0f,150.0f});
+    Branch* rect1 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-200.0f,1000.0f},VIEW_WIDTH);
+    Branch* rect2 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2+75.0f,800.0f},VIEW_WIDTH);
+    Branch* rect3 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-200.0f,600.0f},VIEW_WIDTH);
+    Branch* rect4 = new Branch(&branchTexture,{350.0f,150.0f},{VIEW_WIDTH/2+50.0f,300.0f},VIEW_WIDTH);
+    Branch* rect5 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-260.0f,150.0f},VIEW_WIDTH);
     
     std::vector<Branch*> rects;
     rects.push_back(rect1);
@@ -89,7 +89,7 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
     std::string unicornFile {"v_assets/unicorn.png"};
     sf::Texture unicornTexture;
     load_texture(&unicornTexture,unicornFile);
-    Player* player_arm = new Player(&armTexture,{0.0f,40.0f},{600.0f,1100.0f},900.0f,true);
+    Player* player_arm = new Player(&armTexture,{0.0f,30.0f},{600.0f,1100.0f},900.0f,true);
     Player* main_player = new Player(&unicornTexture,{100.0f,100.0f},{600.0f,1100.0f},100.0f,false);
     // Player* player_bird = new Player({50.0f,50.0f},{370.0f,900.0f},500.0f,false);
     std::vector<Player*> players;
@@ -101,7 +101,7 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
 
         deltaTime = clock.restart().asSeconds();
         totalTime += deltaTime;
-        view.setCenter(VIEW_HEIGHT/2,main_player->getPosition().y-100.0f);
+        view.setCenter(VIEW_WIDTH/2,main_player->getPosition().y-100.0f);
         view.setSize(800.0f,800.0f);
         
         // this part handles events related to the actual game window like closing or resizing. 
@@ -113,33 +113,35 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
                 window.close();
                 break;
             case sf::Event::Resized:
-                resizedView(window,view,VIEW_HEIGHT);
+                resizedView(window,view,VIEW_WIDTH);
                 printf("New window width: %i New window height: %i\n", evnt.size.width, evnt.size.height);
                 break;
             case sf::Event::KeyPressed:
                 if (evnt.key.code == sf::Keyboard::Escape)
                         window.close();
                 if (evnt.key.code == sf::Keyboard::R)
-                    game(window,view,HUD,VIEW_HEIGHT);
+                    game(window,view,HUD,VIEW_WIDTH);
                 break;
             default:
                 break;
             }
         }
-        
+        std::cout << main_player->getPlaystate() << std::endl;
         // handle & draw objects
         window.clear(sf::Color(245,230,230));
         window.setView(view);
         Ycoord = view.getCenter().y;
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             for (auto plr: players){
-                if(plr->getPlaystate()=='S'){
+                if(plr->getPlaystate()=='M'){
+                    break;
+                }else{
                     plr->setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
                     plr->Rotate();
-                    plr->ifClickToRight();
                 }
             }
         }
+        
         
         for (auto trunk: trunks){
             trunk->updateYcoord(Ycoord);
@@ -169,7 +171,6 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_HE
                 }
             }
         }
-        std::cout << main_player->getPlaystate() << std::endl;
 
         for (auto note: notes){
             if(i>=rectsLen){
