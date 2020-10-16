@@ -126,21 +126,18 @@ void app::game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_WI
                 break;
             }
         }
-        std::cout << main_player->getPlaystate() << std::endl;
         // handle & draw objects
         window.clear(sf::Color(245,230,230));
         window.setView(view);
         Ycoord = view.getCenter().y;
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
             for (auto plr: players){
-                if(plr->getPlaystate()=='M'){
-                    break;
-                }else{
-                    plr->setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
-                    plr->Rotate();
-                }
+                plr->setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+                plr->ifClickToRight();
+                plr->Rotate();
             }
         }
+        
         
         
         for (auto trunk: trunks){

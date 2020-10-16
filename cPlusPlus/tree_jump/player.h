@@ -32,12 +32,12 @@ public:
     void Movement(float);
     void BirdMovement(sf::Vector2f,float);
     void Stop();
+    void setMouseClickPos(sf::Vector2f);
     void Draw(sf::RenderWindow&);
-    void setMouseClickPos(sf::Vector2f newClick) {mouseClickPos = newClick;};
     sf::Vector2f getPosition() {return shape.getPosition();};
     sf::Vector2f getClickPos() {return mouseClickPos;};
     sf::Vector2f getVelocity() {return velocity;};
-    void updateState(char newState) {std::cout << "Playstate updated" << std::endl; playstate = newState;};
+    void updateState(char newState) {playstate = newState;};
     char getPlaystate() {return playstate;};
 };
 
@@ -120,6 +120,7 @@ void Player::Movement(float deltatime){
     }else{
         updateState('S');
         mouseClickPos = {0.0f,0.0f};
+        velocity = {0.0f,0.0f};
     }
 }
 
@@ -135,11 +136,25 @@ void Player::BirdMovement(sf::Vector2f plrPos,float deltatime){
     }else{
         updateState('S');
         mouseClickPos = {0.0f,0.0f};
+        velocity = {0.0f,0.0f};
     }
 }
 
 void Player::Stop(){
     // shape.setFillColor(sf::Color::Blue);
+}
+
+void Player::setMouseClickPos(sf::Vector2f newClick) {
+    mouseClickPos = newClick;
+    if(arm){
+        if(shape.getSize().x <= 5.0f){
+            mouseClickPos = newClick;    
+        }
+    }else{
+        if(velocity.x == 0 & velocity.y == 0){
+            mouseClickPos = newClick;
+        }
+    }
 }
 
 void Player::Draw(sf::RenderWindow& window){
