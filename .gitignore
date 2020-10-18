@@ -2,6 +2,8 @@
 .txt
 .env
 .vscode
+.jpg
+.png
 
 # c++
 *.slo
