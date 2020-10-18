@@ -98,13 +98,15 @@ void Player::Animate(sf::Vector2f plrPos,float totaltime){
 void Player::Rotate(){
     // Pythagoras theorem to determine angle of shape using trigonometry
     if(arm){
-        float a = mouseClickPos.y-shape.getPosition().y;
-        float b = mouseClickPos.x-shape.getPosition().x;
-        angle = atanf(a/b)*180/PI;
-        if(!clickToRight){
-            angle+=180;
+        if(abs(shape.getSize().x) < 20.0f){
+            float a = mouseClickPos.y-shape.getPosition().y;
+            float b = mouseClickPos.x-shape.getPosition().x;
+            angle = atanf(a/b)*180/PI;
+            if(!clickToRight){
+                angle+=180;
+            }
+            shape.setRotation(angle);
         }
-        shape.setRotation(angle);
     }
 }
 
@@ -145,9 +147,8 @@ void Player::Stop(){
 }
 
 void Player::setMouseClickPos(sf::Vector2f newClick) {
-    mouseClickPos = newClick;
     if(arm){
-        if(shape.getSize().x <= 5.0f){
+        if(abs(shape.getSize().x) <= 20.0f){
             mouseClickPos = newClick;    
         }
     }else{

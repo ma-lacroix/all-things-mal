@@ -23,7 +23,7 @@ Trunk::Trunk(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f pos
     :Object(textureFile,objectSize,position){
     shape.setPosition(position);
     shape.setSize(objectSize);
-    shape.setFillColor(sf::Color(210,105,30,150));
+    shape.setFillColor(sf::Color(190,105,30,255));
     shape.setTexture(textureFile);
 }
 
