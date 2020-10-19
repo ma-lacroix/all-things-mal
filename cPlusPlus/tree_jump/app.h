@@ -29,7 +29,7 @@ void app::load_texture(sf::Texture* some_texture,std::string textureFile){
     }
 }
 
-void app::game(sf::RenderWindow& window,sf::View frontview,sf::View backview,float VIEW_WIDTH){
+void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VIEW_WIDTH){
 
     // timers
     float deltaTime {0.0f};
@@ -39,11 +39,11 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View backview,flo
     int i {1};
     sf::Clock clock;
 
-    // Background
-    std::string backFile {"v_assets/background1.jpg"};
-    sf::Texture backTexture;
-    load_texture(&backTexture,backFile);
-    Object* background = new Object(&backTexture,{1500.0f,1500.0f},{0.0f,-100.0f});
+    // Music sheet
+    std::string sheetFile {"v_assets/sheet.png"};
+    sf::Texture sheetTexture;
+    load_texture(&sheetTexture,sheetFile);
+    Object* sheet = new Object(&sheetTexture,{500.0f,90.0f},{330.0f,-530.0f});
 
     // Tree branches
     std::string branchFile {"v_assets/tree.png"};
@@ -84,8 +84,8 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View backview,flo
     std::string noteFile {"v_assets/note.png"};
     sf::Texture noteTexture;
     load_texture(&noteTexture,noteFile);
-    Note* note1 = new Note(&noteTexture,{45.0f,70.0f},{700.0f,800.0f});
-    Note* note2 = new Note(&noteTexture,{45.0f,70.0f},{550.0f,600.0f});
+    Note* note1 = new Note(&noteTexture,{45.0f,70.0f},{rect1->getPosition().x+90.0f,rect1->getPosition().y-5.0f});
+    Note* note2 = new Note(&noteTexture,{45.0f,70.0f},{rect2->getPosition().x+90.0f,rect2->getPosition().y-5.0f});
     std::vector<Note*> notes;
     notes.push_back(note1);
     notes.push_back(note2);
@@ -99,7 +99,6 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View backview,flo
     load_texture(&unicornTexture,foxFile);
     Player* player_arm = new Player(&armTexture,{0.0f,60.0f},{500.0f,1000.0f},900.0f,true);
     Player* main_player = new Player(&unicornTexture,{150.0f,190.0f},{500.0f,1000.0f},100.0f,false);
-    // Player* player_bird = new Player({50.0f,50.0f},{370.0f,900.0f},500.0f,false);
     std::vector<Player*> players;
     players.push_back(player_arm);
     players.push_back(main_player);
@@ -111,7 +110,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View backview,flo
         totalTime += deltaTime;
         frontview.setCenter(VIEW_WIDTH/2,main_player->getPosition().y-100.0f);        
         frontview.setSize(800.0f,800.0f);
-        backview.setCenter(0.0f,(main_player->getPosition().y-1200.0f)*0.1);
+        // HUD.setCenter(0.0f,(main_player->getPosition().y-1200.0f)*0.1);
 
         // this part handles events related to the actual game window like closing or resizing. 
         sf::Event evnt;
@@ -129,18 +128,18 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View backview,flo
                 if (evnt.key.code == sf::Keyboard::Escape)
                         window.close();
                 if (evnt.key.code == sf::Keyboard::R)
-                    game(window,frontview,backview,VIEW_WIDTH);
+                    game(window,frontview,HUD,VIEW_WIDTH);
                 break;
             default:
                 break;
             }
         }
         
-        window.clear(sf::Color(245,230,230));
+        window.clear(sf::Color(155,125,100));
 
         // set background
-        window.setView(backview);
-        background->Draw(window);
+        // window.setView(HUD);
+        // background->Draw(window);
 
         // handle & draw objects
         window.setView(frontview);
@@ -152,8 +151,6 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View backview,flo
                 plr->Rotate();
             }
         }
-        
-        
         
         for (auto trunk: trunks){
             trunk->updateYcoord(Ycoord);
@@ -177,6 +174,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View backview,flo
                     break;
                 }else{
                     plr->updateState('S');
+                    plr->Animate(totalTime);
                     plr->AdjustArm(main_player->getPosition());
                     plr->State(deltaTime);
                     plr->Draw(window);
@@ -194,10 +192,8 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View backview,flo
             };
             note->Draw(window);
         }
-        // player_bird->BirdMovement(main_player->getPosition(),deltaTime);
-        // player_bird->Animate(main_player->getPosition(),totalTime);
-        // player_bird->Draw(window);
-        
+        window.setView(HUD);
+        sheet->Draw(window);
         window.display();
     }
 }

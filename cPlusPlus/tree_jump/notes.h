@@ -29,6 +29,8 @@ Note::Note(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f posit
     shape.setOrigin(objectSize.x/2,objectSize.y/2);
     shape.setFillColor(sf::Color(255,255,255,255));
     shape.setTexture(textureFile);
+    shape.setOutlineColor(sf::Color::White);
+    shape.setOutlineThickness(2.0f);
 }
 
 Note::~Note(){
@@ -41,8 +43,8 @@ void Note::Animate(float totalTime){
 }
 
 bool Note::MoveElsewhere(sf::Vector2f plrPos, sf::Vector2f branchPos){
-    if(abs(shape.getPosition().x - plrPos.x) < 100.0f &
-       abs(shape.getPosition().y - plrPos.y) < 100.0f){
+    if(abs(shape.getPosition().x - plrPos.x) < 120.0f &
+       abs(shape.getPosition().y - plrPos.y) < 120.0f){
             shape.setPosition(branchPos.x+90.0f,branchPos.y-5.0f);
             return true;
        }else{

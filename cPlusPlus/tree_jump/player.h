@@ -27,7 +27,7 @@ public:
     void State(float);
     void ifClickToRight();
     void AdjustArm(sf::Vector2f);
-    void Animate(sf::Vector2f,float);
+    void Animate(float);
     void Rotate();
     void Movement(float);
     void BirdMovement(sf::Vector2f,float);
@@ -88,11 +88,10 @@ void Player::AdjustArm(sf::Vector2f Coords){
     }
 }
 
-void Player::Animate(sf::Vector2f plrPos,float totaltime){
-    float velocity1,velocity2;
-    velocity1 = std::sinf(totaltime*PI)+5.0f;
-    velocity2 = std::sinf(totaltime*PI);
-    shape.move(velocity1,-velocity2);
+void Player::Animate(float totaltime){
+    float velocity;
+    velocity = std::sinf(totaltime*PI)/300.0f;
+    shape.move(0.0f,-velocity);
 }
 
 void Player::Rotate(){
@@ -107,6 +106,11 @@ void Player::Rotate(){
             }
             shape.setRotation(angle);
         }
+    }else{
+        float a = mouseClickPos.y-shape.getPosition().y;
+        float b = mouseClickPos.x-shape.getPosition().x;
+        angle = atanf(a/b)*180/PI;
+        shape.setRotation(angle);
     }
 }
 
@@ -123,22 +127,9 @@ void Player::Movement(float deltatime){
         updateState('S');
         mouseClickPos = {0.0f,0.0f};
         velocity = {0.0f,0.0f};
-    }
-}
-
-void Player::BirdMovement(sf::Vector2f plrPos,float deltatime){
-    sf::Vector2f direction;
-    sf::Vector2f direction_norm;
-    direction.x = plrPos.x+130.0f-(shape.getPosition().x);
-    direction.y = plrPos.y-95.0f-(shape.getPosition().y);
-    // direction_norm = direction / sqrtf(direction.x * direction.x + direction.y * direction.y); // avoid speed changes
-    velocity = direction*deltatime*speed;
-    if(abs(direction.x+direction.y)>0.7f){
-        shape.move(velocity);
-    }else{
-        updateState('S');
-        mouseClickPos = {0.0f,0.0f};
-        velocity = {0.0f,0.0f};
+        if(!arm){
+            shape.setRotation(0.0f);
+        }
     }
 }
 
