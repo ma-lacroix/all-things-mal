@@ -90,8 +90,8 @@ void Player::AdjustArm(sf::Vector2f Coords){
 
 void Player::Animate(float totaltime){
     float velocity;
-    velocity = std::sinf(totaltime*PI)/300.0f;
-    shape.move(0.0f,-velocity);
+    velocity = std::sinf(totaltime*PI)/250.0f;
+    shape.move(-velocity,0.0f);
 }
 
 void Player::Rotate(){

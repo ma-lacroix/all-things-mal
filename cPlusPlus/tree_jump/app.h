@@ -4,6 +4,7 @@
 // #include <SFML/Audio.hpp>
 #include <iostream>
 #include <vector>
+#include "sheet.h"
 #include "branch.h"
 #include "notes.h"
 #include "trunk.h"
@@ -36,14 +37,14 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     float totalTime {0.0f};
     float Ycoord {0.0f};
     size_t rectsLen {0};
-    int i {1};
+    int i {3};
     sf::Clock clock;
 
     // Music sheet
     std::string sheetFile {"v_assets/sheet.png"};
     sf::Texture sheetTexture;
     load_texture(&sheetTexture,sheetFile);
-    Object* sheet = new Object(&sheetTexture,{500.0f,90.0f},{330.0f,-530.0f});
+    Object* sheetBackground = new Object(&sheetTexture,{500.0f,88.0f},{330.0f,-530.0f});
 
     // Tree branches
     std::string branchFile {"v_assets/tree.png"};
@@ -84,11 +85,12 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     std::string noteFile {"v_assets/note.png"};
     sf::Texture noteTexture;
     load_texture(&noteTexture,noteFile);
-    Note* note1 = new Note(&noteTexture,{45.0f,70.0f},{rect1->getPosition().x+90.0f,rect1->getPosition().y-5.0f});
-    Note* note2 = new Note(&noteTexture,{45.0f,70.0f},{rect2->getPosition().x+90.0f,rect2->getPosition().y-5.0f});
+    Note* note1 = new Note(&noteTexture,{45.0f,70.0f},{rect2->getPosition().x+90.0f,rect2->getPosition().y-5.0f});
+    Note* note2 = new Note(&noteTexture,{45.0f,70.0f},{rect3->getPosition().x+90.0f,rect3->getPosition().y-5.0f});
     std::vector<Note*> notes;
     notes.push_back(note1);
     notes.push_back(note2);
+    Sheet* sheetNotes = new Sheet(&noteTexture,'A');
 
     // main player & its arms
     std::string armFile {"v_assets/arm.png"};
@@ -188,12 +190,14 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
             }
             note->Animate(totalTime);
             if(note->MoveElsewhere(main_player->getPosition(),rects.at(i)->getPosition())){
+                sheetNotes->AddNote();
                 ++i;
             };
             note->Draw(window);
         }
         window.setView(HUD);
-        sheet->Draw(window);
+        sheetBackground->Draw(window);
+        sheetNotes->Draw(window);
         window.display();
     }
 }
