@@ -5,6 +5,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <ctime>
 #include "object.h"
 #include "player.h"
 
@@ -55,8 +56,10 @@ void Branch::updateColor(bool value){
 }
 
 void Branch::updateYcoord(float Ycoord){
+    std::srand(time(0));
     if(shape.getPosition().y-Ycoord > 500.0f){
-        shape.move(0.0f,-1200.0f);
+        float newPos =(-rand()%4*50)-1201;
+        shape.move(0.0f,newPos);
     }
 }
 

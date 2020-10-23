@@ -4,6 +4,7 @@
 // #include <SFML/Audio.hpp>
 #include <iostream>
 #include <vector>
+#include <ctime>
 #include "sheet.h"
 #include "branch.h"
 #include "notes.h"
@@ -39,6 +40,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     size_t rectsLen {0};
     int i {3};
     sf::Clock clock;
+    std::srand(time(0));
 
     // Music sheet
     std::string sheetFile {"v_assets/sheet.png"};
@@ -100,7 +102,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     sf::Texture unicornTexture;
     load_texture(&unicornTexture,foxFile);
     Player* player_arm = new Player(&armTexture,{0.0f,60.0f},{500.0f,1000.0f},900.0f,true);
-    Player* main_player = new Player(&unicornTexture,{150.0f,190.0f},{500.0f,1000.0f},100.0f,false);
+    Player* main_player = new Player(&unicornTexture,{150.0f,190.0f},{500.0f,1000.0f},300.0f,false);
     std::vector<Player*> players;
     players.push_back(player_arm);
     players.push_back(main_player);
@@ -185,13 +187,14 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
         }
 
         for (auto note: notes){
+            int randNum = rand()%2+1;
             if(i>=rectsLen){
                 i=0;
             }
             note->Animate(totalTime);
             if(note->MoveElsewhere(main_player->getPosition(),rects.at(i)->getPosition())){
                 sheetNotes->AddNote();
-                ++i;
+                i+=randNum;
             };
             note->Draw(window);
         }
