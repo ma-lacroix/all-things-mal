@@ -18,6 +18,7 @@ public:
     Note(sf::Texture*, sf::Vector2f,sf::Vector2f);
     ~Note();
     bool MoveElsewhere(sf::Vector2f,sf::Vector2f);
+    void updateYcoord(float,sf::Vector2f);
     void Animate(float);
     void Draw(sf::RenderWindow&);
 };
@@ -50,6 +51,12 @@ bool Note::MoveElsewhere(sf::Vector2f plrPos, sf::Vector2f branchPos){
        }else{
             return false;
        }
+}
+
+void Note::updateYcoord(float Ycoord,sf::Vector2f branch1Pos){
+    if(shape.getPosition().y-Ycoord > 600.0f){
+        shape.move(branch1Pos.x+90.0f,branch1Pos.y-5.0f);
+    }
 }
 
 void Note::Draw(sf::RenderWindow& window){

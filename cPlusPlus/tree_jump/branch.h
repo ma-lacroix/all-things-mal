@@ -34,7 +34,7 @@ Branch::Branch(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f p
     shape.setTexture(textureFile);
     textureRect.width = textureFile->getSize().x;
     textureRect.height = textureFile->getSize().y;
-    if(position.x > VIEW_WIDTH/3){
+    if(position.x > VIEW_WIDTH/2){
         // textureRect.left,
         textureRect.width = abs(textureRect.width);
     }else{
@@ -58,7 +58,7 @@ void Branch::updateColor(bool value){
 void Branch::updateYcoord(float Ycoord){
     std::srand(time(0));
     if(shape.getPosition().y-Ycoord > 500.0f){
-        float newPos =(-rand()%4*50)-1201;
+        float newPos =(-rand()%4*50)-2201;
         shape.move(0.0f,newPos);
     }
 }

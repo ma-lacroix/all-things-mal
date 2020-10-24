@@ -30,18 +30,18 @@ private:
     float intervY;
 
 public:
-    Sheet(sf::Texture*, char);
+    Sheet(sf::Texture*, char, sf::Vector2f);
     ~Sheet();
     void AddNote();
     void Draw(sf::RenderWindow&);
 };
 
-Sheet::Sheet(sf::Texture* textureFile, char code){
+Sheet::Sheet(sf::Texture* textureFile, char code, sf::Vector2f sheetPos){
     index = 0;
-    startPosX = 100.0f;
-    startPosY = 560.0f;
     intervX = 50.0f;
     intervY = 5.7f;
+    startPosX = sheetPos.x*1.07f;
+    startPosY = -sheetPos.y-2*intervY;
     notes.push_back(&note1);
     notes.push_back(&note2);
     notes.push_back(&note3);

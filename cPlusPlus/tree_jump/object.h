@@ -12,11 +12,12 @@ private:
 public:
     Object(sf::Texture*, sf::Vector2f, sf::Vector2f);
     ~Object();
+    sf::Vector2f getPosition() {return shape.getPosition();};
     void Draw(sf::RenderWindow&);
 };
 
 Object::Object(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f position){
-    shape.setOrigin(objectSize.x/2,objectSize.y/2);
+    // shape.setOrigin(objectSize.x/2,objectSize.y/2);
     shape.setPosition(position);
     shape.setSize(objectSize);
     shape.setFillColor(sf::Color(255,255,255,255));

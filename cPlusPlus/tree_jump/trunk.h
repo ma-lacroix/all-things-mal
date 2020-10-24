@@ -31,8 +31,8 @@ Trunk::~Trunk(){
 }
 
 void Trunk::updateYcoord(float Ycoord){
-    if(shape.getPosition().y-Ycoord > 500.0f){
-        shape.move(0.0f,-1200.0f);
+    if(shape.getPosition().y-Ycoord > 600.0f){
+        shape.move(0.0f,-1500.0f);
     }
 }
 

@@ -10,6 +10,7 @@
 #include "notes.h"
 #include "trunk.h"
 #include "player.h"
+#include "sun.h"
 
 struct app{
     void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_WIDTH);  
@@ -46,66 +47,84 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     std::string sheetFile {"v_assets/sheet.png"};
     sf::Texture sheetTexture;
     load_texture(&sheetTexture,sheetFile);
-    Object* sheetBackground = new Object(&sheetTexture,{500.0f,88.0f},{330.0f,-530.0f});
+    Object* sheetBackground = new Object(&sheetTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f-250.0f,-VIEW_WIDTH/2.5f});
 
     // Tree branches
     std::string branchFile {"v_assets/tree.png"};
     sf::Texture branchTexture;
     load_texture(&branchTexture,branchFile);
 
-    Branch* rect1 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-200.0f,1000.0f},VIEW_WIDTH);
-    Branch* rect2 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2+75.0f,800.0f},VIEW_WIDTH);
-    Branch* rect3 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-200.0f,600.0f},VIEW_WIDTH);
-    Branch* rect4 = new Branch(&branchTexture,{350.0f,150.0f},{VIEW_WIDTH/2+50.0f,300.0f},VIEW_WIDTH);
-    Branch* rect5 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-260.0f,150.0f},VIEW_WIDTH);
+    Branch* rect1 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-200.0f,2000.0f},VIEW_WIDTH);
+    Branch* rect2 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2+75.0f,1800.0f},VIEW_WIDTH);
+    Branch* rect3 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-200.0f,1600.0f},VIEW_WIDTH);
+    Branch* rect4 = new Branch(&branchTexture,{350.0f,150.0f},{VIEW_WIDTH/2+50.0f,1300.0f},VIEW_WIDTH);
+    Branch* rect5 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-260.0f,1150.0f},VIEW_WIDTH);
+    Branch* rect6 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-200.0f,1000.0f},VIEW_WIDTH);
+    Branch* rect7 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2+75.0f,800.0f},VIEW_WIDTH);
+    Branch* rect8 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-200.0f,600.0f},VIEW_WIDTH);
+    Branch* rect9 = new Branch(&branchTexture,{350.0f,150.0f},{VIEW_WIDTH/2+41.0f,300.0f},VIEW_WIDTH);
+    Branch* rect10 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-240.0f,150.0f},VIEW_WIDTH);
     
+
     std::vector<Branch*> rects;
     rects.push_back(rect1);
     rects.push_back(rect2);
     rects.push_back(rect3);
     rects.push_back(rect4);
     rects.push_back(rect5);
+    rects.push_back(rect6);
+    rects.push_back(rect7);
+    rects.push_back(rect8);
+    rects.push_back(rect9);
+    rects.push_back(rect10);
     rectsLen = rects.size();
 
     // Tree trunk pieces
     std::string trunkFile {"v_assets/trunk.png"};
     sf::Texture trunkTexture;
     load_texture(&trunkTexture,trunkFile);
-    Trunk* trunk1 = new Trunk(&trunkTexture,{100.0f,300.0f},{575.0f,1100.0f});
-    Trunk* trunk2 = new Trunk(&trunkTexture,{100.0f,300.0f},{575.0f,800.0f});
-    Trunk* trunk3 = new Trunk(&trunkTexture,{100.0f,300.0f},{585.0f,500.0f});
-    Trunk* trunk4 = new Trunk(&trunkTexture,{100.0f,300.0f},{575.0f,200.0f});
-    Trunk* trunk5 = new Trunk(&trunkTexture,{100.0f,300.0f},{585.0f,-100.0f});
+    Trunk* trunk1 = new Trunk(&trunkTexture,{100.0f,300.0f},{VIEW_WIDTH/2,2100.0f});
+    Trunk* trunk2 = new Trunk(&trunkTexture,{100.0f,300.0f},{VIEW_WIDTH/2+15.0f,1800.0f});
+    Trunk* trunk3 = new Trunk(&trunkTexture,{100.0f,300.0f},{VIEW_WIDTH/2,1500.0f});
+    Trunk* trunk4 = new Trunk(&trunkTexture,{100.0f,300.0f},{VIEW_WIDTH/2-15.0f,1200.0f});
+    Trunk* trunk5 = new Trunk(&trunkTexture,{100.0f,300.0f},{VIEW_WIDTH/2,900.0f});
+    Trunk* trunk6 = new Trunk(&trunkTexture,{100.0f,300.0f},{VIEW_WIDTH/2,600.0f});
     std::vector<Trunk*> trunks;
     trunks.push_back(trunk1);
     trunks.push_back(trunk2);
     trunks.push_back(trunk3);
     trunks.push_back(trunk4);
     trunks.push_back(trunk5);
+    trunks.push_back(trunk6);
 
     // Music notes
     std::string noteFile {"v_assets/note.png"};
     sf::Texture noteTexture;
     load_texture(&noteTexture,noteFile);
-    Note* note1 = new Note(&noteTexture,{45.0f,70.0f},{rect2->getPosition().x+90.0f,rect2->getPosition().y-5.0f});
-    Note* note2 = new Note(&noteTexture,{45.0f,70.0f},{rect3->getPosition().x+90.0f,rect3->getPosition().y-5.0f});
+    Note* note1 = new Note(&noteTexture,{45.0f,70.0f},{rect8->getPosition().x+90.0f,rect8->getPosition().y-5.0f});
+    // Note* note2 = new Note(&noteTexture,{45.0f,70.0f},{rect9->getPosition().x+90.0f,rect9->getPosition().y-5.0f});
     std::vector<Note*> notes;
     notes.push_back(note1);
-    notes.push_back(note2);
-    Sheet* sheetNotes = new Sheet(&noteTexture,'A');
+    // notes.push_back(note2);
+    Sheet* sheetNotes = new Sheet(&noteTexture,'A',sheetBackground->getPosition());
 
     // main player & its arms
     std::string armFile {"v_assets/arm.png"};
     sf::Texture armTexture;
     load_texture(&armTexture,armFile);
     std::string foxFile {"v_assets/fox.png"};
-    sf::Texture unicornTexture;
-    load_texture(&unicornTexture,foxFile);
-    Player* player_arm = new Player(&armTexture,{0.0f,60.0f},{500.0f,1000.0f},900.0f,true);
-    Player* main_player = new Player(&unicornTexture,{150.0f,190.0f},{500.0f,1000.0f},300.0f,false);
+    sf::Texture foxTexture;
+    load_texture(&foxTexture,foxFile);
+    Player* player_arm = new Player(&armTexture,{0.0f,60.0f},{rect1->getPosition()},900.0f,true);
+    Player* main_player = new Player(&foxTexture,{150.0f,190.0f},{rect1->getPosition()},300.0f,false);
     std::vector<Player*> players;
     players.push_back(player_arm);
     players.push_back(main_player);
+
+    std::string sunFile {"v_assets/sun.png"};
+    sf::Texture sunTexture;
+    load_texture(&sunTexture,sunFile);
+    Sun* sun = new Sun(&sunTexture,{150.0f,150.0f},{rect6->getPosition()},25.0f);
 
     // game loop
     while (window.isOpen()){
@@ -160,13 +179,18 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
             trunk->updateYcoord(Ycoord);
             trunk->Draw(window);
         }
-
+        
         for (auto rect: rects){
             rect->updateYcoord(Ycoord);
             rect->updateColor(rect->Collision(main_player->getClickPos(),main_player->getVelocity().y));
             rect->Draw(window);
         }
-        
+
+        // handle the sun ennemy
+        sun->setPlayerPos(main_player->getPosition());
+        sun->Rotate();
+        sun->Movement(deltaTime,Ycoord,rect1->getPosition());
+        sun->Draw(window);
         
         for (auto rect: rects){
             for (auto plr: players){
@@ -187,14 +211,20 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
         }
 
         for (auto note: notes){
-            int randNum = rand()%2+1;
+            note->updateYcoord(Ycoord,rect1->getPosition());
+            int randNum = rand()%rectsLen+1;
             if(i>=rectsLen){
                 i=0;
             }
             note->Animate(totalTime);
             if(note->MoveElsewhere(main_player->getPosition(),rects.at(i)->getPosition())){
                 sheetNotes->AddNote();
-                i+=randNum;
+                if (randNum+i > rectsLen){ // this avoids having notes appear below
+                    i = randNum+i - rectsLen;
+                }else{
+                    i+=randNum;
+                }
+                
             };
             note->Draw(window);
         }
