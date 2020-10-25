@@ -47,7 +47,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     std::string sheetFile {"v_assets/sheet.png"};
     sf::Texture sheetTexture;
     load_texture(&sheetTexture,sheetFile);
-    Object* sheetBackground = new Object(&sheetTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f-250.0f,-VIEW_WIDTH/2.5f});
+    Object* sheetBackground = new Object(&sheetTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f-250.0f,VIEW_WIDTH/2.5f});
 
     // Tree branches
     std::string branchFile {"v_assets/tree.png"};
@@ -115,7 +115,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     std::string foxFile {"v_assets/fox.png"};
     sf::Texture foxTexture;
     load_texture(&foxTexture,foxFile);
-    Player* player_arm = new Player(&armTexture,{0.0f,60.0f},{rect1->getPosition()},900.0f,true);
+    Player* player_arm = new Player(&armTexture,{0.0f,20.0f},{rect1->getPosition()},900.0f,true);
     Player* main_player = new Player(&foxTexture,{150.0f,190.0f},{rect1->getPosition()},300.0f,false);
     std::vector<Player*> players;
     players.push_back(player_arm);
@@ -124,7 +124,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     std::string sunFile {"v_assets/sun.png"};
     sf::Texture sunTexture;
     load_texture(&sunTexture,sunFile);
-    Sun* sun = new Sun(&sunTexture,{150.0f,150.0f},{rect6->getPosition()},25.0f);
+    Sun* sun = new Sun(&sunTexture,{150.0f,150.0f},{rect10->getPosition()},50.0f);
 
     // game loop
     while (window.isOpen()){
@@ -188,9 +188,14 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
 
         // handle the sun ennemy
         sun->setPlayerPos(main_player->getPosition());
-        sun->Rotate();
-        sun->Movement(deltaTime,Ycoord,rect1->getPosition());
-        sun->Draw(window);
+        sun->Movement(deltaTime,Ycoord);
+        if(sun->Collision(main_player->getPosition())){
+            frontview.setCenter(VIEW_WIDTH/2,VIEW_WIDTH/2);
+            main_player->updateState('G');
+            main_player->State(deltaTime);
+        }else{
+            sun->Draw(window);
+        }
         
         for (auto rect: rects){
             for (auto plr: players){

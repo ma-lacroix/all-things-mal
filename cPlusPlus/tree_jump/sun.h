@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <cmath>
+#include <ctime>
 #include "object.h"
 #define PI 3.14159265
 
@@ -25,7 +26,8 @@ public:
     void State(float);
     void ifToRight();
     void Rotate();
-    void Movement(float,float,sf::Vector2f);
+    void Movement(float,float);
+    bool Collision(sf::Vector2f);
     void Stop();
     void setPlayerPos(sf::Vector2f Pos) {mainPlayerPos = Pos;};
     void Draw(sf::RenderWindow&);
@@ -67,10 +69,13 @@ void Sun::Rotate(){
     shape.setRotation(angle);
 }
 
-void Sun::Movement(float deltatime,float Ycoord,sf::Vector2f branch1Pos){
+void Sun::Movement(float deltatime,float Ycoord){
+    std::srand(time(0));
+    float randFactor = rand()%2-1; // number between -1 and 1
     if(shape.getPosition().y-Ycoord > 600.0f){
-        shape.move(0.0f,-1500.0f);
+        shape.move(400.0f*randFactor,-1500.0f);
     }else{
+        Rotate();
         sf::Vector2f direction;
         sf::Vector2f direction_norm;
         direction.x = mainPlayerPos.x-(shape.getPosition().x);
@@ -84,6 +89,15 @@ void Sun::Movement(float deltatime,float Ycoord,sf::Vector2f branch1Pos){
             velocity = {0.0f,0.0f};
         }
     }
+}
+
+bool Sun::Collision(sf::Vector2f plrPos){
+    if(abs(shape.getPosition().x - plrPos.x) < 100.0f &
+       abs(shape.getPosition().y - plrPos.y) < 100.0f){
+            return true;
+       }else{
+            return false;
+       }
 }
 
 void Sun::Stop(){

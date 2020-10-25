@@ -33,6 +33,7 @@ public:
     void BirdMovement(sf::Vector2f,float);
     void Stop();
     void setMouseClickPos(sf::Vector2f);
+    void GameOver(float);
     void Draw(sf::RenderWindow&);
     sf::Vector2f getPosition() {return shape.getPosition();};
     sf::Vector2f getClickPos() {return mouseClickPos;};
@@ -67,6 +68,10 @@ void Player::State(float deltatime){
         break;
     case 'S':
         Stop();
+        break;
+    case 'G':
+        GameOver(deltatime);
+        break;
     default:
         break;
     }
@@ -134,7 +139,12 @@ void Player::Movement(float deltatime){
 }
 
 void Player::Stop(){
-    // shape.setFillColor(sf::Color::Blue);
+}
+
+void Player::GameOver(float deltatime){
+    shape.setFillColor(sf::Color::Blue);
+    shape.rotate(1.0f);
+    shape.move(0.0f,400.0f*deltatime);
 }
 
 void Player::setMouseClickPos(sf::Vector2f newClick) {
