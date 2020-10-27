@@ -92,10 +92,12 @@ void Sun::Movement(float deltatime,float Ycoord){
 }
 
 bool Sun::Collision(sf::Vector2f plrPos){
-    if(abs(shape.getPosition().x - plrPos.x) < 100.0f &
-       abs(shape.getPosition().y - plrPos.y) < 100.0f){
+    if(abs(shape.getPosition().x - plrPos.x) < 130.0f &
+       abs(shape.getPosition().y - plrPos.y) < 130.0f){
+            shape.setFillColor(sf::Color(255.0f,50.0f,50.0f,255.0f));
             return true;
        }else{
+            shape.setFillColor(sf::Color(255.0f,255.0f,255.0f,255.0f));
             return false;
        }
 }

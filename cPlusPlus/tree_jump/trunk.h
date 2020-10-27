@@ -15,6 +15,7 @@ public:
     // Trunk(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f position, bool clickable);
     Trunk(sf::Texture*, sf::Vector2f,sf::Vector2f);
     ~Trunk();
+    void GameOver(float, int);
     void updateYcoord(float);
     void Draw(sf::RenderWindow&);
 };
@@ -31,9 +32,16 @@ Trunk::~Trunk(){
 }
 
 void Trunk::updateYcoord(float Ycoord){
-    if(shape.getPosition().y-Ycoord > 600.0f){
-        shape.move(0.0f,-1500.0f);
+    float distance = shape.getPosition().y-Ycoord;
+    if(distance >= 600.0f){
+        shape.move(0.0f,-1800.0f);
     }
+}
+
+void Trunk::GameOver(float deltatime, int i){
+    shape.setOrigin(shape.getSize().x/2,shape.getSize().y/2);
+    shape.rotate(sinf(i)/10);
+    shape.move(sinf(i)/100,(500.0f+i*5)*deltatime);
 }
 
 void Trunk::Draw(sf::RenderWindow& window){

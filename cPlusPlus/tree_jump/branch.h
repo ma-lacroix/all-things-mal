@@ -21,6 +21,7 @@ public:
     void updateColor(bool);
     void updateYcoord(float);
     bool Collision(sf::Vector2f, float);
+    void GameOver(float,int);
     void Draw(sf::RenderWindow&);
     bool getStatus() {return status;};
     sf::Vector2f getPosition() {return shape.getPosition();};
@@ -76,6 +77,12 @@ bool Branch::Collision(sf::Vector2f clickPos, float Yoffset){
         status = false;
     }
     return status;
+}
+
+void Branch::GameOver(float deltatime, int i){
+    shape.setOrigin(shape.getSize().x/2,shape.getSize().y/2);
+    shape.rotate(sinf(i)/10);
+    shape.move(sinf(i)/100,(600.0f+i*5)*deltatime);
 }
 
 void Branch::Draw(sf::RenderWindow& window){

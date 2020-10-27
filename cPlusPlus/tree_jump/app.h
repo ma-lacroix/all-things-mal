@@ -37,11 +37,13 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     // timers
     float deltaTime {0.0f};
     float totalTime {0.0f};
+    int gameOverCounter {0};
     float Ycoord {0.0f};
     size_t rectsLen {0};
     int i {3};
     sf::Clock clock;
     std::srand(time(0));
+    bool gameOn {true};
 
     // Music sheet
     std::string sheetFile {"v_assets/sheet.png"};
@@ -89,6 +91,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     Trunk* trunk4 = new Trunk(&trunkTexture,{100.0f,300.0f},{VIEW_WIDTH/2-15.0f,1200.0f});
     Trunk* trunk5 = new Trunk(&trunkTexture,{100.0f,300.0f},{VIEW_WIDTH/2,900.0f});
     Trunk* trunk6 = new Trunk(&trunkTexture,{100.0f,300.0f},{VIEW_WIDTH/2,600.0f});
+    Trunk* trunk7 = new Trunk(&trunkTexture,{100.0f,300.0f},{VIEW_WIDTH/2,300.0f});
     std::vector<Trunk*> trunks;
     trunks.push_back(trunk1);
     trunks.push_back(trunk2);
@@ -96,16 +99,17 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     trunks.push_back(trunk4);
     trunks.push_back(trunk5);
     trunks.push_back(trunk6);
+    trunks.push_back(trunk7);
 
     // Music notes
     std::string noteFile {"v_assets/note.png"};
     sf::Texture noteTexture;
     load_texture(&noteTexture,noteFile);
     Note* note1 = new Note(&noteTexture,{45.0f,70.0f},{rect8->getPosition().x+90.0f,rect8->getPosition().y-5.0f});
-    // Note* note2 = new Note(&noteTexture,{45.0f,70.0f},{rect9->getPosition().x+90.0f,rect9->getPosition().y-5.0f});
+    Note* note2 = new Note(&noteTexture,{45.0f,70.0f},{rect2->getPosition().x+90.0f,rect2->getPosition().y-5.0f});
     std::vector<Note*> notes;
     notes.push_back(note1);
-    // notes.push_back(note2);
+    notes.push_back(note2);
     Sheet* sheetNotes = new Sheet(&noteTexture,'A',sheetBackground->getPosition());
 
     // main player & its arms
@@ -115,7 +119,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     std::string foxFile {"v_assets/fox.png"};
     sf::Texture foxTexture;
     load_texture(&foxTexture,foxFile);
-    Player* player_arm = new Player(&armTexture,{0.0f,20.0f},{rect1->getPosition()},900.0f,true);
+    Player* player_arm = new Player(&armTexture,{0.0f,40.0f},{rect1->getPosition()},900.0f,true);
     Player* main_player = new Player(&foxTexture,{150.0f,190.0f},{rect1->getPosition()},300.0f,false);
     std::vector<Player*> players;
     players.push_back(player_arm);
@@ -160,82 +164,110 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
         
         window.clear(sf::Color(155,125,100));
 
-        // set background
-        // window.setView(HUD);
-        // background->Draw(window);
-
-        // handle & draw objects
-        window.setView(frontview);
-        Ycoord = frontview.getCenter().y;
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-            for (auto plr: players){
-                plr->setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
-                plr->ifClickToRight();
-                plr->Rotate();
+        if(gameOn){
+            // handle & draw objects
+            window.setView(frontview);
+            Ycoord = frontview.getCenter().y;
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                for (auto plr: players){
+                    plr->setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+                    plr->ifClickToRight();
+                    plr->Rotate();
+                }
             }
-        }
-        
-        for (auto trunk: trunks){
-            trunk->updateYcoord(Ycoord);
-            trunk->Draw(window);
-        }
-        
-        for (auto rect: rects){
-            rect->updateYcoord(Ycoord);
-            rect->updateColor(rect->Collision(main_player->getClickPos(),main_player->getVelocity().y));
-            rect->Draw(window);
-        }
+            
+            for (auto trunk: trunks){
+                trunk->updateYcoord(Ycoord);
+                trunk->Draw(window);
+            }
+            
+            for (auto rect: rects){
+                rect->updateYcoord(Ycoord);
+                rect->updateColor(rect->Collision(main_player->getClickPos(),main_player->getVelocity().y));
+                rect->Draw(window);
+            }
 
-        // handle the sun ennemy
-        sun->setPlayerPos(main_player->getPosition());
-        sun->Movement(deltaTime,Ycoord);
-        if(sun->Collision(main_player->getPosition())){
-            frontview.setCenter(VIEW_WIDTH/2,VIEW_WIDTH/2);
+            // handle the sun ennemy
+            sun->setPlayerPos(main_player->getPosition());
+            sun->Movement(deltaTime,Ycoord);
+            if(sun->Collision(main_player->getPosition())){
+                if(gameOverCounter<500){
+                    main_player->inDanger(true);
+                    sun->Draw(window);
+                    ++gameOverCounter;
+                }else{
+                    gameOn = false;
+                }
+            }else{
+                main_player->inDanger(false);
+                sun->Draw(window);
+            }
+            
+            for (auto rect: rects){
+                for (auto plr: players){
+                    if(rect->Collision(plr->getClickPos(),plr->getVelocity().y)){
+                        plr->updateState('M');
+                        plr->AdjustArm(main_player->getPosition());
+                        plr->State(deltaTime);
+                        plr->Draw(window);
+                        break;
+                    }else{
+                        plr->updateState('S');
+                        plr->Animate(totalTime);
+                        plr->AdjustArm(main_player->getPosition());
+                        plr->State(deltaTime);
+                        plr->Draw(window);
+                    }
+                }
+            }
+
+            for (auto note: notes){
+                note->updateYcoord(Ycoord,rect1->getPosition());
+                int randNum = rand()%rectsLen+1;
+                if(i>=rectsLen){
+                    i=0;
+                }
+                note->Animate(totalTime);
+                if(note->MoveElsewhere(main_player->getPosition(),rects.at(i)->getPosition())){
+                    sheetNotes->AddNote();
+                    if (randNum+i > rectsLen){ // this avoids having notes appear below
+                        i = randNum+i - rectsLen;
+                    }else{
+                        i+=randNum;
+                    }
+                    
+                };
+                note->Draw(window);
+            }
+            window.setView(HUD);
+            sheetBackground->Draw(window);
+            sheetNotes->Draw(window);
+        }else{
+            // frontview.setCenter(VIEW_WIDTH/2,VIEW_WIDTH/2);
+            window.setView(frontview);
+            Ycoord = frontview.getCenter().y;
+            int incr = 0;
+
+            for (auto trunk: trunks){
+                trunk->updateYcoord(Ycoord);
+                trunk->GameOver(deltaTime,incr);
+                trunk->Draw(window);
+                ++incr;
+            }
+            incr = 0;
+            for (auto rect: rects){
+                rect->updateYcoord(Ycoord);
+                rect->GameOver(deltaTime,incr);
+                rect->Draw(window);
+                ++incr;
+            }
+
             main_player->updateState('G');
             main_player->State(deltaTime);
-        }else{
-            sun->Draw(window);
-        }
-        
-        for (auto rect: rects){
-            for (auto plr: players){
-                if(rect->Collision(plr->getClickPos(),plr->getVelocity().y)){
-                    plr->updateState('M');
-                    plr->AdjustArm(main_player->getPosition());
-                    plr->State(deltaTime);
-                    plr->Draw(window);
-                    break;
-                }else{
-                    plr->updateState('S');
-                    plr->Animate(totalTime);
-                    plr->AdjustArm(main_player->getPosition());
-                    plr->State(deltaTime);
-                    plr->Draw(window);
-                }
-            }
+            main_player->Draw(window);
         }
 
-        for (auto note: notes){
-            note->updateYcoord(Ycoord,rect1->getPosition());
-            int randNum = rand()%rectsLen+1;
-            if(i>=rectsLen){
-                i=0;
-            }
-            note->Animate(totalTime);
-            if(note->MoveElsewhere(main_player->getPosition(),rects.at(i)->getPosition())){
-                sheetNotes->AddNote();
-                if (randNum+i > rectsLen){ // this avoids having notes appear below
-                    i = randNum+i - rectsLen;
-                }else{
-                    i+=randNum;
-                }
-                
-            };
-            note->Draw(window);
-        }
-        window.setView(HUD);
-        sheetBackground->Draw(window);
-        sheetNotes->Draw(window);
+        
         window.display();
     }
 }

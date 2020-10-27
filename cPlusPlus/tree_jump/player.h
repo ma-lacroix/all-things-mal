@@ -33,12 +33,13 @@ public:
     void BirdMovement(sf::Vector2f,float);
     void Stop();
     void setMouseClickPos(sf::Vector2f);
+    void inDanger(bool);
     void GameOver(float);
     void Draw(sf::RenderWindow&);
+    void updateState(char newState) {playstate = newState;};
     sf::Vector2f getPosition() {return shape.getPosition();};
     sf::Vector2f getClickPos() {return mouseClickPos;};
     sf::Vector2f getVelocity() {return velocity;};
-    void updateState(char newState) {playstate = newState;};
     char getPlaystate() {return playstate;};
 };
 
@@ -139,11 +140,20 @@ void Player::Movement(float deltatime){
 }
 
 void Player::Stop(){
+    // add sound here
+}
+
+void Player::inDanger(bool value){
+    if(value){
+        shape.setFillColor(sf::Color(160.0f,160.0f,100.0f,160.0f));
+    }else{
+        shape.setFillColor(sf::Color(255.0f,255.0f,255.0f,255.0f));
+    }
 }
 
 void Player::GameOver(float deltatime){
     shape.setFillColor(sf::Color::Blue);
-    shape.rotate(1.0f);
+    shape.rotate(0.2f);
     shape.move(0.0f,400.0f*deltatime);
 }
 
