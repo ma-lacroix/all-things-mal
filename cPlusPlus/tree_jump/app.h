@@ -43,7 +43,14 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     int i {3};
     sf::Clock clock;
     std::srand(time(0));
-    bool gameOn {true};
+    bool gameOn {false};
+    bool menuOn {true};
+
+    // Menu background - for testing purposes
+    std::string backgroundFile {"v_assets/background.jpg"};
+    sf::Texture backgroundTexture;
+    load_texture(&backgroundTexture,backgroundFile);
+    Object* menuBackground = new Object(&backgroundTexture,{VIEW_WIDTH/2,VIEW_WIDTH/2},{VIEW_WIDTH/4,VIEW_WIDTH*1.35f});
 
     // Music sheet
     std::string sheetFile {"v_assets/sheet.png"};
@@ -66,7 +73,6 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     Branch* rect8 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-200.0f,600.0f},VIEW_WIDTH);
     Branch* rect9 = new Branch(&branchTexture,{350.0f,150.0f},{VIEW_WIDTH/2+41.0f,300.0f},VIEW_WIDTH);
     Branch* rect10 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-240.0f,150.0f},VIEW_WIDTH);
-    
 
     std::vector<Branch*> rects;
     rects.push_back(rect1);
@@ -164,7 +170,19 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
         
         window.clear(sf::Color(155,125,100));
 
-        if(gameOn){
+        if(menuOn){
+            window.setView(frontview);
+            menuBackground->Draw(window);
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                if(gameOverCounter<100){
+                    ++gameOverCounter;
+                }else{
+                    menuOn = false;
+                    gameOn = true;
+                }
+            }
+        }else{
+            if(gameOn){
             // handle & draw objects
             window.setView(frontview);
             Ycoord = frontview.getCenter().y;
@@ -191,7 +209,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
             sun->setPlayerPos(main_player->getPosition());
             sun->Movement(deltaTime,Ycoord);
             if(sun->Collision(main_player->getPosition())){
-                if(gameOverCounter<500){
+                if(gameOverCounter<300){
                     main_player->inDanger(true);
                     sun->Draw(window);
                     ++gameOverCounter;
@@ -266,6 +284,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
             main_player->State(deltaTime);
             main_player->Draw(window);
         }
+    }
 
         
         window.display();
