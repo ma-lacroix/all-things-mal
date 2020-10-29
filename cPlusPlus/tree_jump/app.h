@@ -11,9 +11,10 @@
 #include "trunk.h"
 #include "player.h"
 #include "sun.h"
+#include "gameMenu.h"
 
 struct app{
-    void game(sf::RenderWindow& window,sf::View view,sf::View HUD,float VIEW_WIDTH);  
+    void game(sf::RenderWindow& window,sf::View mainMenu,sf::View view,sf::View HUD,float VIEW_WIDTH);  
     void resizedView(const sf::RenderWindow& window, sf::View& view, const float VIEW_WIDTH);
     void load_texture(sf::Texture* some_texture,std::string textureFile);
 };
@@ -32,15 +33,18 @@ void app::load_texture(sf::Texture* some_texture,std::string textureFile){
     }
 }
 
-void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VIEW_WIDTH){
+void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf::View HUD,float VIEW_WIDTH){
 
     // timers
     float deltaTime {0.0f};
     float totalTime {0.0f};
-    int gameOverCounter {0};
+    
+    // game globals
+    char menuChoice {'n'};
     float Ycoord {0.0f};
     size_t rectsLen {0};
     int i {3};
+    int gameOverCounter {0};
     sf::Clock clock;
     std::srand(time(0));
     bool gameOn {false};
@@ -50,13 +54,16 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
     std::string backgroundFile {"v_assets/background.jpg"};
     sf::Texture backgroundTexture;
     load_texture(&backgroundTexture,backgroundFile);
-    Object* menuBackground = new Object(&backgroundTexture,{VIEW_WIDTH/2,VIEW_WIDTH/2},{VIEW_WIDTH/4,VIEW_WIDTH*1.35f});
+    Object* menuBackground = new Object(&backgroundTexture,{VIEW_WIDTH/2.0f,VIEW_WIDTH/1.8f},{VIEW_WIDTH/4,VIEW_WIDTH*1.35f});
 
     // Music sheet
     std::string sheetFile {"v_assets/sheet.png"};
     sf::Texture sheetTexture;
     load_texture(&sheetTexture,sheetFile);
     Object* sheetBackground = new Object(&sheetTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f-250.0f,VIEW_WIDTH/2.5f});
+
+    // Menu
+    Menu* menu = new Menu(&sheetTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f,VIEW_WIDTH*1.37f});
 
     // Tree branches
     std::string branchFile {"v_assets/tree.png"};
@@ -141,6 +148,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
 
         deltaTime = clock.restart().asSeconds();
         totalTime += deltaTime;
+        mainMenu.setCenter(VIEW_WIDTH/2,main_player->getPosition().y-100.0f);
         frontview.setCenter(VIEW_WIDTH/2,main_player->getPosition().y-100.0f);        
         frontview.setSize(800.0f,800.0f);
         // HUD.setCenter(0.0f,(main_player->getPosition().y-1200.0f)*0.1);
@@ -161,7 +169,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
                 if (evnt.key.code == sf::Keyboard::Escape)
                         window.close();
                 if (evnt.key.code == sf::Keyboard::R)
-                    game(window,frontview,HUD,VIEW_WIDTH);
+                    game(window,mainMenu,frontview,HUD,VIEW_WIDTH);
                 break;
             default:
                 break;
@@ -171,10 +179,28 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
         window.clear(sf::Color(155,125,100));
 
         if(menuOn){
-            window.setView(frontview);
+            window.setView(mainMenu);
             menuBackground->Draw(window);
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
-                if(gameOverCounter<100){
+            menu->Draw(window);
+            if(menuChoice == 'n'){
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
+                    menuChoice = 'a';
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::B)){
+                    menuChoice = 'b';
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)){
+                    menuChoice = 'c';
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
+                    menuChoice = 'd';
+                }
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
+                    menuChoice = 'e';
+                }
+            }else{
+                menu->Selection(menuChoice);
+                if(gameOverCounter<400){
                     ++gameOverCounter;
                 }else{
                     menuOn = false;
@@ -209,7 +235,7 @@ void app::game(sf::RenderWindow& window,sf::View frontview,sf::View HUD,float VI
             sun->setPlayerPos(main_player->getPosition());
             sun->Movement(deltaTime,Ycoord);
             if(sun->Collision(main_player->getPosition())){
-                if(gameOverCounter<300){
+                if(gameOverCounter<500){
                     main_player->inDanger(true);
                     sun->Draw(window);
                     ++gameOverCounter;
