@@ -56,15 +56,6 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     load_texture(&backgroundTexture,backgroundFile);
     Object* menuBackground = new Object(&backgroundTexture,{VIEW_WIDTH/2.0f,VIEW_WIDTH/1.8f},{VIEW_WIDTH/4,VIEW_WIDTH*1.35f});
 
-    // Music sheet
-    std::string sheetFile {"v_assets/sheet.png"};
-    sf::Texture sheetTexture;
-    load_texture(&sheetTexture,sheetFile);
-    Object* sheetBackground = new Object(&sheetTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f-250.0f,VIEW_WIDTH/2.5f});
-
-    // Menu
-    Menu* menu = new Menu(&sheetTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f,VIEW_WIDTH*1.37f});
-
     // Tree branches
     std::string branchFile {"v_assets/tree.png"};
     sf::Texture branchTexture;
@@ -114,6 +105,12 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     trunks.push_back(trunk6);
     trunks.push_back(trunk7);
 
+    // Music sheet
+    std::string sheetFile {"v_assets/sheet.png"};
+    sf::Texture sheetTexture;
+    load_texture(&sheetTexture,sheetFile);
+    Object* sheetBackground = new Object(&sheetTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f-250.0f,VIEW_WIDTH/2.5f});
+
     // Music notes
     std::string noteFile {"v_assets/note.png"};
     sf::Texture noteTexture;
@@ -123,7 +120,10 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     std::vector<Note*> notes;
     notes.push_back(note1);
     notes.push_back(note2);
-    Sheet* sheetNotes = new Sheet(&noteTexture,'A',sheetBackground->getPosition());
+    Sheet* sheetNotes = new Sheet(&noteTexture,sheetBackground->getPosition(),0);
+
+    // Main menu
+    Menu* menu = new Menu(&sheetTexture,&noteTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f,VIEW_WIDTH*1.37f});
 
     // main player & its arms
     std::string armFile {"v_assets/arm.png"};
@@ -184,27 +184,29 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             menu->Draw(window);
             if(menuChoice == 'n'){
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-                    menuChoice = 'a';
+                    menuChoice = 'A';
                 }
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::B)){
-                    menuChoice = 'b';
+                    menuChoice = 'B';
                 }
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::C)){
-                    menuChoice = 'c';
+                    menuChoice = 'C';
                 }
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-                    menuChoice = 'd';
+                    menuChoice = 'D';
                 }
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::E)){
-                    menuChoice = 'e';
+                    menuChoice = 'E';
                 }
             }else{
                 menu->Selection(menuChoice);
+                // sheetNotes->drawNotes(menuChoice);
                 if(gameOverCounter<400){
                     ++gameOverCounter;
                 }else{
                     menuOn = false;
                     gameOn = true;
+                    menu->~Menu();
                 }
             }
         }else{
@@ -311,8 +313,6 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             main_player->Draw(window);
         }
     }
-
-        
         window.display();
     }
 }
