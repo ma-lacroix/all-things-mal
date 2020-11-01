@@ -112,18 +112,26 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     Object* sheetBackground = new Object(&sheetTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f-250.0f,VIEW_WIDTH/2.5f});
 
     // Music notes
-    std::string noteFile {"v_assets/note.png"};
-    sf::Texture noteTexture;
-    load_texture(&noteTexture,noteFile);
-    Note* note1 = new Note(&noteTexture,{45.0f,70.0f},{rect8->getPosition().x+90.0f,rect8->getPosition().y-5.0f});
-    Note* note2 = new Note(&noteTexture,{45.0f,70.0f},{rect2->getPosition().x+90.0f,rect2->getPosition().y-5.0f});
+    std::string quarterNoteFile {"v_assets/quarterNote.png"};
+    sf::Texture quarterNoteTexture;
+    load_texture(&quarterNoteTexture,quarterNoteFile);
+    std::string eightNoteFile {"v_assets/eightNote.png"};
+    sf::Texture eightNoteTexture;
+    load_texture(&eightNoteTexture,eightNoteFile);
+    std::string halfNoteFile {"v_assets/halfNote.png"};
+    sf::Texture halfNoteTexture;
+    load_texture(&halfNoteTexture,halfNoteFile);
+    Note* note1 = new Note(&quarterNoteTexture,{45.0f,70.0f},{rect6->getPosition().x+0.0f,rect6->getPosition().y-5.0f});
+    Note* note2 = new Note(&eightNoteTexture,{45.0f,70.0f},{rect10->getPosition().x+100.0f,rect10->getPosition().y-5.0f});
+    Note* note3 = new Note(&halfNoteTexture,{45.0f,70.0f},{rect2->getPosition().x+200.0f,rect2->getPosition().y-5.0f});
     std::vector<Note*> notes;
     notes.push_back(note1);
     notes.push_back(note2);
-    Sheet* sheetNotes = new Sheet(&noteTexture,sheetBackground->getPosition(),0);
+    notes.push_back(note3);
+    Sheet* sheetNotes = new Sheet(&eightNoteTexture,sheetBackground->getPosition(),0);
 
     // Main menu
-    Menu* menu = new Menu(&sheetTexture,&noteTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f,VIEW_WIDTH*1.37f});
+    Menu* menu = new Menu(&sheetTexture,&eightNoteTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f,VIEW_WIDTH*1.37f});
 
     // main player & its arms
     std::string armFile {"v_assets/arm.png"};
@@ -237,7 +245,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             sun->setPlayerPos(main_player->getPosition());
             sun->Movement(deltaTime,Ycoord);
             if(sun->Collision(main_player->getPosition())){
-                if(gameOverCounter<500){
+                if(gameOverCounter<800){
                     main_player->inDanger(true);
                     sun->Draw(window);
                     ++gameOverCounter;
