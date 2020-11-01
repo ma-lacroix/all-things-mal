@@ -12,6 +12,8 @@ private:
 public:
     Object(sf::Texture*, sf::Vector2f, sf::Vector2f);
     ~Object();
+    void setNoLine(){shape.setOutlineColor(sf::Color::Transparent);};
+    void setRotation(float degrees){shape.rotate(degrees);};
     sf::Vector2f getPosition() {return shape.getPosition();};
     void Draw(sf::RenderWindow&);
 };

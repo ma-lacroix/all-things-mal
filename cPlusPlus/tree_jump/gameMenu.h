@@ -46,23 +46,23 @@ private:
     std::vector<melodyBox*> boxes;
     std::vector<Sheet*> notes;
 public:
-    Menu(sf::Texture*,sf::Texture*,sf::Vector2f,sf::Vector2f);
+    Menu(sf::Texture*,std::vector<sf::Texture*> ,sf::Vector2f,sf::Vector2f);
     ~Menu();
     void Selection(char);
     void Draw(sf::RenderWindow&);
 };
 
-Menu::Menu(sf::Texture* textureFile, sf::Texture* noteTexture,sf::Vector2f boxSize, sf::Vector2f boxPos){
+Menu::Menu(sf::Texture* textureFile, std::vector<sf::Texture*> noteTextures,sf::Vector2f boxSize, sf::Vector2f boxPos){
     box1 = new melodyBox(textureFile,boxSize,boxPos);
     box2 = new melodyBox(textureFile,boxSize,{boxPos.x,boxPos.y+boxSize.y*1.5f});
     box3 = new melodyBox(textureFile,boxSize,{boxPos.x,boxPos.y+boxSize.y*3.0f});
     box4 = new melodyBox(textureFile,boxSize,{boxPos.x,boxPos.y+boxSize.y*4.5f});
     box5 = new melodyBox(textureFile,boxSize,{boxPos.x,boxPos.y+boxSize.y*6.0f});
-    sheetNotes1 = new Sheet(noteTexture,'A',box1->getPosition(),255);
-    sheetNotes2 = new Sheet(noteTexture,'B',box2->getPosition(),255);
-    sheetNotes3 = new Sheet(noteTexture,'C',box3->getPosition(),255);
-    sheetNotes4 = new Sheet(noteTexture,'D',box4->getPosition(),255);
-    sheetNotes5 = new Sheet(noteTexture,'E',box5->getPosition(),255);
+    sheetNotes1 = new Sheet(noteTextures,'A',box1->getPosition(),255);
+    sheetNotes2 = new Sheet(noteTextures,'B',box2->getPosition(),255);
+    sheetNotes3 = new Sheet(noteTextures,'C',box3->getPosition(),255);
+    sheetNotes4 = new Sheet(noteTextures,'D',box4->getPosition(),255);
+    sheetNotes5 = new Sheet(noteTextures,'E',box5->getPosition(),255);
     boxes.push_back(box1);
     boxes.push_back(box2);
     boxes.push_back(box3);

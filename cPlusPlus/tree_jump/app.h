@@ -50,7 +50,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     bool gameOn {false};
     bool menuOn {true};
 
-    // Menu background - for testing purposes
+    // Menu background
     std::string backgroundFile {"v_assets/background.jpg"};
     sf::Texture backgroundTexture;
     load_texture(&backgroundTexture,backgroundFile);
@@ -111,6 +111,23 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     load_texture(&sheetTexture,sheetFile);
     Object* sheetBackground = new Object(&sheetTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f-250.0f,VIEW_WIDTH/2.5f});
 
+    // Friends
+    std::string buddyFile {"v_assets/buddy.png"};
+    sf::Texture buddyTexture;
+    load_texture(&buddyTexture,buddyFile);
+    std::string unicornFile {"v_assets/unicorn.png"};
+    sf::Texture unicornTexture;
+    load_texture(&unicornTexture,unicornFile);
+    Object* buddy1 = new Object(&buddyTexture,{300.0f,300.0f},{rect5->getPosition().x+50.0f,rect5->getPosition().y+100.0f});
+    Object* buddy2 = new Object(&unicornTexture,{200.0f,200.0f},{200.0f,-300.0f});
+    buddy1->setNoLine();
+    buddy1->setRotation(45.0f);
+    buddy2->setNoLine();
+    buddy2->setRotation(90.0f);
+    std::vector<Object*> friends;
+    friends.push_back(buddy1);
+    friends.push_back(buddy2);
+
     // Music notes
     std::string quarterNoteFile {"v_assets/quarterNote.png"};
     sf::Texture quarterNoteTexture;
@@ -121,17 +138,25 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     std::string halfNoteFile {"v_assets/halfNote.png"};
     sf::Texture halfNoteTexture;
     load_texture(&halfNoteTexture,halfNoteFile);
+    std::string emptyNoteFile {"v_assets/emptyNote.png"};
+    sf::Texture emptyNoteTexture;
+    load_texture(&emptyNoteTexture,emptyNoteFile);
     Note* note1 = new Note(&quarterNoteTexture,{45.0f,70.0f},{rect6->getPosition().x+0.0f,rect6->getPosition().y-5.0f});
-    Note* note2 = new Note(&eightNoteTexture,{45.0f,70.0f},{rect10->getPosition().x+100.0f,rect10->getPosition().y-5.0f});
-    Note* note3 = new Note(&halfNoteTexture,{45.0f,70.0f},{rect2->getPosition().x+200.0f,rect2->getPosition().y-5.0f});
+    Note* note2 = new Note(&halfNoteTexture,{45.0f,70.0f},{rect2->getPosition().x+200.0f,rect2->getPosition().y-5.0f});
+    // Note* note3 = new Note(&eightNoteTexture,{45.0f,70.0f},{rect10->getPosition().x+100.0f,rect10->getPosition().y-5.0f});
     std::vector<Note*> notes;
+    std::vector<sf::Texture*>  noteTextures;
     notes.push_back(note1);
     notes.push_back(note2);
-    notes.push_back(note3);
-    Sheet* sheetNotes = new Sheet(&eightNoteTexture,sheetBackground->getPosition(),0);
+    // notes.push_back(note3);
+    noteTextures.push_back(&quarterNoteTexture);
+    noteTextures.push_back(&halfNoteTexture);
+    noteTextures.push_back(&emptyNoteTexture);
+    // noteTextures.push_back(&eightNoteTexture);
+    Sheet* sheetNotes = new Sheet(noteTextures,sheetBackground->getPosition(),0);
 
     // Main menu
-    Menu* menu = new Menu(&sheetTexture,&eightNoteTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f,VIEW_WIDTH*1.37f});
+    Menu* menu = new Menu(&sheetTexture,noteTextures,{500.0f,88.0f},{VIEW_WIDTH/3.5f,VIEW_WIDTH*1.37f});
 
     // main player & its arms
     std::string armFile {"v_assets/arm.png"};
@@ -228,6 +253,10 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
                     plr->ifClickToRight();
                     plr->Rotate();
                 }
+            }
+
+            for (auto fri: friends){
+                fri->Draw(window);
             }
             
             for (auto trunk: trunks){

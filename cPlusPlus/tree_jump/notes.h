@@ -56,7 +56,7 @@ bool Note::MoveElsewhere(sf::Vector2f plrPos, sf::Vector2f branchPos){
 void Note::updateYcoord(float Ycoord,sf::Vector2f branch1Pos){
     if(shape.getPosition().y-Ycoord > 600.0f){
         // shape.move(branch1Pos.x+90.0f,branch1Pos.y-5.0f);
-        shape.move(0.0f,1200.0f);
+        shape.move(0.0f,-1200.0f);
     }
 }
 
