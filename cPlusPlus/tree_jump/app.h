@@ -49,6 +49,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     std::srand(time(0));
     bool gameOn {false};
     bool menuOn {true};
+    bool goal {false};
 
     // Menu background
     std::string backgroundFile {"v_assets/background.jpg"};
@@ -143,12 +144,12 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     load_texture(&emptyNoteTexture,emptyNoteFile);
     Note* note1 = new Note(&quarterNoteTexture,{45.0f,70.0f},{rect6->getPosition().x+0.0f,rect6->getPosition().y-5.0f});
     Note* note2 = new Note(&halfNoteTexture,{45.0f,70.0f},{rect2->getPosition().x+200.0f,rect2->getPosition().y-5.0f});
-    // Note* note3 = new Note(&eightNoteTexture,{45.0f,70.0f},{rect10->getPosition().x+100.0f,rect10->getPosition().y-5.0f});
     std::vector<Note*> notes;
+    
+    // Music notes textures vector
     std::vector<sf::Texture*>  noteTextures;
     notes.push_back(note1);
     notes.push_back(note2);
-    // notes.push_back(note3);
     noteTextures.push_back(&quarterNoteTexture);
     noteTextures.push_back(&halfNoteTexture);
     noteTextures.push_back(&emptyNoteTexture);
@@ -156,7 +157,10 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     Sheet* sheetNotes = new Sheet(noteTextures,sheetBackground->getPosition(),0);
 
     // Main menu
-    Menu* menu = new Menu(&sheetTexture,noteTextures,{500.0f,88.0f},{VIEW_WIDTH/3.5f,VIEW_WIDTH*1.37f});
+    std::string lettersFile {"v_assets/keys.png"};
+    sf::Texture lettersTexture;
+    load_texture(&lettersTexture,lettersFile);
+    Menu* menu = new Menu(&sheetTexture,noteTextures,&lettersTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f,VIEW_WIDTH*1.37f});
 
     // main player & its arms
     std::string armFile {"v_assets/arm.png"};
@@ -183,7 +187,8 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
         totalTime += deltaTime;
         mainMenu.setCenter(VIEW_WIDTH/2,main_player->getPosition().y-100.0f);
         frontview.setCenter(VIEW_WIDTH/2,main_player->getPosition().y-100.0f);        
-        frontview.setSize(800.0f,800.0f);
+        // frontview.setSize(800.0f,800.0f);
+        frontview.setSize(1000.0f,1000.0f);
         // HUD.setCenter(0.0f,(main_player->getPosition().y-1200.0f)*0.1);
 
         // this part handles events related to the actual game window like closing or resizing. 
@@ -243,7 +248,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
                 }
             }
         }else{
-            if(gameOn){
+            if(gameOn & !goal){
             // handle & draw objects
             window.setView(frontview);
             Ycoord = frontview.getCenter().y;
@@ -312,7 +317,9 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
                 }
                 note->Animate(totalTime);
                 if(note->MoveElsewhere(main_player->getPosition(),rects.at(i)->getPosition())){
-                    sheetNotes->AddNote();
+                    if(sheetNotes->AddNote()==8){
+                        goal = true;
+                    };
                     if (randNum+i > rectsLen){ // this avoids having notes appear below
                         i = randNum+i - rectsLen;
                     }else{
@@ -325,8 +332,16 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             window.setView(HUD);
             sheetBackground->Draw(window);
             sheetNotes->Draw(window);
-        }else{
-            // frontview.setCenter(VIEW_WIDTH/2,VIEW_WIDTH/2);
+        }else if(goal){
+        // animation when player wins
+            window.setView(frontview);
+            Ycoord = frontview.getCenter().y;
+            main_player->updateState('G');
+            main_player->State(deltaTime);
+            main_player->Draw(window);
+        }
+        else{
+            // animation when player loses
             window.setView(frontview);
             Ycoord = frontview.getCenter().y;
             int incr = 0;

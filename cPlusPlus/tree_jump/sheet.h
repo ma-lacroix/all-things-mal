@@ -40,7 +40,7 @@ public:
     Sheet(std::vector<sf::Texture*>, sf::Vector2f, int);
     ~Sheet();
     void drawNotes(char,std::vector<sf::Texture*>);
-    void AddNote();
+    int AddNote();
     void Draw(sf::RenderWindow&);
 };
 
@@ -186,11 +186,12 @@ void Sheet::drawNotes(char code,std::vector<sf::Texture*> textures){
 Sheet::~Sheet(){
 }
 
-void Sheet::AddNote(){
+int Sheet::AddNote(){
     if(index < 8){
         notes.at(index)->setFillColor(sf::Color(255,255,255,255));
         ++index;
     }
+    return index;
 }
 
 void Sheet::Draw(sf::RenderWindow& window){

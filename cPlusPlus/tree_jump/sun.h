@@ -63,9 +63,6 @@ void Sun::Rotate(){
     float a = mainPlayerPos.y-shape.getPosition().y;
     float b = mainPlayerPos.x-shape.getPosition().x;
     angle = atanf(a/b)*180/PI;
-    // if(clickToRight){
-    //     angle+=180;
-    // }
     shape.setRotation(angle);
 }
 
