@@ -13,7 +13,9 @@ public:
     Object(sf::Texture*, sf::Vector2f, sf::Vector2f);
     ~Object();
     void setNoLine(){shape.setOutlineColor(sf::Color::Transparent);};
+    void setTransparency(int num){shape.setFillColor(sf::Color(255,255,255,num));};
     void setRotation(float degrees){shape.rotate(degrees);};
+    void moveCenter(sf::Vector2f);
     sf::Vector2f getPosition() {return shape.getPosition();};
     void Draw(sf::RenderWindow&);
 };
@@ -29,6 +31,11 @@ Object::Object(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f p
 }
 
 Object::~Object(){
+}
+
+void Object::moveCenter(sf::Vector2f newPos){
+    shape.setOrigin(shape.getSize()/2.0f);
+    shape.setPosition(newPos);
 }
 
 void Object::Draw(sf::RenderWindow& window){

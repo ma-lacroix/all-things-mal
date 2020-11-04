@@ -35,6 +35,7 @@ public:
     void setMouseClickPos(sf::Vector2f);
     void inDanger(bool);
     void GameOver(float);
+    void Goal(float);
     void Draw(sf::RenderWindow&);
     void updateState(char newState) {playstate = newState;};
     sf::Vector2f getPosition() {return shape.getPosition();};
@@ -72,6 +73,9 @@ void Player::State(float deltatime){
         break;
     case 'G':
         GameOver(deltatime);
+        break;
+    case 'F':
+        Goal(deltatime);
         break;
     default:
         break;
@@ -155,6 +159,11 @@ void Player::GameOver(float deltatime){
     shape.setFillColor(sf::Color::Blue);
     shape.rotate(0.2f);
     shape.move(0.0f,400.0f*deltatime);
+}
+
+void Player::Goal(float deltatime){
+    shape.setFillColor(sf::Color::Green);
+    shape.rotate(-0.01f);
 }
 
 void Player::setMouseClickPos(sf::Vector2f newClick) {

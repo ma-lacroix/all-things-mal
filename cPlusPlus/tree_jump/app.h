@@ -119,8 +119,8 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     std::string unicornFile {"v_assets/unicorn.png"};
     sf::Texture unicornTexture;
     load_texture(&unicornTexture,unicornFile);
-    Object* buddy1 = new Object(&buddyTexture,{300.0f,300.0f},{rect5->getPosition().x+50.0f,rect5->getPosition().y+100.0f});
-    Object* buddy2 = new Object(&unicornTexture,{200.0f,200.0f},{200.0f,-300.0f});
+    Object* buddy1 = new Object(&buddyTexture,{250.0f,250.0f},{rect5->getPosition().x-50.0f,rect10->getPosition().y+500.0f});
+    Object* buddy2 = new Object(&unicornTexture,{260.0f,200.0f},{200.0f,-300.0f});
     buddy1->setNoLine();
     buddy1->setRotation(45.0f);
     buddy2->setNoLine();
@@ -188,7 +188,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
         mainMenu.setCenter(VIEW_WIDTH/2,main_player->getPosition().y-100.0f);
         frontview.setCenter(VIEW_WIDTH/2,main_player->getPosition().y-100.0f);        
         // frontview.setSize(800.0f,800.0f);
-        frontview.setSize(1000.0f,1000.0f);
+        frontview.setSize(900.0f,900.0f);
         // HUD.setCenter(0.0f,(main_player->getPosition().y-1200.0f)*0.1);
 
         // this part handles events related to the actual game window like closing or resizing. 
@@ -261,6 +261,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             }
 
             for (auto fri: friends){
+                fri->setRotation(0.05f);
                 fri->Draw(window);
             }
             
@@ -336,11 +337,19 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
         // animation when player wins
             window.setView(frontview);
             Ycoord = frontview.getCenter().y;
-            main_player->updateState('G');
+            menuBackground->moveCenter(frontview.getCenter());
+            menuBackground->setTransparency(150);
+            menuBackground->Draw(window);
+            buddy1->moveCenter(frontview.getCenter()/1.05f);
+            buddy1->setRotation(0.09f);
+            buddy1->Draw(window);
+            buddy2->moveCenter(frontview.getCenter()*1.05f);
+            buddy2->setRotation(-0.08f);
+            buddy2->Draw(window);
+            main_player->updateState('F');
             main_player->State(deltaTime);
             main_player->Draw(window);
-        }
-        else{
+        }else{
             // animation when player loses
             window.setView(frontview);
             Ycoord = frontview.getCenter().y;

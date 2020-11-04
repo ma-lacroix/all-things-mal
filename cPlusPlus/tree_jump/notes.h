@@ -46,7 +46,7 @@ void Note::Animate(float totalTime){
 bool Note::MoveElsewhere(sf::Vector2f plrPos, sf::Vector2f branchPos){
     if(abs(shape.getPosition().x - plrPos.x) < 120.0f &
        abs(shape.getPosition().y - plrPos.y) < 120.0f){
-            shape.setPosition(branchPos.x+90.0f,branchPos.y-5.0f);
+            shape.setPosition(branchPos.x+90.0f,branchPos.y-1200.0f);
             return true;
        }else{
             return false;
