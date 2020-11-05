@@ -55,7 +55,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     std::string backgroundFile {"v_assets/background.jpg"};
     sf::Texture backgroundTexture;
     load_texture(&backgroundTexture,backgroundFile);
-    Object* menuBackground = new Object(&backgroundTexture,{VIEW_WIDTH/2.0f,VIEW_WIDTH/1.8f},{VIEW_WIDTH/4,VIEW_WIDTH*1.35f});
+    Object* menuBackground = new Object(&backgroundTexture,{VIEW_WIDTH/2.0f,VIEW_WIDTH/1.8f},{VIEW_WIDTH/4,VIEW_WIDTH*1.2f});
 
     // Tree branches
     std::string branchFile {"v_assets/tree.png"};
@@ -119,12 +119,19 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     std::string unicornFile {"v_assets/unicorn.png"};
     sf::Texture unicornTexture;
     load_texture(&unicornTexture,unicornFile);
-    Object* buddy1 = new Object(&buddyTexture,{250.0f,250.0f},{rect5->getPosition().x-50.0f,rect10->getPosition().y+500.0f});
-    Object* buddy2 = new Object(&unicornTexture,{260.0f,200.0f},{200.0f,-300.0f});
+    std::string flowerFile {"v_assets/flower.png"};
+    sf::Texture flowerTexture;
+    load_texture(&flowerTexture,flowerFile);
+    Object* buddy1 = new Object(&buddyTexture,{250.0f,250.0f},{rect3->getPosition().x-50.0f,rect10->getPosition().y+500.0f});
+    Object* buddy2 = new Object(&unicornTexture,{260.0f,200.0f},{rect1->getPosition().x,-3000.0f});
+    Object* buddy3 = new Object(&flowerTexture,{250.0f,500.0f},{VIEW_WIDTH/15.0f,VIEW_WIDTH*1.9f});
+    Object* buddy4 = new Object(&flowerTexture,{350.0f,600.0f},{VIEW_WIDTH/3.0f,VIEW_WIDTH*2.0f});
+    Object* buddy5 = new Object(&flowerTexture,{300.0f,800.0f},{VIEW_WIDTH/1.5f,VIEW_WIDTH*1.8f});
     buddy1->setNoLine();
-    buddy1->setRotation(45.0f);
     buddy2->setNoLine();
-    buddy2->setRotation(90.0f);
+    buddy3->setNoLine();
+    buddy4->setNoLine();
+    buddy5->setNoLine();
     std::vector<Object*> friends;
     friends.push_back(buddy1);
     friends.push_back(buddy2);
@@ -160,7 +167,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     std::string lettersFile {"v_assets/keys.png"};
     sf::Texture lettersTexture;
     load_texture(&lettersTexture,lettersFile);
-    Menu* menu = new Menu(&sheetTexture,noteTextures,&lettersTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f,VIEW_WIDTH*1.37f});
+    Menu* menu = new Menu(&sheetTexture,noteTextures,&lettersTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f,VIEW_WIDTH*1.2f});
 
     // main player & its arms
     std::string armFile {"v_assets/arm.png"};
@@ -220,6 +227,14 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             window.setView(mainMenu);
             menuBackground->Draw(window);
             menu->Draw(window);
+            // flowers
+            buddy3->Animate(totalTime*1.2f);
+            buddy4->Animate(totalTime);
+            buddy5->Animate(totalTime*1.7f);
+            buddy3->Draw(window);
+            buddy4->Draw(window);
+            buddy5->Draw(window);
+
             if(menuChoice == 'n'){
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
                     menuChoice = 'A';
@@ -261,7 +276,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             }
 
             for (auto fri: friends){
-                fri->setRotation(0.05f);
+                fri->Animate(totalTime);
                 fri->Draw(window);
             }
             
@@ -340,12 +355,15 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             menuBackground->moveCenter(frontview.getCenter());
             menuBackground->setTransparency(150);
             menuBackground->Draw(window);
-            buddy1->moveCenter(frontview.getCenter()/1.05f);
+            buddy1->moveCenter(frontview.getCenter()/1.35f);
             buddy1->setRotation(0.09f);
             buddy1->Draw(window);
             buddy2->moveCenter(frontview.getCenter()*1.05f);
             buddy2->setRotation(-0.08f);
             buddy2->Draw(window);
+            buddy3->moveCenter(frontview.getCenter()/1.1f);
+            buddy3->setRotation(-0.1f);
+            buddy3->Draw(window);
             main_player->updateState('F');
             main_player->State(deltaTime);
             main_player->Draw(window);

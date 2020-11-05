@@ -2,9 +2,11 @@
 
 #ifndef _OBJECT_H_
 #define _OBJECT_H_
+#define PI 3.14159265
 
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <cmath>
 
 class Object {
 private:
@@ -12,11 +14,12 @@ private:
 public:
     Object(sf::Texture*, sf::Vector2f, sf::Vector2f);
     ~Object();
+    sf::Vector2f getPosition() {return shape.getPosition();};
     void setNoLine(){shape.setOutlineColor(sf::Color::Transparent);};
     void setTransparency(int num){shape.setFillColor(sf::Color(255,255,255,num));};
     void setRotation(float degrees){shape.rotate(degrees);};
     void moveCenter(sf::Vector2f);
-    sf::Vector2f getPosition() {return shape.getPosition();};
+    void Animate(float);
     void Draw(sf::RenderWindow&);
 };
 
@@ -36,6 +39,12 @@ Object::~Object(){
 void Object::moveCenter(sf::Vector2f newPos){
     shape.setOrigin(shape.getSize()/2.0f);
     shape.setPosition(newPos);
+}
+
+void Object::Animate(float totaltime){
+    float velocity;
+    velocity = std::sinf(totaltime*PI)/20.0f;
+    shape.move(-velocity,0.0f);
 }
 
 void Object::Draw(sf::RenderWindow& window){
