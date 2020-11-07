@@ -61,7 +61,6 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     std::string branchFile {"v_assets/tree.png"};
     sf::Texture branchTexture;
     load_texture(&branchTexture,branchFile);
-
     Branch* rect1 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-200.0f,2000.0f},VIEW_WIDTH);
     Branch* rect2 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2+75.0f,1800.0f},VIEW_WIDTH);
     Branch* rect3 = new Branch(&branchTexture,{250.0f,150.0f},{VIEW_WIDTH/2-200.0f,1600.0f},VIEW_WIDTH);
@@ -113,6 +112,9 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     Object* sheetBackground = new Object(&sheetTexture,{500.0f,88.0f},{VIEW_WIDTH/3.5f-250.0f,VIEW_WIDTH/2.5f});
 
     // Friends
+    std::string airbaloonFile {"v_assets/airbaloon.png"};
+    sf::Texture airbaloonTexture;
+    load_texture(&airbaloonTexture,airbaloonFile);
     std::string buddyFile {"v_assets/buddy.png"};
     sf::Texture buddyTexture;
     load_texture(&buddyTexture,buddyFile);
@@ -122,19 +124,23 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     std::string flowerFile {"v_assets/flower.png"};
     sf::Texture flowerTexture;
     load_texture(&flowerTexture,flowerFile);
+    std::string flowerFile2 {"v_assets/flower2.png"};
+    sf::Texture flowerTexture2;
+    load_texture(&flowerTexture2,flowerFile2);
+    Object* buddy0 = new Object(&airbaloonTexture,{100.0f,220.0f},{rect1->getPosition().x-VIEW_WIDTH*0.2f,5000.0f});
     Object* buddy1 = new Object(&buddyTexture,{250.0f,250.0f},{rect3->getPosition().x-50.0f,rect10->getPosition().y+500.0f});
     Object* buddy2 = new Object(&unicornTexture,{260.0f,200.0f},{rect1->getPosition().x,-3000.0f});
     Object* buddy3 = new Object(&flowerTexture,{250.0f,500.0f},{VIEW_WIDTH/15.0f,VIEW_WIDTH*1.9f});
-    Object* buddy4 = new Object(&flowerTexture,{350.0f,600.0f},{VIEW_WIDTH/3.0f,VIEW_WIDTH*2.0f});
-    Object* buddy5 = new Object(&flowerTexture,{300.0f,800.0f},{VIEW_WIDTH/1.5f,VIEW_WIDTH*1.8f});
+    Object* buddy4 = new Object(&flowerTexture2,{200.0f,600.0f},{VIEW_WIDTH/3.0f,VIEW_WIDTH*1.9f});
+    Object* buddy5 = new Object(&flowerTexture,{300.0f,800.0f},{VIEW_WIDTH/2.0f,VIEW_WIDTH*1.8f});
+    Object* buddy6 = new Object(&flowerTexture2,{200.0f,600.0f},{VIEW_WIDTH/1.4f,VIEW_WIDTH*1.9f});
+    buddy0->setNoLine();
     buddy1->setNoLine();
     buddy2->setNoLine();
     buddy3->setNoLine();
     buddy4->setNoLine();
     buddy5->setNoLine();
-    std::vector<Object*> friends;
-    friends.push_back(buddy1);
-    friends.push_back(buddy2);
+    buddy6->setNoLine();
 
     // Music notes
     std::string quarterNoteFile {"v_assets/quarterNote.png"};
@@ -231,9 +237,11 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             buddy3->Animate(totalTime*1.2f);
             buddy4->Animate(totalTime);
             buddy5->Animate(totalTime*1.7f);
+            buddy6->Animate(totalTime*2.0f);
             buddy3->Draw(window);
             buddy4->Draw(window);
             buddy5->Draw(window);
+            buddy6->Draw(window);
 
             if(menuChoice == 'n'){
                 if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
@@ -268,17 +276,17 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             window.setView(frontview);
             Ycoord = frontview.getCenter().y;
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
+                buddy0->setMouseClickY(window.mapPixelToCoords(sf::Mouse::getPosition(window)).y);
                 for (auto plr: players){
                     plr->setMouseClickPos(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
                     plr->ifClickToRight();
                     plr->Rotate();
                 }
             }
-
-            for (auto fri: friends){
-                fri->Animate(totalTime);
-                fri->Draw(window);
-            }
+            
+            buddy0->Animate(totalTime*1.4f);
+            buddy0->Movement(deltaTime);
+            buddy0->Draw(window);
             
             for (auto trunk: trunks){
                 trunk->updateYcoord(Ycoord);
@@ -355,18 +363,25 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             menuBackground->moveCenter(frontview.getCenter());
             menuBackground->setTransparency(150);
             menuBackground->Draw(window);
-            buddy1->moveCenter(frontview.getCenter()/1.35f);
-            buddy1->setRotation(0.09f);
-            buddy1->Draw(window);
-            buddy2->moveCenter(frontview.getCenter()*1.05f);
-            buddy2->setRotation(-0.08f);
-            buddy2->Draw(window);
-            buddy3->moveCenter(frontview.getCenter()/1.1f);
-            buddy3->setRotation(-0.1f);
-            buddy3->Draw(window);
-            main_player->updateState('F');
-            main_player->State(deltaTime);
-            main_player->Draw(window);
+            if(gameOverCounter<1000){
+                    ++gameOverCounter;
+            }else{
+                buddy0->moveCenter(frontview.getCenter()/1.01f);
+                buddy0->setRotation(0.001f);
+                buddy1->moveCenter(frontview.getCenter()/1.04f);
+                buddy1->setRotation(0.07f);
+                buddy1->Draw(window);
+                buddy2->moveCenter(frontview.getCenter()*1.03f);
+                buddy2->setRotation(-0.08f);
+                buddy2->Draw(window);
+                buddy3->moveCenter(frontview.getCenter()/1.06f);
+                buddy3->setRotation(-0.1f);
+                buddy3->Draw(window);
+                main_player->updateState('F');
+                main_player->State(deltaTime);
+                buddy0->Draw(window);
+                main_player->Draw(window);
+            }
         }else{
             // animation when player loses
             window.setView(frontview);

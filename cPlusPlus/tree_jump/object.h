@@ -11,15 +11,18 @@
 class Object {
 private:
     sf::RectangleShape shape;
+    float MouseClickY;
 public:
     Object(sf::Texture*, sf::Vector2f, sf::Vector2f);
     ~Object();
     sf::Vector2f getPosition() {return shape.getPosition();};
+    void setMouseClickY(float newY) {MouseClickY = newY;};
     void setNoLine(){shape.setOutlineColor(sf::Color::Transparent);};
     void setTransparency(int num){shape.setFillColor(sf::Color(255,255,255,num));};
     void setRotation(float degrees){shape.rotate(degrees);};
     void moveCenter(sf::Vector2f);
     void Animate(float);
+    void Movement(float);
     void Draw(sf::RenderWindow&);
 };
 
@@ -31,6 +34,7 @@ Object::Object(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f p
     shape.setOutlineColor(sf::Color::Black);
     shape.setOutlineThickness(8.0f);
     shape.setTexture(textureFile);
+    MouseClickY = 1000.0f;
 }
 
 Object::~Object(){
@@ -45,6 +49,19 @@ void Object::Animate(float totaltime){
     float velocity;
     velocity = std::sinf(totaltime*PI)/20.0f;
     shape.move(-velocity,0.0f);
+}
+
+void Object::Movement(float deltatime){
+    sf::Vector2f direction;
+    sf::Vector2f direction_norm;
+    sf::Vector2f velocity;
+    direction.x = 0.0f;
+    direction.y = MouseClickY-(shape.getPosition().y);
+    direction_norm = direction / sqrtf(direction.x * direction.x + direction.y * direction.y); // avoid speed changes
+    velocity = direction*deltatime*0.8f;
+    if(abs(direction.x+direction.y)>0.7f){
+        shape.move(velocity);
+    }
 }
 
 void Object::Draw(sf::RenderWindow& window){
