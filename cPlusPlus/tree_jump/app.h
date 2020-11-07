@@ -142,6 +142,12 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     buddy5->setNoLine();
     buddy6->setNoLine();
 
+    // block of grass in background
+    sf::RectangleShape grass;
+    grass.setFillColor(sf::Color(10,160,80,100));
+    grass.setSize({VIEW_WIDTH*1.5f,VIEW_WIDTH*1.5f});
+    grass.setPosition({rect1->getPosition().x*0.1f,rect1->getPosition().y});
+
     // Music notes
     std::string quarterNoteFile {"v_assets/quarterNote.png"};
     sf::Texture quarterNoteTexture;
@@ -227,7 +233,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             }
         }
         
-        window.clear(sf::Color(155,125,100));
+        window.clear(sf::Color(180,225,255));
 
         if(menuOn){
             window.setView(mainMenu);
@@ -283,7 +289,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
                     plr->Rotate();
                 }
             }
-            
+            window.draw(grass); 
             buddy0->Animate(totalTime*1.4f);
             buddy0->Movement(deltaTime);
             buddy0->Draw(window);

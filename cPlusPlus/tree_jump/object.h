@@ -34,7 +34,7 @@ Object::Object(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f p
     shape.setOutlineColor(sf::Color::Black);
     shape.setOutlineThickness(8.0f);
     shape.setTexture(textureFile);
-    MouseClickY = 1000.0f;
+    MouseClickY = 5000.0f;
 }
 
 Object::~Object(){
