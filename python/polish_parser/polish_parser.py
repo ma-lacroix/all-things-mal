@@ -31,7 +31,8 @@ def eval(obj):
     return bracPos
 
 def main():
-    obj = list('{"*",{"+",4,5},7}') # polish notation example, the list will allow us to map character positions
+    # obj = list('{"*",{"+",4,5},7}') # polish notation example, the list will allow us to map character positions
+    obj = list('{"*",{"+",4,5},{"+",{"-",10,5},2}}')
     bracPos = eval(obj)
     print(bracPos)
 
