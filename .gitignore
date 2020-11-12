@@ -4,6 +4,8 @@
 .vscode
 .jpg
 .png
+.wav
+.flac
 
 # c++
 *.slo
