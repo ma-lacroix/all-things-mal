@@ -4,10 +4,13 @@
 #define _PLAYER_H_
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <cmath>
+#include <vector>
 #include "object.h"
 #define PI 3.14159265
+
 
 class Player: public Object {
 private:
@@ -20,11 +23,13 @@ private:
     bool arm;
     bool clickToRight;
     char playstate;
+    bool playFinal;
+    std::vector<sf::Sound> sounds; 
 public:
     // Player(sf::Texture* textureFile,sf::Vector2f PlayerSize, sf::Vector2f position, bool clickable);
-    Player(sf::Texture* textureFile, sf::Vector2f,sf::Vector2f,float,bool);
+    Player(sf::Texture* textureFile, sf::Vector2f,sf::Vector2f,float,bool,std::vector<sf::Sound>);
     ~Player();
-    void State(float);
+    void State(float,char);
     void ifClickToRight();
     void AdjustArm(sf::Vector2f);
     void Animate(float);
@@ -35,7 +40,7 @@ public:
     void setMouseClickPos(sf::Vector2f);
     void inDanger(bool);
     void GameOver(float);
-    void Goal(float);
+    void Goal(float,char);
     void Draw(sf::RenderWindow&);
     void updateState(char newState) {playstate = newState;};
     sf::Vector2f getPosition() {return shape.getPosition();};
@@ -44,7 +49,8 @@ public:
     char getPlaystate() {return playstate;};
 };
 
-Player::Player(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f position, float speed, bool arm)
+Player::Player(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f position, float speed, 
+                bool arm, std::vector<sf::Sound> sounds)
     :Object(textureFile, objectSize,position){
     shape.setPosition(position);
     shape.setSize(objectSize);
@@ -52,17 +58,19 @@ Player::Player(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f p
     this->objectSize = objectSize;
     this->speed = speed;
     this->arm = arm;
+    this->sounds = sounds;
     velocity = {0.0f,0.0f};
     mouseClickPos = {0.0f,0.0f};
     playstate = 'S';
     clickToRight = false;
+    playFinal = true;
     shape.setTexture(textureFile);
 }
 
 Player::~Player(){
 }
 
-void Player::State(float deltatime){
+void Player::State(float deltatime, char menuChoice){
     switch (playstate){
     case 'M':
         // shape.setFillColor(sf::Color::Cyan);
@@ -75,7 +83,7 @@ void Player::State(float deltatime){
         GameOver(deltatime);
         break;
     case 'F':
-        Goal(deltatime);
+        Goal(deltatime,menuChoice);
         break;
     default:
         break;
@@ -156,17 +164,45 @@ void Player::inDanger(bool value){
 }
 
 void Player::GameOver(float deltatime){
+    if(playFinal){
+        playFinal = false;
+        sounds.at(0).play();
+    }
     shape.setFillColor(sf::Color::Blue);
     shape.rotate(0.2f);
     shape.move(0.0f,400.0f*deltatime);
 }
 
-void Player::Goal(float deltatime){
+void Player::Goal(float deltatime, char menuChoice){
+    if(playFinal){
+        playFinal = false;
+        switch (menuChoice)
+        {
+        case 'A':
+            sounds.at(1).play();
+            break;
+        case 'B':
+            sounds.at(2).play();
+            break;
+        case 'C':
+            sounds.at(3).play();
+            break;
+        case 'D':
+            sounds.at(4).play();
+            break;
+        case 'E':
+            sounds.at(5).play();
+            break;
+        default:
+            break;
+        }
+    }
     shape.setFillColor(sf::Color::Green);
     shape.rotate(-0.01f);
 }
 
 void Player::setMouseClickPos(sf::Vector2f newClick) {
+    sounds.at(6).play();
     if(arm){
         if(abs(shape.getSize().x) <= 20.0f){
             mouseClickPos = newClick;    

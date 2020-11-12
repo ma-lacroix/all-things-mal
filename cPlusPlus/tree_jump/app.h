@@ -1,7 +1,7 @@
 // struct that initialises the game, renders the game objects and the loop
 
 #include <SFML/Graphics.hpp>
-// #include <SFML/Audio.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <vector>
 #include <ctime>
@@ -14,7 +14,7 @@
 #include "gameMenu.h"
 
 struct app{
-    void game(sf::RenderWindow& window,sf::View mainMenu,sf::View view,sf::View HUD,float VIEW_WIDTH);  
+    void game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,sf::View view,sf::View HUD,float VIEW_WIDTH);  
     void resizedView(const sf::RenderWindow& window, sf::View& view, const float VIEW_WIDTH);
     void load_texture(sf::Texture* some_texture,std::string textureFile);
 };
@@ -33,7 +33,7 @@ void app::load_texture(sf::Texture* some_texture,std::string textureFile){
     }
 }
 
-void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf::View HUD,float VIEW_WIDTH){
+void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf::View HUD,float VIEW_WIDTH){
 
     // timers
     float deltaTime {0.0f};
@@ -50,6 +50,61 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     bool gameOn {false};
     bool menuOn {true};
     bool goal {false};
+    bool introMusic {true};
+    bool startMusic {true};
+    bool endMusic {true};
+
+    // sounds
+    sf::Sound intro;
+    sf::SoundBuffer buffer1;
+    buffer1.loadFromFile("a_assets/intro.wav");
+    intro.setBuffer(buffer1);
+    intro.setVolume(100);
+
+    sf::Sound Song_A;
+    sf::SoundBuffer buffer2;
+    buffer2.loadFromFile("a_assets/Song_A.flac");
+    Song_A.setBuffer(buffer2);
+    Song_A.setVolume(80);
+
+    sf::Sound Song_B;
+    sf::SoundBuffer buffer3;
+    buffer3.loadFromFile("a_assets/Song_B.flac");
+    Song_B.setBuffer(buffer3);
+    Song_B.setVolume(80);
+
+    sf::Sound Song_C;
+    sf::SoundBuffer buffer4;
+    buffer4.loadFromFile("a_assets/Song_C.flac");
+    Song_C.setBuffer(buffer4);
+    Song_C.setVolume(80);
+
+    sf::Sound Song_D;
+    sf::SoundBuffer buffer5;
+    buffer5.loadFromFile("a_assets/Song_D.flac");
+    Song_D.setBuffer(buffer5);
+    Song_D.setVolume(80);
+
+    sf::Sound Song_E;
+    sf::SoundBuffer buffer6;
+    buffer6.loadFromFile("a_assets/Song_E.flac");
+    Song_E.setBuffer(buffer6);
+    Song_E.setVolume(80);
+
+    sf::Sound c_scale;
+    sf::SoundBuffer buffer7;
+    buffer6.loadFromFile("a_assets/c_scale.flac");
+    c_scale.setBuffer(buffer7);
+    c_scale.setVolume(80);
+
+    std::vector<sf::Sound> sounds;
+    sounds.push_back(intro);
+    sounds.push_back(Song_A);
+    sounds.push_back(Song_B);
+    sounds.push_back(Song_C);
+    sounds.push_back(Song_D);
+    sounds.push_back(Song_E);
+    sounds.push_back(c_scale);
 
     // Menu background
     std::string backgroundFile {"v_assets/background.jpg"};
@@ -188,8 +243,8 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
     std::string foxFile {"v_assets/fox.png"};
     sf::Texture foxTexture;
     load_texture(&foxTexture,foxFile);
-    Player* player_arm = new Player(&armTexture,{0.0f,40.0f},{rect1->getPosition()},900.0f,true);
-    Player* main_player = new Player(&foxTexture,{150.0f,190.0f},{rect1->getPosition()},300.0f,false);
+    Player* player_arm = new Player(&armTexture,{0.0f,40.0f},{rect1->getPosition()},900.0f,true,sounds);
+    Player* main_player = new Player(&foxTexture,{150.0f,190.0f},{rect1->getPosition()},300.0f,false,sounds);
     std::vector<Player*> players;
     players.push_back(player_arm);
     players.push_back(main_player);
@@ -207,7 +262,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
         mainMenu.setCenter(VIEW_WIDTH/2,main_player->getPosition().y-100.0f);
         frontview.setCenter(VIEW_WIDTH/2,main_player->getPosition().y-100.0f);        
         // frontview.setSize(800.0f,800.0f);
-        frontview.setSize(900.0f,900.0f);
+        frontview.setSize(950.0f,950.0f);
         // HUD.setCenter(0.0f,(main_player->getPosition().y-1200.0f)*0.1);
 
         // this part handles events related to the actual game window like closing or resizing. 
@@ -226,7 +281,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
                 if (evnt.key.code == sf::Keyboard::Escape)
                         window.close();
                 if (evnt.key.code == sf::Keyboard::R)
-                    game(window,mainMenu,frontview,HUD,VIEW_WIDTH);
+                    game(main_song,window,mainMenu,frontview,HUD,VIEW_WIDTH);
                 break;
             default:
                 break;
@@ -236,6 +291,10 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
         window.clear(sf::Color(180,225,255));
 
         if(menuOn){
+            if(introMusic){
+                introMusic = false;
+                intro.play();
+            }
             window.setView(mainMenu);
             menuBackground->Draw(window);
             menu->Draw(window);
@@ -278,6 +337,12 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             }
         }else{
             if(gameOn & !goal){
+            
+            if(startMusic){
+                startMusic = false;
+                main_song.play();
+            }
+
             // handle & draw objects
             window.setView(frontview);
             Ycoord = frontview.getCenter().y;
@@ -326,14 +391,14 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
                     if(rect->Collision(plr->getClickPos(),plr->getVelocity().y)){
                         plr->updateState('M');
                         plr->AdjustArm(main_player->getPosition());
-                        plr->State(deltaTime);
+                        plr->State(deltaTime,menuChoice);
                         plr->Draw(window);
                         break;
                     }else{
                         plr->updateState('S');
                         plr->Animate(totalTime);
                         plr->AdjustArm(main_player->getPosition());
-                        plr->State(deltaTime);
+                        plr->State(deltaTime,menuChoice);
                         plr->Draw(window);
                     }
                 }
@@ -363,7 +428,8 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             sheetBackground->Draw(window);
             sheetNotes->Draw(window);
         }else if(goal){
-        // animation when player wins
+            // animation when player wins
+            main_song.stop();
             window.setView(frontview);
             Ycoord = frontview.getCenter().y;
             menuBackground->moveCenter(frontview.getCenter());
@@ -384,12 +450,13 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
                 buddy3->setRotation(-0.1f);
                 buddy3->Draw(window);
                 main_player->updateState('F');
-                main_player->State(deltaTime);
+                main_player->State(deltaTime,menuChoice);
                 buddy0->Draw(window);
                 main_player->Draw(window);
             }
         }else{
             // animation when player loses
+            main_song.stop();
             window.setView(frontview);
             Ycoord = frontview.getCenter().y;
             int incr = 0;
@@ -409,7 +476,7 @@ void app::game(sf::RenderWindow& window,sf::View mainMenu,sf::View frontview,sf:
             }
 
             main_player->updateState('G');
-            main_player->State(deltaTime);
+            main_player->State(deltaTime,menuChoice);
             main_player->Draw(window);
         }
     }
