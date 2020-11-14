@@ -2,39 +2,18 @@
 # Author: Marc-Antoine Lacroix
 # WIP
 
-def openBrackets(obj):
-# looks for positions of open brackets
-    i = 0
-    open = []
-    for element in obj:
-        i+=1
-        if(element == '{'):
-            open.append(i)
-    return open                    
-
-def closedBrackets(obj):
-# looks for positions of open brackets
-    i = 0
-    closed = []
-    for element in obj:
-        i+=1
-        if(element == '}'):
-            closed.append(i)
-    return closed[::-1]                    
-
-def eval(obj):
-# 1.maps the inner and outer positions of brackets in the object
-# 2.extracts the math symbol next to the inner object and stores it into a temp object
-# 3.performs the operation using the next 2 numbers for first iteration, stores into a temp number
-# 4.repeats steps 2 and 3 but using the temp number from step 3
-    bracPos = list(zip(openBrackets(obj),closedBrackets(obj)))
-    return bracPos
+def eval(obj,i):
+    olen = len(obj)
+    if(i>olen):
+        return
+    eval(obj,i+1)
+    print(obj)
 
 def main():
-    # obj = list('{"*",{"+",4,5},7}') # polish notation example, the list will allow us to map character positions
-    obj = list('{"*",{"+",4,5},{"+",{"-",10,5},2}}')
-    bracPos = eval(obj)
-    print(bracPos)
-
+    # obj = ['+',['-',4,3],1]
+    obj = [[1,2,3],[4,5,6],[7,8,[9,10,11]]]
+    i = 0
+    eval(obj,i)
+    
 if __name__ == "__main__":
     main()
