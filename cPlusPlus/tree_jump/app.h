@@ -59,7 +59,7 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
     sf::SoundBuffer buffer1;
     buffer1.loadFromFile("a_assets/intro.wav");
     intro.setBuffer(buffer1);
-    intro.setVolume(100);
+    intro.setVolume(80);
 
     sf::Sound Song_A;
     sf::SoundBuffer buffer2;
@@ -93,7 +93,7 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
 
     sf::Sound c_scale;
     sf::SoundBuffer buffer7;
-    buffer6.loadFromFile("a_assets/c_scale.flac");
+    buffer7.loadFromFile("a_assets/c_scale.flac");
     c_scale.setBuffer(buffer7);
     c_scale.setVolume(80);
 
@@ -293,16 +293,16 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
         if(menuOn){
             if(introMusic){
                 introMusic = false;
-                intro.play();
+                c_scale.play();
             }
             window.setView(mainMenu);
             menuBackground->Draw(window);
             menu->Draw(window);
             // flowers
-            buddy3->Animate(totalTime*1.2f);
-            buddy4->Animate(totalTime);
-            buddy5->Animate(totalTime*1.7f);
-            buddy6->Animate(totalTime*2.0f);
+            buddy3->Animate(totalTime*1.2f,true);
+            buddy4->Animate(totalTime,true);
+            buddy5->Animate(totalTime*1.7f,false);
+            buddy6->Animate(totalTime*2.0f,true);
             buddy3->Draw(window);
             buddy4->Draw(window);
             buddy5->Draw(window);
@@ -339,6 +339,7 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
             if(gameOn & !goal){
             
             if(startMusic){
+                c_scale.stop();
                 startMusic = false;
                 main_song.play();
             }
@@ -355,7 +356,7 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
                 }
             }
             window.draw(grass); 
-            buddy0->Animate(totalTime*1.4f);
+            buddy0->Animate(totalTime*1.4f,true);
             buddy0->Movement(deltaTime);
             buddy0->Draw(window);
             
@@ -436,19 +437,11 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
             menuBackground->setTransparency(150);
             menuBackground->Draw(window);
             if(gameOverCounter<1000){
-                    ++gameOverCounter;
+                buddy0->moveCenter(frontview.getCenter()/0.95f);
+                ++gameOverCounter;
             }else{
-                buddy0->moveCenter(frontview.getCenter()/1.01f);
-                buddy0->setRotation(0.001f);
-                buddy1->moveCenter(frontview.getCenter()/1.04f);
-                buddy1->setRotation(0.07f);
-                buddy1->Draw(window);
-                buddy2->moveCenter(frontview.getCenter()*1.03f);
-                buddy2->setRotation(-0.08f);
-                buddy2->Draw(window);
-                buddy3->moveCenter(frontview.getCenter()/1.06f);
-                buddy3->setRotation(-0.1f);
-                buddy3->Draw(window);
+                // buddy0->setRotation(0.001f);
+                buddy0->Animate(totalTime*0.1f,true);
                 main_player->updateState('F');
                 main_player->State(deltaTime,menuChoice);
                 buddy0->Draw(window);

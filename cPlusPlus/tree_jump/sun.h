@@ -1,4 +1,4 @@
-// object class
+// sun enemy class
 
 #ifndef _SUN_H_
 #define _SUN_H_

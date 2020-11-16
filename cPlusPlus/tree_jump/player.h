@@ -197,12 +197,11 @@ void Player::Goal(float deltatime, char menuChoice){
             break;
         }
     }
-    shape.setFillColor(sf::Color::Green);
-    shape.rotate(-0.01f);
+    shape.setFillColor(sf::Color::Cyan);
+    Animate(deltatime*3.0f);
 }
 
 void Player::setMouseClickPos(sf::Vector2f newClick) {
-    sounds.at(6).play();
     if(arm){
         if(abs(shape.getSize().x) <= 20.0f){
             mouseClickPos = newClick;    

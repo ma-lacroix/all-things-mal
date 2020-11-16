@@ -21,7 +21,7 @@ public:
     void setTransparency(int num){shape.setFillColor(sf::Color(255,255,255,num));};
     void setRotation(float degrees){shape.rotate(degrees);};
     void moveCenter(sf::Vector2f);
-    void Animate(float);
+    void Animate(float,bool);
     void Movement(float);
     void Draw(sf::RenderWindow&);
 };
@@ -45,10 +45,14 @@ void Object::moveCenter(sf::Vector2f newPos){
     shape.setPosition(newPos);
 }
 
-void Object::Animate(float totaltime){
+void Object::Animate(float totaltime, bool horiz){
     float velocity;
-    velocity = std::sinf(totaltime*PI)/20.0f;
-    shape.move(-velocity,0.0f);
+    velocity = std::sinf(totaltime*PI)/10.0f;
+    if(horiz){
+        shape.move(-velocity,0.0f);
+    }else{
+        shape.move(0.0f,velocity);
+    }
 }
 
 void Object::Movement(float deltatime){
