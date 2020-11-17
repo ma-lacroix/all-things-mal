@@ -1,4 +1,5 @@
 // struct that initialises the game, renders the game objects and the loop
+// "intro" song taken from OpenGameArt.org
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
