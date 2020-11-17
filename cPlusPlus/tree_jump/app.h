@@ -97,6 +97,33 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
     c_scale.setBuffer(buffer7);
     c_scale.setVolume(80);
 
+    sf::Sound ouch;
+    sf::SoundBuffer buffer8;
+    buffer8.loadFromFile("a_assets/ouch.flac");
+    ouch.setBuffer(buffer8);
+    ouch.setVolume(40);
+
+    sf::Sound armExtension;
+    sf::SoundBuffer buffer9;
+    buffer9.loadFromFile("a_assets/Vijouit.flac");
+    armExtension.setBuffer(buffer9);
+    armExtension.setVolume(10);
+    armExtension.setPitch(1.1f);
+
+    sf::Sound Monster;
+    sf::SoundBuffer buffer10;
+    buffer10.loadFromFile("a_assets/Monster.flac");
+    Monster.setBuffer(buffer10);
+    Monster.setVolume(80);
+    Monster.setPitch(0.8f);
+
+    sf::Sound Ding;
+    sf::SoundBuffer buffer11;
+    buffer11.loadFromFile("a_assets/Ding.flac");
+    Ding.setBuffer(buffer11);
+    Ding.setVolume(80);
+    Ding.setPitch(1.4f);
+
     std::vector<sf::Sound> sounds;
     sounds.push_back(intro);
     sounds.push_back(Song_A);
@@ -105,6 +132,10 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
     sounds.push_back(Song_D);
     sounds.push_back(Song_E);
     sounds.push_back(c_scale);
+    sounds.push_back(ouch);
+    sounds.push_back(armExtension);
+    sounds.push_back(Monster);
+    sounds.push_back(Ding);
 
     // Menu background
     std::string backgroundFile {"v_assets/background.jpg"};
@@ -263,9 +294,8 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
         frontview.setCenter(VIEW_WIDTH/2,main_player->getPosition().y-100.0f);        
         // frontview.setSize(800.0f,800.0f);
         frontview.setSize(950.0f,950.0f);
-        // HUD.setCenter(0.0f,(main_player->getPosition().y-1200.0f)*0.1);
 
-        // this part handles events related to the actual game window like closing or resizing. 
+        // this part handles events related to the game window like closing or resizing. 
         sf::Event evnt;
         while(window.pollEvent(evnt)){
             switch (evnt.type)
@@ -291,6 +321,7 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
         window.clear(sf::Color(180,225,255));
 
         if(menuOn){
+            // starts the game,draws the menu until player makes their choice
             if(introMusic){
                 introMusic = false;
                 c_scale.play();
@@ -298,7 +329,8 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
             window.setView(mainMenu);
             menuBackground->Draw(window);
             menu->Draw(window);
-            // flowers
+            
+            // flowers animations
             buddy3->Animate(totalTime*1.2f,true);
             buddy4->Animate(totalTime,true);
             buddy5->Animate(totalTime*1.7f,false);
@@ -326,8 +358,8 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
                 }
             }else{
                 menu->Selection(menuChoice);
-                // sheetNotes->drawNotes(menuChoice);
                 if(gameOverCounter<400){
+                    // little delay before starting the game
                     ++gameOverCounter;
                 }else{
                     menuOn = false;
@@ -336,15 +368,17 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
                 }
             }
         }else{
+            // the main game 
+
             if(gameOn & !goal){
             
             if(startMusic){
+                // stop the intro music
                 c_scale.stop();
                 startMusic = false;
                 main_song.play();
             }
 
-            // handle & draw objects
             window.setView(frontview);
             Ycoord = frontview.getCenter().y;
             if (sf::Mouse::isButtonPressed(sf::Mouse::Left)){
@@ -374,6 +408,12 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
             // handle the sun ennemy
             sun->setPlayerPos(main_player->getPosition());
             sun->Movement(deltaTime,Ycoord);
+            
+            // play a sound when sun is close to player
+            float distSunPlayer = abs(sun->getPosition().y-main_player->getPosition().y);
+            if(distSunPlayer<=603.0f & distSunPlayer >= 595.0f){
+                Monster.play();
+            }
             if(sun->Collision(main_player->getPosition())){
                 if(gameOverCounter<800){
                     main_player->inDanger(true);
@@ -390,6 +430,7 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
             for (auto rect: rects){
                 for (auto plr: players){
                     if(rect->Collision(plr->getClickPos(),plr->getVelocity().y)){
+                        // if click matches a branch position
                         plr->updateState('M');
                         plr->AdjustArm(main_player->getPosition());
                         plr->State(deltaTime,menuChoice);
@@ -413,6 +454,8 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
                 }
                 note->Animate(totalTime);
                 if(note->MoveElsewhere(main_player->getPosition(),rects.at(i)->getPosition())){
+                    // if main player sprite touches a note
+                    Ding.play();
                     if(sheetNotes->AddNote()==8){
                         goal = true;
                     };
@@ -440,7 +483,6 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
                 buddy0->moveCenter(frontview.getCenter()/0.95f);
                 ++gameOverCounter;
             }else{
-                // buddy0->setRotation(0.001f);
                 buddy0->Animate(totalTime*0.1f,true);
                 main_player->updateState('F');
                 main_player->State(deltaTime,menuChoice);
@@ -448,7 +490,7 @@ void app::game(sf::Music& main_song,sf::RenderWindow& window,sf::View mainMenu,s
                 main_player->Draw(window);
             }
         }else{
-            // animation when player loses
+            // animation when player loses the game
             main_song.stop();
             window.setView(frontview);
             Ycoord = frontview.getCenter().y;

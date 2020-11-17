@@ -1,4 +1,4 @@
-// object class
+// Music notes class
 
 #ifndef _NOTE_H_
 #define _NOTE_H_
@@ -14,7 +14,6 @@ private:
     sf::RectangleShape shape;
     bool status;
 public:
-    // Note(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f position, bool clickable);
     Note(sf::Texture*, sf::Vector2f,sf::Vector2f);
     ~Note();
     bool MoveElsewhere(sf::Vector2f,sf::Vector2f);
@@ -55,7 +54,6 @@ bool Note::MoveElsewhere(sf::Vector2f plrPos, sf::Vector2f branchPos){
 
 void Note::updateYcoord(float Ycoord,sf::Vector2f branch1Pos){
     if(shape.getPosition().y-Ycoord > 600.0f){
-        // shape.move(branch1Pos.x+90.0f,branch1Pos.y-5.0f);
         shape.move(0.0f,-1200.0f);
     }
 }

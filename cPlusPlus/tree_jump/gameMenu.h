@@ -1,3 +1,5 @@
+// game menu class
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "sheet.h"

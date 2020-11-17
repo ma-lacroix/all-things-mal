@@ -1,3 +1,5 @@
+// Music sheet class
+
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>

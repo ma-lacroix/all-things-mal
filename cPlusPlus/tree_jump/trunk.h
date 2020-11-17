@@ -1,4 +1,4 @@
-// object class
+// tree trunk objects class
 
 #ifndef _TRUNK_H_
 #define _TRUNK_H_
@@ -12,7 +12,6 @@ private:
     sf::RectangleShape shape;
     bool status;
 public:
-    // Trunk(sf::Texture* textureFile,sf::Vector2f objectSize, sf::Vector2f position, bool clickable);
     Trunk(sf::Texture*, sf::Vector2f,sf::Vector2f);
     ~Trunk();
     void GameOver(float, int);

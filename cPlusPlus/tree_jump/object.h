@@ -48,6 +48,7 @@ void Object::moveCenter(sf::Vector2f newPos){
 void Object::Animate(float totaltime, bool horiz){
     float velocity;
     velocity = std::sinf(totaltime*PI)/10.0f;
+    // bool is used to move objects horizontally or vertically
     if(horiz){
         shape.move(-velocity,0.0f);
     }else{

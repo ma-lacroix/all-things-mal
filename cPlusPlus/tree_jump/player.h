@@ -1,4 +1,4 @@
-// object class
+// Player class
 
 #ifndef _PLAYER_H_
 #define _PLAYER_H_
@@ -24,9 +24,9 @@ private:
     bool clickToRight;
     char playstate;
     bool playFinal;
+    bool dangerNoise;
     std::vector<sf::Sound> sounds; 
 public:
-    // Player(sf::Texture* textureFile,sf::Vector2f PlayerSize, sf::Vector2f position, bool clickable);
     Player(sf::Texture* textureFile, sf::Vector2f,sf::Vector2f,float,bool,std::vector<sf::Sound>);
     ~Player();
     void State(float,char);
@@ -64,6 +64,7 @@ Player::Player(sf::Texture* textureFile, sf::Vector2f objectSize, sf::Vector2f p
     playstate = 'S';
     clickToRight = false;
     playFinal = true;
+    dangerNoise = true;
     shape.setTexture(textureFile);
 }
 
@@ -73,7 +74,6 @@ Player::~Player(){
 void Player::State(float deltatime, char menuChoice){
     switch (playstate){
     case 'M':
-        // shape.setFillColor(sf::Color::Cyan);
         Movement(deltatime);
         break;
     case 'S':
@@ -137,7 +137,7 @@ void Player::Movement(float deltatime){
     sf::Vector2f direction_norm;
     direction.x = mouseClickPos.x-(shape.getPosition().x);
     direction.y = mouseClickPos.y-(shape.getPosition().y);
-    direction_norm = direction / sqrtf(direction.x * direction.x + direction.y * direction.y); // avoid speed changes
+    direction_norm = direction / sqrtf(direction.x * direction.x + direction.y * direction.y); // smooth out movement
     velocity = direction_norm*deltatime*speed;
     if(abs(direction.x+direction.y)>0.7f){
         shape.move(velocity);
@@ -152,13 +152,18 @@ void Player::Movement(float deltatime){
 }
 
 void Player::Stop(){
-    // add sound here
+    // add sound here - unused class function
 }
 
 void Player::inDanger(bool value){
     if(value){
+        if(dangerNoise){
+            dangerNoise = false;
+            sounds.at(7).play();
+        }
         shape.setFillColor(sf::Color(160.0f,160.0f,100.0f,160.0f));
     }else{
+        dangerNoise = true;
         shape.setFillColor(sf::Color(255.0f,255.0f,255.0f,255.0f));
     }
 }
@@ -202,6 +207,7 @@ void Player::Goal(float deltatime, char menuChoice){
 }
 
 void Player::setMouseClickPos(sf::Vector2f newClick) {
+    sounds.at(8).play();
     if(arm){
         if(abs(shape.getSize().x) <= 20.0f){
             mouseClickPos = newClick;    
