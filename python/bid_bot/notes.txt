@@ -1,0 +1,10 @@
+1. Find a trading platform
+2. Try it out & understand its API documents
+3. Define trading strategy
+4. Implement the strategy
+    - connection
+    - input & source
+    - monitoring
+5. Test the strategy
+6. Invest
+7. Automate the whole thing
