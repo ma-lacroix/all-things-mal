@@ -2,7 +2,9 @@
 # testing some APIs and getting a hang of things
 
 import datetime
+import pandas
 from tradingview_ta import TA_Handler, Interval
+import pandas_datareader.data as web
 
 def build_intervals():
     
@@ -36,13 +38,35 @@ def get_recommendation(var,meta,intv):
     
     return var.get_analysis().summary["RECOMMENDATION"]
 
+def get_close_prices(timeframe,security):
+    service = 'yahoo'
+    end = datetime.datetime.today().strftime('%Y-%m-%d')    
+    if(timeframe=='1d'):
+        start = (datetime.datetime.today()-datetime.timedelta(days=1)).strftime('%Y-%m-%d')
+    elif(timeframe=='1w'):
+        start = (datetime.datetime.today()-datetime.timedelta(days=7)).strftime('%Y-%m-%d')
+    elif(timeframe=='1m'):
+        start = (datetime.datetime.today()-datetime.timedelta(days=30)).strftime('%Y-%m-%d')
+    else:
+        start = end
+    try:
+        df = web.DataReader(security,service,start,end)[['Close','Volume']]
+    except ValueError as error:
+        print("Couldn't connect to {} - {}".format(service,error))
+    return df
+
 def print_results(intdict,securities):
     print("\nToday's date: {}\r".format(datetime.date.today()))
-    for intd in intdict:
-        print("Based on {}\n".format(intdict[intd][1]))
-        for item in securities:
-            recom = get_recommendation(securities[item][0],securities[item][1],intdict[intd][0])
-            print("{} -> {}".format(securities[item][1][0],recom))
+    for item in securities:
+        print("\n{}\n".format(securities[item][1][0]))
+        for intd in intdict:
+            df = get_close_prices(intd,securities[item][1][0])
+            try:
+                recom = get_recommendation(securities[item][0],securities[item][1],intdict[intd][0])
+            except ValueError as error:
+                print("Couldn't connect to TradingView - {}".format(error))
+            print("Based on {} -> {}\n".format(intdict[intd][1],recom))
+            print(df)
         print("\r")
 
 def main():
