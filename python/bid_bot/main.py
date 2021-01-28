@@ -22,14 +22,30 @@ def build_securities():
     TSLA = TA_Handler()
     AMZN = TA_Handler()
     BBBY = TA_Handler()
+    HELE = TA_Handler()
+    GGG = TA_Handler()
+    EXPD = TA_Handler()
+    GRMN = TA_Handler()
+    TSM = TA_Handler()
 
     secdict = {"1":[BKNG,["BKNG","NASDAQ","america"]],
                "2":[TSLA,["TSLA","NASDAQ","america"]],
                "3":[AMZN,["AMZN","NASDAQ","america"]],
-               "4":[BBBY,["BBBY","NASDAQ","america"]]
+               "4":[BBBY,["BBBY","NASDAQ","america"]],
+               "5":[HELE,["HELE","NASDAQ","america"]],
+               "6":[GGG,["GGG","NYSE","america"]],
+               "7":[EXPD,["EXPD","NASDAQ","america"]],
+               "8":[GRMN,["GRMN","NASDAQ","america"]],
+               "9":[TSM,["TSM","NYSE","america"]]
                 }
     
     return secdict
+
+def get_securities_list(securities):
+    symb_list = []
+    for item in securities:
+        symb_list.append(securities[item][1][0])
+    return symb_list
 
 def get_recommendation(var,meta,intv):
     var.set_symbol_as(meta[0])
@@ -48,12 +64,12 @@ def get_close_prices(timeframe,security):
         start = (datetime.datetime.today()-datetime.timedelta(days=8)).strftime('%Y-%m-%d')
     elif(timeframe=='1m'):
         start = (datetime.datetime.today()-datetime.timedelta(days=31)).strftime('%Y-%m-%d')
-    elif(timeframe=='1y'):
-        start = (datetime.datetime.today()-datetime.timedelta(days=365)).strftime('%Y-%m-%d')
+    elif(timeframe=='3m'):
+        start = (datetime.datetime.today()-datetime.timedelta(days=93)).strftime('%Y-%m-%d')
     else:
         start = end
     try:
-        df = web.DataReader(security,service,start,end)[['Close','Volume']]
+        df = np.round(web.DataReader(security,service,start,end)[['Close','Volume']],2)
         df.sort_values('Date',inplace = True)
     except ValueError as error:
         print("Couldn't connect to {} - {}".format(service,error))
@@ -76,9 +92,7 @@ def get_sharp_ratio(simulations,df):
     return all_weights[sharpe_arr.argmax(),:]
 
 def get_log_ret(intdict,securities):
-    symb_list = []
-    for item in securities:
-        symb_list.append(securities[item][1][0])
+    symb_list = get_securities_list(securities)
     df = get_close_prices(intdict,symb_list)
     log_ret = pd.DataFrame(np.log(df['Close']/df['Close'].shift(1)))
     log_ret.fillna(0,inplace=True)
@@ -86,6 +100,7 @@ def get_log_ret(intdict,securities):
 
 def print_results(intdict,securities):
     print("\nToday's date: {}\r".format(datetime.date.today()))
+    print(get_close_prices('1d',get_securities_list(securities))['Close'].tail(1))
     for intd in intdict:
         for item in securities:    
             print("\n{}".format(securities[item][1][0]))
@@ -94,12 +109,12 @@ def print_results(intdict,securities):
                 print("Based on {} -> {}".format(intdict[intd][1],recom))
             except ValueError as error:
                 print("Couldn't connect to TradingView - {}".format(error))
-        try:
-            sol = get_sharp_ratio(15000,get_log_ret(intd,securities))
-            print("Optimal portfolio allocation: {}".format(sol))
-        except ValueError as err:
-            print("Couldn't get Sharpe ratios - {}".format(err))
         print("\r")
+    try:
+        sol = get_sharp_ratio(15000,get_log_ret('3m',securities))
+        print("Optimal portfolio allocation (based on last 3 months): {}".format(sol))
+    except ValueError as error:
+        print("Couldn't get Sharpe ratios - {}".format(error))
 
 def main():
     securities = build_securities()
