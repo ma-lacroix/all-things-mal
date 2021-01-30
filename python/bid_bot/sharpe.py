@@ -27,3 +27,19 @@ def get_log_ret(intdict,symb_list):
     log_ret = pd.DataFrame(np.log(df['Close']/df['Close'].shift(1)))
     log_ret.fillna(0,inplace=True)
     return log_ret
+
+def print_portolio(securities,simulations,grouping):
+    print("\nToday's date: {}\r".format(datetime.date.today()))
+    try:
+        symb_list = utils.check_dtype_securities(securities)
+        log_returns = get_log_ret('3m',symb_list)
+        if(grouping):
+            log_returns.columns=securities['GICS Sector'].head(30)
+            log_returns = log_returns.groupby(log_returns.columns, axis=1).sum()
+        sol = get_sharp_ratio(simulations,log_returns)
+        print("Optimal portfolio allocation (based on last 3 months): ")
+        for row in zip(log_returns.columns,sol):
+            print(row[0],': ',row[1])
+    except ValueError as error:
+        print("Couldn't get Sharpe ratios - {}".format(error))
+
