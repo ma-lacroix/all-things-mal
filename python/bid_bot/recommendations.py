@@ -37,7 +37,7 @@ def print_recommendations(intdict,securities):
             print("\n{}".format(securities[item][1][0]))
             try:
                 recom = get_recommendation(securities[item][0],securities[item][1],intdict[intd][0])
-                print("Based on {} -> {} -> Price: ".format(intdict[intd][1],recom))
+                print("Based on {} -> {}".format(intdict[intd][1],recom))
                                                             # prices[['Symbols']==item])
             except ValueError as error:
                 print("Couldn't connect to TradingView - {}".format(error))
