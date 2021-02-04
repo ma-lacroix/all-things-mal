@@ -9,7 +9,8 @@ import sharpe,recommendations
 def get_sp500():
     print("Getting list of S&P stock symbols...")        
     df=pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')[0][['GICS Sub-Industry','GICS Sector','Symbol']]
-    return df.head(30)
+    df=df[df['Symbol']!='GOOG'].reset_index(drop=True) # removing some stocks
+    return df.head(200)
 
 def check_dtype_securities(securities):
 # different data types will flow through the program
@@ -42,16 +43,17 @@ def close_prices_loop(timeframe,security):
     print("Getting closing prices...")
     df = pd.DataFrame()
     num = len(security)
-    residue = num%5
-    incr = int((num-residue)/5)-1
+    residue = num%10
+    incr = int((num-residue)/10)
     cnt = 0
     while(cnt<num-residue):
-        print(f"Getting {cnt} to {cnt+incr}")
+        print(f"Getting {cnt} to {cnt+incr-1}")
         df = pd.concat([get_close_prices(timeframe,security[cnt:cnt+incr]),df])
-        cnt+=incr+1
+        cnt+=incr
     if(residue>0):
         print(f"Getting {cnt} to {cnt+residue}")
         df = pd.concat([get_close_prices(timeframe,security[cnt:cnt+residue]),df])
+    df.fillna(0,inplace=True)
     return df
 
 def get_close_prices(timeframe,security):    
@@ -67,9 +69,10 @@ def get_close_prices(timeframe,security):
 
 def trim_too_expensive(securities,max_price):
     symb_list = check_dtype_securities(securities)
-    prices = close_prices_loop('1d',symb_list)['Close'].tail(1)
+    prices = close_prices_loop('1d',symb_list)['Close'].min().reset_index()
+    prices.columns = ['Symbol','Close']
     print(f"Keeping stocks with open prices below {max_price}")
-    for row in prices:
-        if(prices[row].values[0]>max_price):
-            securities = securities[securities['Symbol']!=row]
+    for index,row in prices.iterrows():
+        if(row['Close']>max_price):
+            securities = securities[securities['Symbol']!=row['Symbol']]
     return securities
