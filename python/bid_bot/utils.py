@@ -10,7 +10,7 @@ def get_sp500():
     print("Getting list of S&P stock symbols...")        
     df=pd.read_html('https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')[0][['GICS Sub-Industry','GICS Sector','Symbol']]
     df=df[df['Symbol']!='GOOG'].reset_index(drop=True) # removing some stocks
-    return df.head(200)
+    return df.head(500)
 
 def check_dtype_securities(securities):
 # different data types will flow through the program
@@ -69,10 +69,11 @@ def get_close_prices(timeframe,security):
 
 def trim_too_expensive(securities,max_price):
     symb_list = check_dtype_securities(securities)
-    prices = close_prices_loop('1d',symb_list)['Close'].min().reset_index()
+    prices = close_prices_loop('1d',symb_list)['Close'].max().reset_index()
     prices.columns = ['Symbol','Close']
     print(f"Keeping stocks with open prices below {max_price}")
     for index,row in prices.iterrows():
         if(row['Close']>max_price):
             securities = securities[securities['Symbol']!=row['Symbol']]
+    print("Total securities: {}".format(len(securities)))
     return securities

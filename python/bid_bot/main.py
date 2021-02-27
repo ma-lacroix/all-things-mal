@@ -11,8 +11,8 @@ def main():
     # recommendations.print_recommendations(intdict,securities)
     # securities = utils.trim_too_expensive(utils.get_sp500(),100)
     securities = utils.get_sp500()
-    securities = utils.trim_too_expensive(securities,100)
-    sharpe.print_portolio(securities,100,True)
+    securities = utils.trim_too_expensive(securities,50)
+    sharpe.print_portolio(securities,100,False)
     
 if __name__ == "__main__":
     main()
