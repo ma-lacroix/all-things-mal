@@ -20,7 +20,7 @@ void checkingProcess(bool error1, bool error2){
 int main() {
 
     try{
-        somethingGoingWrong(false,true);
+        somethingGoingWrong(true,true);
     }
     catch(int err1){
         std::cout << "Error code: " << err1 << std::endl;

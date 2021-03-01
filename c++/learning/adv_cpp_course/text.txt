@@ -1,0 +1,4 @@
+"New entry"
+"Read entry"
+"Delete entry"
+"Print all"
