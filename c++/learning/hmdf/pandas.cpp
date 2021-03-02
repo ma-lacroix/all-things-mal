@@ -56,9 +56,10 @@ void testing_groupby() {
                 // unsigned long,
                 int>(std::cout);
     
-    int channel = df2.get_column<int>("Channel")[0];
-    int visitors = df2.get_column<int>("Visitors")[0];
-
+    for(int i = 0; i<2; ++i){ // check how to get size of grouped vector
+        std::cout << df2.get_column<std::string>("Channels")[i] << " "; 
+        std::cout << df2.get_column<int>("Visitors")[i] << " visitors" << std::endl;
+    }
 
 }
 
