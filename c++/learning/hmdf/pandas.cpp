@@ -24,37 +24,41 @@ void testing_read_csv()  {
 }
 
 void testing_groupby() {
-    Df df;    
-    
-    // df.read("sample_data.csv");
-    // df.write<std::ostream,unsigned long,std::string,int>(std::cout);
-    
-    std::vector<unsigned long> Index {"paid","paid","free","free","free"};
-    std::vector<unsigned long> xIndex = Index;
-    std::vector<std::string> Channels {"paid","paid","free","free","free"};
-    std::vector<int> Visitors {450,343,500,234,100};
 
-    df.load_data(std::move(Index),
-                std::make_pair("Channels",Channels),
-                std::make_pair("Visitors",Visitors),
-                std::make_pair("xIndex",xIndex));
-    df.write<std::ostream,
-                unsigned long,
-                std::string,
-                int>(std::cout);
+    Df df;    
+    // std::vector<unsigned long> Index = {1,2,3,4,5};
+    // std::vector<unsigned long> xIndex = Index;
+    // std::vector<std::string> Channels = {"paid","paid","free","free","free"};
+    // std::vector<int> Visitors = {450,343,500,234,100};
+
+    // df.load_data(std::move(Index),
+    //             std::make_pair("Channels",Channels),
+    //             std::make_pair("Visitors",Visitors),
+    //             std::make_pair("xIndex",xIndex)
+    //             );
+      
+    // df.write<std::ostream,
+    //             unsigned long,
+    //             std::string,
+    //             int>(std::cout);
+
+    df.read("sample_data.csv");
+    df.write<std::ostream,unsigned long,std::string,int>(std::cout);
+  
                 
     const Df df2 = df.groupby<hmdf::GroupbySum,
-                        unsigned long,
                         std::string,
-                        unsigned long,
-                        int>(hmdf::GroupbySum(),hmdf::DF_INDEX_COL_NAME);
+                        // unsigned long,
+                        std::string,
+                        int>(hmdf::GroupbySum(),"Channels");
     df2.write<std::ostream,
                 std::string,
-                unsigned long,
+                // unsigned long,
                 int>(std::cout);
-    // std::string example2 = df3.get_column<std::string>("Channels")[0];
     
-    // std::cout << "Group by:" << example2 << std::endl;
+    int channel = df2.get_column<int>("Channel")[0];
+    int visitors = df2.get_column<int>("Visitors")[0];
+
 
 }
 
