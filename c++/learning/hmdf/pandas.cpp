@@ -26,25 +26,9 @@ void testing_read_csv()  {
 void testing_groupby() {
 
     Df df;    
-    // std::vector<unsigned long> Index = {1,2,3,4,5};
-    // std::vector<unsigned long> xIndex = Index;
-    // std::vector<std::string> Channels = {"paid","paid","free","free","free"};
-    // std::vector<int> Visitors = {450,343,500,234,100};
-
-    // df.load_data(std::move(Index),
-    //             std::make_pair("Channels",Channels),
-    //             std::make_pair("Visitors",Visitors),
-    //             std::make_pair("xIndex",xIndex)
-    //             );
-      
-    // df.write<std::ostream,
-    //             unsigned long,
-    //             std::string,
-    //             int>(std::cout);
 
     df.read("sample_data.csv");
     df.write<std::ostream,unsigned long,std::string,int>(std::cout);
-  
                 
     const Df df2 = df.groupby<hmdf::GroupbySum,
                         std::string,
