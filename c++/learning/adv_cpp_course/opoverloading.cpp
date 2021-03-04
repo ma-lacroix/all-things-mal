@@ -6,14 +6,14 @@ private:
     int num2;
 public:
     Simple()
-        // num1(0),num2(0)
+        // :num1(0),num2(0)
         {
         this->num1 = 0;
         this->num2 = 0;
         std::cout << "Default class constructor called" << std::endl;
         }
     Simple(int anum, int bnum)
-        // num1(anum),num2(bnum)
+        // :num1(anum),num2(bnum)
         {
         this->num1 = anum;
         this->num2 = bnum;
