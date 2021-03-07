@@ -9,7 +9,7 @@ Bitmap::Bitmap(int width, int height)
 	
 Bitmap::~Bitmap(){
     std::cout << "destructor called" << std::endl;
-}
+} 
 
 bool Bitmap::write(std::string filename){
     Bitmapfileheader fileheader;
@@ -39,5 +39,11 @@ bool Bitmap::write(std::string filename){
 }
 
 bool Bitmap::setPixel(int x, int y, uint8_t red, uint8_t green,uint8_t blue){
+    uint8_t *pPixel = m_pPixel.get();
+    pPixel += (y*3) * m_width + (x*3);
+    pPixel[0] = blue;
+    pPixel[0] = green;
+    pPixel[0] = red;
+    
     return false;
 }

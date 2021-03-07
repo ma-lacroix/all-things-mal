@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <cstdint>
-#pragma pack(2)
 
 class Bitmap{
 	private:

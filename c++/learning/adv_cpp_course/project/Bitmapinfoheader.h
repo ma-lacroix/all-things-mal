@@ -3,7 +3,7 @@
 
 #include<iostream>
 #include<cstdint>
-// #pragma pack(2)
+#pragma pack(2)
 
 struct Bitmapinfoheader{
 	int32_t headerSize{40};
