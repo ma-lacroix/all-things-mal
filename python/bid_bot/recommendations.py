@@ -7,7 +7,7 @@ from tradingview_ta import TA_Handler, Interval
 import utils
 
 def build_intervals():
-    
+    # TA_handler class member variables
     oneday = Interval.INTERVAL_1_DAY
     oneweek = Interval.INTERVAL_1_WEEK
     onemonth = Interval.INTERVAL_1_MONTH
