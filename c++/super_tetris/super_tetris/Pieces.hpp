@@ -16,7 +16,6 @@
 
 class Piece {
 private:
-    std::vector<sf::Vector2f> m_init;
     std::vector<sf::Vector2f> m_positions;
     std::vector<sf::RectangleShape> m_squares;
     sf::Vector2f m_block_size;
@@ -28,10 +27,13 @@ private:
 public:
     Piece(sf::Vector2f,sf::Vector2f,std::vector<sf::Vector2f>,sf::Color);
     ~Piece();
+    std::vector<float> Get_piece_bounds();
     bool Check_boundaries(sf::Vector2f);
     bool Check_bottom();
     void Move(sf::Vector2f);
+    void Adjust_rotation(sf::Vector2f);
     void Rotate();
+    void Rotation_Outbound();
     void Draw(sf::RenderWindow&);
 };
 

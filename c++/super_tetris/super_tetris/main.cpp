@@ -84,6 +84,9 @@ int main()
                 if(event.key.code == sf::Keyboard::Up){
                     line.Move({0.0f,-1.0f});
                 }
+                if(event.key.code == sf::Keyboard::Space){
+                    line.Rotate();
+                }
             }
         }
         
