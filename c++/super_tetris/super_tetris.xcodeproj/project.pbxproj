@@ -7,28 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DB9FC9482607EF1E0092B6CC /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB9FC9472607EF1E0092B6CC /* ResourcePath.mm */; };
-		DB9FC94B2607EF1E0092B6CC /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB9FC94A2607EF1E0092B6CC /* main.cpp */; };
-		DB9FC9522607EF1E0092B6CC /* sansation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB9FC9512607EF1E0092B6CC /* sansation.ttf */; };
-		DB9FC95F2607EFCB0092B6CC /* game_logic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB9FC95D2607EFCB0092B6CC /* game_logic.cpp */; };
-		DB9FC9622607F13D0092B6CC /* board.png in Resources */ = {isa = PBXBuildFile; fileRef = DB9FC9612607F13D0092B6CC /* board.png */; };
+		DB0526BF2609DB2A00280855 /* board.png in Resources */ = {isa = PBXBuildFile; fileRef = DB0526BE2609DB2A00280855 /* board.png */; };
+		DB0526C32609DC5F00280855 /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB0526C12609DC5F00280855 /* Background.cpp */; };
+		DB0526C8260A141200280855 /* Pieces.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB0526C6260A141200280855 /* Pieces.cpp */; };
+		DB79A5FD2608C82D000F917B /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB79A5FC2608C82D000F917B /* ResourcePath.mm */; };
+		DB79A6002608C82D000F917B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB79A5FF2608C82D000F917B /* main.cpp */; };
+		DB79A6072608C82D000F917B /* sansation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB79A6062608C82D000F917B /* sansation.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		DB9FC9422607EF1E0092B6CC /* tic_tac_toe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tic_tac_toe.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		DB9FC9462607EF1E0092B6CC /* tic_tac_toe-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "tic_tac_toe-Info.plist"; path = "../tic_tac_toe-Info.plist"; sourceTree = "<group>"; };
-		DB9FC9472607EF1E0092B6CC /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
-		DB9FC9492607EF1E0092B6CC /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
-		DB9FC94A2607EF1E0092B6CC /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		DB9FC9512607EF1E0092B6CC /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sansation.ttf; path = ../sansation.ttf; sourceTree = "<group>"; };
-		DB9FC95B2607EF480092B6CC /* tic_tac_toe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = tic_tac_toe.entitlements; sourceTree = "<group>"; };
-		DB9FC95D2607EFCB0092B6CC /* game_logic.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = game_logic.cpp; sourceTree = "<group>"; };
-		DB9FC95E2607EFCB0092B6CC /* game_logic.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = game_logic.hpp; sourceTree = "<group>"; };
-		DB9FC9612607F13D0092B6CC /* board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = board.png; sourceTree = "<group>"; };
+		DB0526BE2609DB2A00280855 /* board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = board.png; path = ../../../tictactoe/tic_tac_toe/tic_tac_toe/Resources/board.png; sourceTree = "<group>"; };
+		DB0526C12609DC5F00280855 /* Background.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Background.cpp; sourceTree = "<group>"; };
+		DB0526C22609DC5F00280855 /* Background.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Background.hpp; sourceTree = "<group>"; };
+		DB0526C6260A141200280855 /* Pieces.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Pieces.cpp; sourceTree = "<group>"; };
+		DB0526C7260A141200280855 /* Pieces.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Pieces.hpp; sourceTree = "<group>"; };
+		DB79A5F72608C82D000F917B /* super_tetris.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = super_tetris.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB79A5FB2608C82D000F917B /* super_tetris-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "super_tetris-Info.plist"; path = "../super_tetris-Info.plist"; sourceTree = "<group>"; };
+		DB79A5FC2608C82D000F917B /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
+		DB79A5FE2608C82D000F917B /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
+		DB79A5FF2608C82D000F917B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		DB79A6062608C82D000F917B /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sansation.ttf; path = ../sansation.ttf; sourceTree = "<group>"; };
+		DB79A6102608C96E000F917B /* super_tetris.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = super_tetris.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		DB9FC93E2607EF1E0092B6CC /* Frameworks */ = {
+		DB79A5F32608C82D000F917B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -38,50 +41,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		DB9FC9382607EF1E0092B6CC = {
+		DB79A5ED2608C82D000F917B = {
 			isa = PBXGroup;
 			children = (
-				DB9FC9442607EF1E0092B6CC /* tic_tac_toe */,
-				DB9FC9432607EF1E0092B6CC /* Products */,
+				DB79A5F92608C82D000F917B /* super_tetris */,
+				DB79A5F82608C82D000F917B /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		DB9FC9432607EF1E0092B6CC /* Products */ = {
+		DB79A5F82608C82D000F917B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DB9FC9422607EF1E0092B6CC /* tic_tac_toe.app */,
+				DB79A5F72608C82D000F917B /* super_tetris.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DB9FC9442607EF1E0092B6CC /* tic_tac_toe */ = {
+		DB79A5F92608C82D000F917B /* super_tetris */ = {
 			isa = PBXGroup;
 			children = (
-				DB9FC95B2607EF480092B6CC /* tic_tac_toe.entitlements */,
-				DB9FC9472607EF1E0092B6CC /* ResourcePath.mm */,
-				DB9FC9492607EF1E0092B6CC /* ResourcePath.hpp */,
-				DB9FC94A2607EF1E0092B6CC /* main.cpp */,
-				DB9FC95D2607EFCB0092B6CC /* game_logic.cpp */,
-				DB9FC95E2607EFCB0092B6CC /* game_logic.hpp */,
-				DB9FC94C2607EF1E0092B6CC /* Resources */,
-				DB9FC9452607EF1E0092B6CC /* Supporting Files */,
+				DB79A6102608C96E000F917B /* super_tetris.entitlements */,
+				DB79A5FC2608C82D000F917B /* ResourcePath.mm */,
+				DB79A5FE2608C82D000F917B /* ResourcePath.hpp */,
+				DB79A5FF2608C82D000F917B /* main.cpp */,
+				DB0526C6260A141200280855 /* Pieces.cpp */,
+				DB0526C7260A141200280855 /* Pieces.hpp */,
+				DB0526C12609DC5F00280855 /* Background.cpp */,
+				DB0526C22609DC5F00280855 /* Background.hpp */,
+				DB79A6012608C82D000F917B /* Resources */,
+				DB79A5FA2608C82D000F917B /* Supporting Files */,
 			);
-			path = tic_tac_toe;
+			path = super_tetris;
 			sourceTree = "<group>";
 		};
-		DB9FC9452607EF1E0092B6CC /* Supporting Files */ = {
+		DB79A5FA2608C82D000F917B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				DB9FC9462607EF1E0092B6CC /* tic_tac_toe-Info.plist */,
+				DB79A5FB2608C82D000F917B /* super_tetris-Info.plist */,
 			);
 			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		DB9FC94C2607EF1E0092B6CC /* Resources */ = {
+		DB79A6012608C82D000F917B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DB9FC9612607F13D0092B6CC /* board.png */,
-				DB9FC9512607EF1E0092B6CC /* sansation.ttf */,
+				DB0526BE2609DB2A00280855 /* board.png */,
+				DB79A6062608C82D000F917B /* sansation.ttf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -89,39 +94,39 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DB9FC9412607EF1E0092B6CC /* tic_tac_toe */ = {
+		DB79A5F62608C82D000F917B /* super_tetris */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DB9FC9572607EF1E0092B6CC /* Build configuration list for PBXNativeTarget "tic_tac_toe" */;
+			buildConfigurationList = DB79A60C2608C82D000F917B /* Build configuration list for PBXNativeTarget "super_tetris" */;
 			buildPhases = (
-				DB9FC93D2607EF1E0092B6CC /* Sources */,
-				DB9FC93E2607EF1E0092B6CC /* Frameworks */,
-				DB9FC93F2607EF1E0092B6CC /* Resources */,
-				DB9FC9402607EF1E0092B6CC /* ShellScript */,
+				DB79A5F22608C82D000F917B /* Sources */,
+				DB79A5F32608C82D000F917B /* Frameworks */,
+				DB79A5F42608C82D000F917B /* Resources */,
+				DB79A5F52608C82D000F917B /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = tic_tac_toe;
-			productName = tic_tac_toe;
-			productReference = DB9FC9422607EF1E0092B6CC /* tic_tac_toe.app */;
+			name = super_tetris;
+			productName = super_tetris;
+			productReference = DB79A5F72608C82D000F917B /* super_tetris.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		DB9FC9392607EF1E0092B6CC /* Project object */ = {
+		DB79A5EE2608C82D000F917B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = "Marc-Antoine Lacroix";
 				TargetAttributes = {
-					DB9FC9412607EF1E0092B6CC = {
+					DB79A5F62608C82D000F917B = {
 						CreatedOnToolsVersion = 12.4;
 					};
 				};
 			};
-			buildConfigurationList = DB9FC93C2607EF1E0092B6CC /* Build configuration list for PBXProject "tic_tac_toe" */;
+			buildConfigurationList = DB79A5F12608C82D000F917B /* Build configuration list for PBXProject "super_tetris" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -129,30 +134,30 @@
 				en,
 				Base,
 			);
-			mainGroup = DB9FC9382607EF1E0092B6CC;
-			productRefGroup = DB9FC9432607EF1E0092B6CC /* Products */;
+			mainGroup = DB79A5ED2608C82D000F917B;
+			productRefGroup = DB79A5F82608C82D000F917B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DB9FC9412607EF1E0092B6CC /* tic_tac_toe */,
+				DB79A5F62608C82D000F917B /* super_tetris */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		DB9FC93F2607EF1E0092B6CC /* Resources */ = {
+		DB79A5F42608C82D000F917B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB9FC9522607EF1E0092B6CC /* sansation.ttf in Resources */,
-				DB9FC9622607F13D0092B6CC /* board.png in Resources */,
+				DB79A6072608C82D000F917B /* sansation.ttf in Resources */,
+				DB0526BF2609DB2A00280855 /* board.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		DB9FC9402607EF1E0092B6CC /* ShellScript */ = {
+		DB79A5F52608C82D000F917B /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 8;
 			files = (
@@ -172,20 +177,21 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		DB9FC93D2607EF1E0092B6CC /* Sources */ = {
+		DB79A5F22608C82D000F917B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB9FC94B2607EF1E0092B6CC /* main.cpp in Sources */,
-				DB9FC95F2607EFCB0092B6CC /* game_logic.cpp in Sources */,
-				DB9FC9482607EF1E0092B6CC /* ResourcePath.mm in Sources */,
+				DB0526C8260A141200280855 /* Pieces.cpp in Sources */,
+				DB0526C32609DC5F00280855 /* Background.cpp in Sources */,
+				DB79A6002608C82D000F917B /* main.cpp in Sources */,
+				DB79A5FD2608C82D000F917B /* ResourcePath.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		DB9FC9552607EF1E0092B6CC /* Debug */ = {
+		DB79A60A2608C82D000F917B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -229,7 +235,7 @@
 			};
 			name = Debug;
 		};
-		DB9FC9562607EF1E0092B6CC /* Release */ = {
+		DB79A60B2608C82D000F917B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(NATIVE_ARCH_ACTUAL)";
@@ -273,27 +279,27 @@
 			};
 			name = Release;
 		};
-		DB9FC9582607EF1E0092B6CC /* Debug */ = {
+		DB79A60D2608C82D000F917B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = tic_tac_toe/tic_tac_toe.entitlements;
+				CODE_SIGN_ENTITLEMENTS = super_tetris/super_tetris.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 482V93Y3BU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = "tic_tac_toe/tic_tac_toe-Info.plist";
+				INFOPLIST_FILE = "super_tetris/super_tetris-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		DB9FC9592607EF1E0092B6CC /* Release */ = {
+		DB79A60E2608C82D000F917B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_ENTITLEMENTS = tic_tac_toe/tic_tac_toe.entitlements;
+				CODE_SIGN_ENTITLEMENTS = super_tetris/super_tetris.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 482V93Y3BU;
 				ENABLE_HARDENED_RUNTIME = YES;
-				INFOPLIST_FILE = "tic_tac_toe/tic_tac_toe-Info.plist";
+				INFOPLIST_FILE = "super_tetris/super_tetris-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "@loader_path/../Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -302,25 +308,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DB9FC93C2607EF1E0092B6CC /* Build configuration list for PBXProject "tic_tac_toe" */ = {
+		DB79A5F12608C82D000F917B /* Build configuration list for PBXProject "super_tetris" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DB9FC9552607EF1E0092B6CC /* Debug */,
-				DB9FC9562607EF1E0092B6CC /* Release */,
+				DB79A60A2608C82D000F917B /* Debug */,
+				DB79A60B2608C82D000F917B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DB9FC9572607EF1E0092B6CC /* Build configuration list for PBXNativeTarget "tic_tac_toe" */ = {
+		DB79A60C2608C82D000F917B /* Build configuration list for PBXNativeTarget "super_tetris" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				DB9FC9582607EF1E0092B6CC /* Debug */,
-				DB9FC9592607EF1E0092B6CC /* Release */,
+				DB79A60D2608C82D000F917B /* Debug */,
+				DB79A60E2608C82D000F917B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = DB9FC9392607EF1E0092B6CC /* Project object */;
+	rootObject = DB79A5EE2608C82D000F917B /* Project object */;
 }
