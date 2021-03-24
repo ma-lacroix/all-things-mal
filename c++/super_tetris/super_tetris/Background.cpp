@@ -21,11 +21,11 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     m_main_bg.setOutlineColor(m_color);
     m_main_bg.setOutlineThickness(3.0f);
     
-    m_second_bg.setSize({s_size.x*0.25f,s_size.x*0.25f});
+    m_second_bg.setSize({s_size.x*0.275f,s_size.x*0.275f});
     m_second_bg.setOutlineColor(m_color);
     m_second_bg.setOutlineThickness(3.0f);
     
-    m_third_bg.setSize({s_size.x*0.25f,s_size.x*0.25f});
+    m_third_bg.setSize({s_size.x*0.275f,s_size.x*0.275f});
     m_third_bg.setOutlineColor(m_color);
     m_third_bg.setOutlineThickness(3.0f);
     
@@ -53,6 +53,15 @@ sf::Vector2f Background::Get_play_size(){
 
 sf::Vector2f Background::Get_play_pos(){
     return m_main_bg.getPosition();
+}
+
+void Background::Draw(sf::RenderWindow& window, Piece* p){
+    window.draw(m_main_bg);
+    window.draw(m_second_bg);
+    window.draw(m_third_bg);
+    window.draw(m_msg_next);
+    window.draw(m_msg_score);
+    p->Draw(window);
 }
 
 void Background::Draw(sf::RenderWindow& window){

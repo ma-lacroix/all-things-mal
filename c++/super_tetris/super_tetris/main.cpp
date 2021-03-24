@@ -15,6 +15,21 @@
 enum class State {INTRO,PLAYING,GAME_OVER};
 const float SCREEN_WIDTH {800.0f};
 const float SCREEN_HEIGHT {1500.0f};
+int c_index {0};
+
+std::vector<Piece*> gen(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int num_pieces){
+    
+    std::vector<Piece*> c_pieces;
+    for(int i {0};i<num_pieces;++i){
+        srand((int)time(0) * i * 2);
+        int c_type = (rand() % 4)+1;
+        Piece* p = new Piece(c_play_size,c_play_pos,c_type);
+        c_pieces.push_back(p);
+    }
+    c_pieces.at(0)->Activate_Piece();
+    return c_pieces;
+}
+
 
 int main()
 {
@@ -29,23 +44,16 @@ int main()
         return EXIT_FAILURE;
     }
     
-    // Load a sprite to display
-//    sf::Texture game_background;
-//    if (!game_background.loadFromFile(resourcePath() + "board.png")) {
-//        return EXIT_FAILURE;
-//    }
-//    sf::Sprite sprite(game_background);
-//    sprite.setPosition(screen_size.x/5,screen_size.y/5);
-    
-    
     Background background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
-    Piece line(background.Get_play_size(),background.Get_play_pos(),{{0.0f,1.0f},{1.0f,1.0f},{2.0f,1.0f},{3.0f,1.0f}},sf::Color::Blue);
+    std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),3);
     
-    sf::Text introduction("Welcome to SuperTetris", font, 50);
-    introduction.setFillColor(sf::Color::Red);
-    introduction.setPosition(screen_size.x/5,screen_size.y/2);
-    std::vector<sf::Text> messages;
-    messages.push_back(introduction);
+    sf::Text t_introduction("Welcome to SuperTetris", font, 50);
+    t_introduction.setFillColor(sf::Color::Red);
+    t_introduction.setPosition(screen_size.x/5,screen_size.y/2);
+    
+    sf::Text t_game_over("Game over", font, 50);
+    t_game_over.setFillColor(sf::Color::Red);
+    t_game_over.setPosition(screen_size.x/5,screen_size.y/2);
 
     // Start the game loop
     while (window.isOpen())
@@ -72,20 +80,20 @@ int main()
             // Move pieces
             if(state == State::PLAYING && event.type == sf::Event::KeyPressed){
                 if(event.key.code == sf::Keyboard::Left){
-                    line.Move({-1.0f,0.0f});
+                    pieces.at(c_index)->Move({-1.0f,0.0f});
                 }
                 if(event.key.code == sf::Keyboard::Right){
-                    line.Move({1.0f,0.0f});
+                    pieces.at(c_index)->Move({1.0f,0.0f});
                 }
                 if(event.key.code == sf::Keyboard::Down){
-                    line.Move({0.0f,1.0f});
+                    pieces.at(c_index)->Move({0.0f,1.0f});
                 }
                 // to remove from final game - for debugging purposes only!
                 if(event.key.code == sf::Keyboard::Up){
-                    line.Move({0.0f,-1.0f});
+                    pieces.at(c_index)->Move({0.0f,-1.0f});
                 }
                 if(event.key.code == sf::Keyboard::Space){
-                    line.Rotate();
+                    pieces.at(c_index)->Rotate();
                 }
             }
         }
@@ -94,13 +102,27 @@ int main()
         window.clear(sf::Color(229,250,255));
         
         if(state==State::INTRO){
-            window.draw(messages.at(0));
+            window.draw(t_introduction);
         }else if(state==State::PLAYING){
-            background.Draw(window);
-            line.Draw(window);
+            if(c_index+1 <= pieces.size()-1){
+                background.Draw(window,pieces.at(c_index+1));
+                for(int i {0};i<=c_index;++i){
+                    pieces.at(i)->Draw(window);
+                }
+            }else{
+                state = State::GAME_OVER;
+            }
+        }else{
+            window.draw(t_game_over);
         }
         // Update the window
         window.display();
+        
+        // Switch to next piece
+        if(!pieces.at(c_index)->Check_status() && c_index < pieces.size()-1){
+            ++c_index;
+            pieces.at(c_index)->Activate_Piece();
+        }
     }
 
     return EXIT_SUCCESS;

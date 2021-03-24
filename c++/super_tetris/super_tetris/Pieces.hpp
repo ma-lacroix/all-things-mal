@@ -25,11 +25,13 @@ private:
     bool m_is_alive;
     
 public:
-    Piece(sf::Vector2f,sf::Vector2f,std::vector<sf::Vector2f>,sf::Color);
+    Piece(sf::Vector2f,sf::Vector2f,int);
     ~Piece();
+    void Activate_Piece();
     std::vector<float> Get_piece_bounds();
     bool Check_boundaries(sf::Vector2f);
     bool Check_bottom(float, sf::Vector2f);
+    bool Check_status();
     void Move(sf::Vector2f);
     void Adjust_rotation(sf::Vector2f);
     void Rotate();

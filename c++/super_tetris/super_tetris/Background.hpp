@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "Pieces.hpp"
 
 class Background {
 private:
@@ -27,6 +28,7 @@ public:
     ~Background();
     sf::Vector2f Get_play_size();
     sf::Vector2f Get_play_pos();
+    void Draw(sf::RenderWindow&,Piece*);
     void Draw(sf::RenderWindow&);
 };
 

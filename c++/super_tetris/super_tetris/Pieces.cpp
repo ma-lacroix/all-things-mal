@@ -8,28 +8,59 @@
 
 #include "Pieces.hpp"
 
-Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos,std::vector<sf::Vector2f> c_initial_pos,sf::Color c_color){
+Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
     
-    std::cout << "Piece constructor called" << std::endl;
+    std::cout << "Piece constructor called of type: " << c_type << std::endl;
+    
+    switch (c_type) {
+        case 1: // line
+            this->m_positions = {{0.0f,1.0f},{1.0f,1.0f},{2.0f,1.0f},{3.0f,1.0f}};
+            this->m_color = sf::Color::Blue;
+            break;
+        case 2: // t
+            this->m_positions = {{0.0f,1.0f},{1.0f,1.0f},{2.0f,1.0f},{1.0f,2.0f}};
+            this->m_color = sf::Color::Yellow;
+            break;
+        case 3: // square
+            this->m_positions = {{0.0f,1.0f},{1.0f,1.0f},{0.0f,2.0f},{1.0f,2.0f}};
+            this->m_color = sf::Color::Green;
+            break;
+        case 4: // s
+            this->m_positions = {{0.0f,1.0f},{0.0f,2.0f},{1.0f,2.0f},{2.0f,2.0f}};
+            this->m_color = sf::Color::Red;
+            break;
+        default:
+            break;
+    }
     
     this->m_block_size = {c_play_size.x/10,c_play_size.x/10};
-    this->m_color = c_color;
-    this->m_positions = c_initial_pos;
     this->m_play_size = c_play_size;
     this->m_play_pos = c_play_pos;
-    m_is_alive = true;
+    this->m_is_alive = false;
     
     for(auto& pos: m_positions){
         sf::RectangleShape m_square;
         m_square.setSize(m_block_size);
-        m_square.setPosition({pos.x*m_block_size.x+c_play_pos.x,pos.y*m_block_size.y+c_play_pos.y});
+        m_square.setPosition({(pos.x*m_block_size.x+c_play_size.x*1.21f),(pos.y*m_block_size.y+c_play_pos.y*1.55f)});
         m_square.setFillColor(m_color);
+        m_square.setOutlineColor(sf::Color::Black);
+        m_square.setOutlineThickness(1.0f);
         m_squares.push_back(m_square);
     }
 }
 
 Piece::~Piece(){
     std::cout << "Piece destructor called" << std::endl;
+}
+
+void Piece::Activate_Piece(){
+    m_is_alive = true;
+    
+    int i {0};
+    for(auto& pos: m_positions){
+        m_squares.at(i).setPosition({pos.x*m_block_size.x+m_play_pos.x,pos.y*m_block_size.y+m_play_pos.y});
+        ++i;
+    }
 }
 
 std::vector<float> Piece::Get_piece_bounds(){
@@ -64,6 +95,7 @@ bool Piece::Check_boundaries(sf::Vector2f c_move){
         return true;
     }
 }
+
 bool Piece::Check_bottom(float max_y, sf::Vector2f c_move){
     if(max_y+c_move.y*m_block_size.y >= m_play_pos.y+m_play_size.y){
         m_is_alive = false;
@@ -71,6 +103,10 @@ bool Piece::Check_bottom(float max_y, sf::Vector2f c_move){
     }else{
         return false;
     }
+}
+
+bool Piece::Check_status(){
+    return m_is_alive;
 }
 
 void Piece::Move(sf::Vector2f c_move){
