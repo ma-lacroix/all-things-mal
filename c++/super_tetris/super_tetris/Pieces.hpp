@@ -29,7 +29,7 @@ public:
     ~Piece();
     std::vector<float> Get_piece_bounds();
     bool Check_boundaries(sf::Vector2f);
-    bool Check_bottom();
+    bool Check_bottom(float, sf::Vector2f);
     void Move(sf::Vector2f);
     void Adjust_rotation(sf::Vector2f);
     void Rotate();

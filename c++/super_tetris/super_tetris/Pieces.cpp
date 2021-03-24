@@ -17,6 +17,7 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos,std::vector<sf::V
     this->m_positions = c_initial_pos;
     this->m_play_size = c_play_size;
     this->m_play_pos = c_play_pos;
+    m_is_alive = true;
     
     for(auto& pos: m_positions){
         sf::RectangleShape m_square;
@@ -56,26 +57,33 @@ bool Piece::Check_boundaries(sf::Vector2f c_move){
     std::vector<float> piece_bounds = Get_piece_bounds();
     
     if(piece_bounds.at(0)+c_move.x*m_block_size.x <= m_play_pos.x-m_block_size.x ||
-       piece_bounds.at(1)+c_move.x*m_block_size.x > m_play_pos.x+m_play_size.x ||
-       piece_bounds.at(2)+c_move.y*m_block_size.y > m_play_pos.y+m_play_size.y-m_block_size.y){
+       piece_bounds.at(1)+c_move.x*m_block_size.x >= m_play_pos.x+m_play_size.x ||
+       Check_bottom(piece_bounds.at(2),c_move)){
         return false;
     }else{
         return true;
     }
 }
-bool Piece::Check_bottom(){
-    
+bool Piece::Check_bottom(float max_y, sf::Vector2f c_move){
+    if(max_y+c_move.y*m_block_size.y >= m_play_pos.y+m_play_size.y){
+        m_is_alive = false;
+        return true;
+    }else{
+        return false;
+    }
 }
 
 void Piece::Move(sf::Vector2f c_move){
-    if(Check_boundaries(c_move)){
+    if(Check_boundaries(c_move) & m_is_alive){
         for(auto& m_square: m_squares){
             m_square.move({c_move.x*m_block_size.x,c_move.y*m_block_size.y});
         }
     }
+    
 }
 
 void Piece::Adjust_rotation(sf::Vector2f c_move){
+// called when rotated piece ends up outside play area
     for(auto& m_square: m_squares){
         m_square.move({c_move.x,c_move.y});
     }
@@ -87,38 +95,38 @@ void Piece::Rotation_Outbound(){
     std::vector<float> piece_bounds = Get_piece_bounds();
     
     if(piece_bounds.at(0) < m_play_pos.x){
-        std::cout << "case 1" << std::endl;
         Adjust_rotation({m_play_pos.x-piece_bounds.at(0),0.0f});
     }else if(piece_bounds.at(1) > m_play_pos.x+m_play_size.x-m_block_size.x){
-        std::cout << "case 2" << std::endl;
         Adjust_rotation({m_play_pos.x+m_play_size.x-piece_bounds.at(1)-m_block_size.x,0.0f});
     }else if(piece_bounds.at(2) > m_play_pos.y+m_play_size.y-m_block_size.y){
-        std::cout << "case 3" << std::endl;
         Adjust_rotation({0.0f,m_play_pos.y+m_play_size.y-piece_bounds.at(2)-m_block_size.y});
     }
 }
 
 void Piece::Rotate(){
-    std::vector<sf::Vector2f> index {
-        {0.0f,0.0f},{0.0f,1.0f},{0.0f,2.0f},{0.0f,3.0f},
-        {1.0f,0.0f},{1.0f,1.0f},{1.0f,2.0f},{1.0f,3.0f},
-        {2.0f,0.0f},{2.0f,1.0f},{2.0f,2.0f},{2.0f,3.0f},
-        {3.0f,0.0f},{3.0f,1.0f},{3.0f,2.0f},{3.0f,3.0f},
-    };
-    // 0 degrees => i = y*4+x
-    // 90 degrees =>  i = 12+y-(x*4)
-    int i {0};
-    sf::Vector2f rotations;
-    for(auto m_pos: m_positions){
-        int ind1 = static_cast<int>(12.0f+m_pos.y-m_pos.x*4);
-        int ind2 = static_cast<int>(m_pos.y*4+m_pos.x);
-        rotations.x = index.at(ind1).x-index.at(ind2).x;
-        rotations.y = index.at(ind1).y-index.at(ind2).y;
-        m_positions.at(i) = index.at(ind1);
-        m_squares.at(i).move({rotations.x*m_block_size.x,rotations.y*m_block_size.y});
-        ++i;
+    if(m_is_alive){
+        std::vector<sf::Vector2f> index {
+            {0.0f,0.0f},{0.0f,1.0f},{0.0f,2.0f},{0.0f,3.0f},
+            {1.0f,0.0f},{1.0f,1.0f},{1.0f,2.0f},{1.0f,3.0f},
+            {2.0f,0.0f},{2.0f,1.0f},{2.0f,2.0f},{2.0f,3.0f},
+            {3.0f,0.0f},{3.0f,1.0f},{3.0f,2.0f},{3.0f,3.0f},
+        };
+        // 0 degrees => i = y*4+x
+        // 90 degrees =>  i = 12+y-(x*4)
+        int i {0};
+        sf::Vector2f rotations;
+        for(auto m_pos: m_positions){
+            int ind1 = static_cast<int>(12.0f+m_pos.y-m_pos.x*4);
+            int ind2 = static_cast<int>(m_pos.y*4+m_pos.x);
+            rotations.x = index.at(ind1).x-index.at(ind2).x;
+            rotations.y = index.at(ind1).y-index.at(ind2).y;
+            m_positions.at(i) = index.at(ind1);
+            m_squares.at(i).move({rotations.x*m_block_size.x,rotations.y*m_block_size.y});
+            ++i;
+        }
+        
+        Rotation_Outbound();
     }
-    Rotation_Outbound();
 }
 
 void Piece::Draw(sf::RenderWindow& window){

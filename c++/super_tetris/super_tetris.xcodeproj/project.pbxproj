@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DB0526BF2609DB2A00280855 /* board.png in Resources */ = {isa = PBXBuildFile; fileRef = DB0526BE2609DB2A00280855 /* board.png */; };
 		DB0526C32609DC5F00280855 /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB0526C12609DC5F00280855 /* Background.cpp */; };
 		DB0526C8260A141200280855 /* Pieces.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB0526C6260A141200280855 /* Pieces.cpp */; };
 		DB79A5FD2608C82D000F917B /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB79A5FC2608C82D000F917B /* ResourcePath.mm */; };
@@ -16,7 +15,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		DB0526BE2609DB2A00280855 /* board.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = board.png; path = ../../../tictactoe/tic_tac_toe/tic_tac_toe/Resources/board.png; sourceTree = "<group>"; };
 		DB0526C12609DC5F00280855 /* Background.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Background.cpp; sourceTree = "<group>"; };
 		DB0526C22609DC5F00280855 /* Background.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Background.hpp; sourceTree = "<group>"; };
 		DB0526C6260A141200280855 /* Pieces.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Pieces.cpp; sourceTree = "<group>"; };
@@ -85,7 +83,6 @@
 		DB79A6012608C82D000F917B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DB0526BE2609DB2A00280855 /* board.png */,
 				DB79A6062608C82D000F917B /* sansation.ttf */,
 			);
 			path = Resources;
@@ -150,7 +147,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB79A6072608C82D000F917B /* sansation.ttf in Resources */,
-				DB0526BF2609DB2A00280855 /* board.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
