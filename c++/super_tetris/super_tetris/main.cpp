@@ -12,10 +12,12 @@
 #include "Background.hpp"
 #include "Pieces.hpp"
 
+// globals
 enum class State {INTRO,PLAYING,GAME_OVER};
 const float SCREEN_WIDTH {800.0f};
 const float SCREEN_HEIGHT {1500.0f};
 int c_index {0};
+
 
 std::vector<Piece*> gen(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int num_pieces){
     
@@ -45,7 +47,8 @@ int main()
     }
     
     Background background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
-    std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),3);
+    std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),10);
+    Field* field = new Field();
     
     sf::Text t_introduction("Welcome to SuperTetris", font, 50);
     t_introduction.setFillColor(sf::Color::Red);
@@ -80,17 +83,17 @@ int main()
             // Move pieces
             if(state == State::PLAYING && event.type == sf::Event::KeyPressed){
                 if(event.key.code == sf::Keyboard::Left){
-                    pieces.at(c_index)->Move({-1.0f,0.0f});
+                    pieces.at(c_index)->Move({-1.0f,0.0f},field);
                 }
                 if(event.key.code == sf::Keyboard::Right){
-                    pieces.at(c_index)->Move({1.0f,0.0f});
+                    pieces.at(c_index)->Move({1.0f,0.0f},field);
                 }
                 if(event.key.code == sf::Keyboard::Down){
-                    pieces.at(c_index)->Move({0.0f,1.0f});
+                    pieces.at(c_index)->Move({0.0f,1.0f},field);
                 }
                 // to remove from final game - for debugging purposes only!
                 if(event.key.code == sf::Keyboard::Up){
-                    pieces.at(c_index)->Move({0.0f,-1.0f});
+                    pieces.at(c_index)->Move({0.0f,-1.0f},field);
                 }
                 if(event.key.code == sf::Keyboard::Space){
                     pieces.at(c_index)->Rotate();
@@ -99,7 +102,7 @@ int main()
         }
         
         // Clear screen
-        window.clear(sf::Color(229,250,255));
+        window.clear(sf::Color(100,100,255));
         
         if(state==State::INTRO){
             window.draw(t_introduction);

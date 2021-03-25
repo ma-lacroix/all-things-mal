@@ -13,6 +13,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include "Field.hpp"
+
 
 class Piece {
 private:
@@ -29,10 +31,11 @@ public:
     ~Piece();
     void Activate_Piece();
     std::vector<float> Get_piece_bounds();
-    bool Check_boundaries(sf::Vector2f);
-    bool Check_bottom(float, sf::Vector2f);
+    std::vector<sf::RectangleShape> Get_m_squares();
+    bool Check_boundaries(sf::Vector2f,Field*);
+    bool Check_bottom(float, sf::Vector2f,Field*);
     bool Check_status();
-    void Move(sf::Vector2f);
+    void Move(sf::Vector2f,Field*);
     void Adjust_rotation(sf::Vector2f);
     void Rotate();
     void Rotation_Outbound();
