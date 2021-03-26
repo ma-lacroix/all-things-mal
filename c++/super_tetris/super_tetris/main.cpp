@@ -24,7 +24,7 @@ std::vector<Piece*> gen(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int n
     std::vector<Piece*> c_pieces;
     for(int i {0};i<num_pieces;++i){
         srand((int)time(0) * i * 2);
-        int c_type = (rand() % 4)+1;
+        int c_type = (rand() % 5)+1;
         Piece* p = new Piece(c_play_size,c_play_pos,c_type);
         c_pieces.push_back(p);
     }
@@ -47,7 +47,7 @@ int main()
     }
     
     Background background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
-    std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),10);
+    std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),30);
     Field* field = new Field();
     
     sf::Text t_introduction("Welcome to SuperTetris", font, 50);
@@ -56,7 +56,7 @@ int main()
     
     sf::Text t_game_over("Game over", font, 50);
     t_game_over.setFillColor(sf::Color::Red);
-    t_game_over.setPosition(screen_size.x/5,screen_size.y/2);
+    t_game_over.setPosition(screen_size.x/2,screen_size.y/2);
 
     // Start the game loop
     while (window.isOpen())

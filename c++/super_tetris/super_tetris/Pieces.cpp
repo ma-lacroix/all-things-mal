@@ -18,7 +18,7 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
             this->m_positions = {{0.0f,1.0f},{1.0f,1.0f},{2.0f,1.0f},{3.0f,1.0f}};
             this->m_color = sf::Color::Blue;
             break;
-        case 2: // t
+        case 2: // T
             this->m_positions = {{0.0f,2.0f},{1.0f,2.0f},{2.0f,2.0f},{1.0f,3.0f}};
             this->m_color = sf::Color::Yellow;
             break;
@@ -26,9 +26,13 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
             this->m_positions = {{1.0f,1.0f},{2.0f,1.0f},{1.0f,2.0f},{2.0f,2.0f}};
             this->m_color = sf::Color::Green;
             break;
-        case 4: // s
-            this->m_positions = {{1.0f,1.0f},{1.0f,2.0f},{2.0f,2.0f},{3.0f,2.0f}};
+        case 4: // S
+            this->m_positions = {{1.0f,1.0f},{1.0f,2.0f},{2.0f,2.0f},{2.0f,3.0f}};
             this->m_color = sf::Color::Red;
+            break;
+        case 5: // L
+            this->m_positions = {{1.0f,1.0f},{2.0f,1.0f},{3.0f,1.0f},{3.0f,2.0f}};
+            this->m_color = sf::Color::Magenta;
             break;
         default:
             break;

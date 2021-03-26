@@ -43,18 +43,18 @@ int Field::Collision(sf::RectangleShape c_rect,sf::Vector2f c_move, sf::Vector2f
             
             if(c_move.x!=0){
                 std::cout << "lateral collision" << std::endl;
-                std::cout << "c_x_s: " << c_x_s << std::endl;
-                std::cout << "f_x_s: " << f_x_s << std::endl;
-                std::cout << "c_y_s: " << c_y_s << std::endl;
-                std::cout << "f_y_s: " << f_y_s << std::endl;
+                std::cout << "c_x_e: " << c_x_e << std::endl;
+                std::cout << "f_x_e: " << f_x_e << std::endl;
+                std::cout << "c_y_e: " << c_y_e << std::endl;
+                std::cout << "f_y_e: " << f_y_e << std::endl;
                 std::cout << "\n" << std::endl;
                 result+=1;
                 break;
             }
             if(c_move.y!=0){
                 std::cout << "bottom collision" << std::endl;
-                std::cout << "c_x_s: " << c_x_s << std::endl;
-                std::cout << "f_x_s: " << f_x_s << std::endl;
+                std::cout << "c_x_e: " << c_x_e << std::endl;
+                std::cout << "f_x_e: " << f_x_e << std::endl;
                 std::cout << "c_y_e: " << c_y_e << std::endl;
                 std::cout << "f_y_e: " << f_y_e << std::endl;
                 std::cout << "\n" << std::endl;
