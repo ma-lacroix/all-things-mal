@@ -61,7 +61,7 @@ void Background::Draw(sf::RenderWindow& window, Piece* p){
     window.draw(m_third_bg);
     window.draw(m_msg_next);
     window.draw(m_msg_score);
-    p->Draw(window);
+    p->DrawNext(window);
 }
 
 void Background::Draw(sf::RenderWindow& window){

@@ -23,6 +23,7 @@ public:
     void Add_field(sf::RectangleShape);
     void Print();
     int Collision(sf::RectangleShape,sf::Vector2f,sf::Vector2f);
+    void Draw(sf::RenderWindow&);
 };
 
 #endif /* Field_hpp */

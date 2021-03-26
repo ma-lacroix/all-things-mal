@@ -12,6 +12,7 @@
 		DB79A5FD2608C82D000F917B /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB79A5FC2608C82D000F917B /* ResourcePath.mm */; };
 		DB79A6002608C82D000F917B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB79A5FF2608C82D000F917B /* main.cpp */; };
 		DB79A6072608C82D000F917B /* sansation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB79A6062608C82D000F917B /* sansation.ttf */; };
+		DBAAE615260D1E5100794073 /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBAAE613260D1E5100794073 /* Field.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,8 @@
 		DB79A5FF2608C82D000F917B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		DB79A6062608C82D000F917B /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sansation.ttf; path = ../sansation.ttf; sourceTree = "<group>"; };
 		DB79A6102608C96E000F917B /* super_tetris.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = super_tetris.entitlements; sourceTree = "<group>"; };
+		DBAAE613260D1E5100794073 /* Field.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Field.cpp; sourceTree = "<group>"; };
+		DBAAE614260D1E5100794073 /* Field.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Field.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +67,8 @@
 				DB79A5FF2608C82D000F917B /* main.cpp */,
 				DB0526C6260A141200280855 /* Pieces.cpp */,
 				DB0526C7260A141200280855 /* Pieces.hpp */,
+				DBAAE613260D1E5100794073 /* Field.cpp */,
+				DBAAE614260D1E5100794073 /* Field.hpp */,
 				DB0526C12609DC5F00280855 /* Background.cpp */,
 				DB0526C22609DC5F00280855 /* Background.hpp */,
 				DB79A6012608C82D000F917B /* Resources */,
@@ -178,6 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DB0526C8260A141200280855 /* Pieces.cpp in Sources */,
+				DBAAE615260D1E5100794073 /* Field.cpp in Sources */,
 				DB0526C32609DC5F00280855 /* Background.cpp in Sources */,
 				DB79A6002608C82D000F917B /* main.cpp in Sources */,
 				DB79A5FD2608C82D000F917B /* ResourcePath.mm in Sources */,

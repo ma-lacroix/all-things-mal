@@ -21,9 +21,6 @@ void Field::Add_field(sf::RectangleShape c_rect){
 }
 
 void Field::Print(){
-    for(auto f: m_field){
-        std::cout << f.getPosition().x << " " << f.getPosition().y << std::endl;
-    }
 }
 
 int Field::Collision(sf::RectangleShape c_rect,sf::Vector2f c_move, sf::Vector2f c_block){
@@ -42,18 +39,35 @@ int Field::Collision(sf::RectangleShape c_rect,sf::Vector2f c_move, sf::Vector2f
         float c_y_s = c_rect.getPosition().y+c_move.y*c_block.y;
         float c_y_e = c_rect.getSize().y+c_y_s+c_move.y*c_block.y;
         
-//        std::cout << c_y_e << ">" << f_y_s << " " << c_x_s << "==" << f_x_s << std::endl;
-        
-//        if((c_x_s < f_x_e && c_y_s == f_y_s) ||
-//           (c_x_e > f_x_s && c_y_s == f_y_s)
-//           ){
-//            std::cout << "lateral collision" << std::endl;
-//            result+=1;
-//        }
-        if((c_y_e > f_y_s && c_x_s == f_x_s)){
-            std::cout << "bottom collision" << std::endl;
-            result+=2;
+        if(c_x_e == f_x_e && c_y_e == f_y_e){
+            
+            if(c_move.x!=0){
+                std::cout << "lateral collision" << std::endl;
+                std::cout << "c_x_s: " << c_x_s << std::endl;
+                std::cout << "f_x_s: " << f_x_s << std::endl;
+                std::cout << "c_y_s: " << c_y_s << std::endl;
+                std::cout << "f_y_s: " << f_y_s << std::endl;
+                std::cout << "\n" << std::endl;
+                result+=1;
+                break;
+            }
+            if(c_move.y!=0){
+                std::cout << "bottom collision" << std::endl;
+                std::cout << "c_x_s: " << c_x_s << std::endl;
+                std::cout << "f_x_s: " << f_x_s << std::endl;
+                std::cout << "c_y_e: " << c_y_e << std::endl;
+                std::cout << "f_y_e: " << f_y_e << std::endl;
+                std::cout << "\n" << std::endl;
+                result+=2;
+                break;
+            }
         }
     }
     return result;
+}
+
+void Field::Draw(sf::RenderWindow& window){
+    for(auto square: m_field){
+        window.draw(square);
+    }
 }

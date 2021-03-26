@@ -40,6 +40,7 @@ public:
     void Rotate();
     void Rotation_Outbound();
     void Draw(sf::RenderWindow&);
+    void DrawNext(sf::RenderWindow&);
 };
 
 #endif /* Pieces_hpp */

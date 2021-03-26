@@ -34,15 +34,15 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
             break;
     }
     
-    this->m_block_size = {c_play_size.x/10,c_play_size.x/10};
+    this->m_block_size = {c_play_size.x/8,c_play_size.x/8};
     this->m_play_size = c_play_size;
     this->m_play_pos = c_play_pos;
     this->m_is_alive = false;
     
     for(auto& pos: m_positions){
         sf::RectangleShape m_square;
-        m_square.setSize(m_block_size);
-        m_square.setPosition({(pos.x*m_block_size.x+c_play_size.x*1.21f),(pos.y*m_block_size.y+c_play_pos.y*1.55f)});
+        m_square.setSize(m_block_size*0.7f); // to fit "next box"
+        m_square.setPosition({(pos.x*m_block_size.x*0.7f+c_play_size.x*1.20f),(pos.y*m_block_size.y*0.7f+c_play_pos.y*1.75f)});
         m_square.setFillColor(m_color);
         m_square.setOutlineColor(sf::Color::Black);
         m_square.setOutlineThickness(1.0f);
@@ -57,9 +57,11 @@ Piece::~Piece(){
 void Piece::Activate_Piece(){
     m_is_alive = true;
     
+    // move piece from "next box" to game board
     int i {0};
     for(auto& pos: m_positions){
         m_squares.at(i).setPosition({pos.x*m_block_size.x+m_play_pos.x,pos.y*m_block_size.y+m_play_pos.y});
+        m_squares.at(i).setSize(m_block_size);
         ++i;
     }
 }
@@ -127,7 +129,7 @@ void Piece::Move(sf::Vector2f c_move, Field* field){
             break;
         }
     }
-    std::cout << coll_status << std::endl;
+    
     if(coll_status==2){
         m_is_alive = false;
         for(auto& m_square: m_squares){
@@ -190,6 +192,14 @@ void Piece::Rotate(){
 }
 
 void Piece::Draw(sf::RenderWindow& window){
+    if(m_is_alive){
+        for(auto& m_square: m_squares){
+            window.draw(m_square);
+        }
+    }
+}
+
+void Piece::DrawNext(sf::RenderWindow& window){
     for(auto& m_square: m_squares){
         window.draw(m_square);
     }

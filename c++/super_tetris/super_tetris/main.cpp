@@ -102,13 +102,14 @@ int main()
         }
         
         // Clear screen
-        window.clear(sf::Color(100,100,255));
+        window.clear(sf::Color(100,100,120));
         
         if(state==State::INTRO){
             window.draw(t_introduction);
         }else if(state==State::PLAYING){
             if(c_index+1 <= pieces.size()-1){
                 background.Draw(window,pieces.at(c_index+1));
+                field->Draw(window);
                 for(int i {0};i<=c_index;++i){
                     pieces.at(i)->Draw(window);
                 }
