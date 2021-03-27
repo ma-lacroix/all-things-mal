@@ -91,10 +91,6 @@ int main()
                 if(event.key.code == sf::Keyboard::Down){
                     pieces.at(c_index)->Move({0.0f,1.0f},field);
                 }
-                // to remove from final game - for debugging purposes only!
-                if(event.key.code == sf::Keyboard::Up){
-                    pieces.at(c_index)->Move({0.0f,-1.0f},field);
-                }
                 if(event.key.code == sf::Keyboard::Space){
                     pieces.at(c_index)->Rotate();
                 }

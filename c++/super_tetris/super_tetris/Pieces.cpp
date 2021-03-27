@@ -11,8 +11,6 @@
 
 Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
     
-    std::cout << "Piece constructor called of type: " << c_type << std::endl;
-    
     switch (c_type) {
         case 1: // line
             this->m_positions = {{0.0f,1.0f},{1.0f,1.0f},{2.0f,1.0f},{3.0f,1.0f}};
@@ -126,12 +124,14 @@ bool Piece::Check_status(){
 void Piece::Move(sf::Vector2f c_move, Field* field){
     
     int coll_status {0};
+    int index {0};
     
     for(auto& m_square: m_squares){
         coll_status = field->Collision(m_square,c_move,m_block_size);
         if(coll_status == 1 || coll_status == 2){
             break;
         }
+        ++index;
     }
     
     if(coll_status==2){
@@ -140,7 +140,8 @@ void Piece::Move(sf::Vector2f c_move, Field* field){
             m_square.move({c_move.x*m_block_size.x,c_move.y*m_block_size.y});
             field->Add_field(m_square);
         }
-    }else if(Check_boundaries(c_move,field) && m_is_alive && coll_status==0){
+    }
+    if(Check_boundaries(c_move,field) && m_is_alive && coll_status==0){
         for(auto& m_square: m_squares){
             m_square.move({c_move.x*m_block_size.x,c_move.y*m_block_size.y});
         }
@@ -186,8 +187,6 @@ void Piece::Rotate(){
             int ind2 = static_cast<int>(m_pos.y*4+m_pos.x);
             rotations.x = index.at(ind1).x-index.at(ind2).x;
             rotations.y = index.at(ind1).y-index.at(ind2).y;
-            std::cout << "From: " << index.at(ind2).x << " " << index.at(ind2).y << " to " << index.at(ind1).x << " " << index.at(ind1).y << std::endl;
-            std::cout << "rotations: " << rotations.x << ", " << rotations.y << std::endl;
             m_positions.at(i) = index.at(ind1);
             m_squares.at(i).move({rotations.x*m_block_size.x,rotations.y*m_block_size.y});
             ++i;
