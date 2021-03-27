@@ -110,9 +110,7 @@ int main()
             if(c_index+1 <= pieces.size()-1){
                 background.Draw(window,pieces.at(c_index+1));
                 field->Draw(window);
-                for(int i {0};i<=c_index;++i){
-                    pieces.at(i)->Draw(window);
-                }
+                pieces.at(c_index)->Draw(window);
             }else{
                 state = State::GAME_OVER;
             }

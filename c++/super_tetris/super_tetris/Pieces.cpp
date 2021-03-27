@@ -19,7 +19,7 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
             this->m_color = sf::Color::Blue;
             break;
         case 2: // T
-            this->m_positions = {{0.0f,2.0f},{1.0f,2.0f},{2.0f,2.0f},{1.0f,3.0f}};
+            this->m_positions = {{0.0f,1.0f},{1.0f,1.0f},{2.0f,1.0f},{1.0f,2.0f}};
             this->m_color = sf::Color::Yellow;
             break;
         case 3: // square
@@ -172,10 +172,10 @@ void Piece::Rotation_Outbound(){
 void Piece::Rotate(){
     if(m_is_alive){
         std::vector<sf::Vector2f> index {
-            {0.0f,0.0f},{0.0f,1.0f},{0.0f,2.0f},{0.0f,3.0f},
-            {1.0f,0.0f},{1.0f,1.0f},{1.0f,2.0f},{1.0f,3.0f},
-            {2.0f,0.0f},{2.0f,1.0f},{2.0f,2.0f},{2.0f,3.0f},
-            {3.0f,0.0f},{3.0f,1.0f},{3.0f,2.0f},{3.0f,3.0f},
+            {0.0f,0.0f},{1.0f,0.0f},{2.0f,0.0f},{3.0f,0.0f},
+            {0.0f,1.0f},{1.0f,1.0f},{2.0f,1.0f},{3.0f,1.0f},
+            {0.0f,2.0f},{1.0f,2.0f},{2.0f,2.0f},{3.0f,2.0f},
+            {0.0f,3.0f},{1.0f,3.0f},{2.0f,3.0f},{3.0f,3.0f},
         };
         // 0 degrees => i = y*4+x
         // 90 degrees =>  i = 12+y-(x*4)
@@ -186,6 +186,8 @@ void Piece::Rotate(){
             int ind2 = static_cast<int>(m_pos.y*4+m_pos.x);
             rotations.x = index.at(ind1).x-index.at(ind2).x;
             rotations.y = index.at(ind1).y-index.at(ind2).y;
+            std::cout << "From: " << index.at(ind2).x << " " << index.at(ind2).y << " to " << index.at(ind1).x << " " << index.at(ind1).y << std::endl;
+            std::cout << "rotations: " << rotations.x << ", " << rotations.y << std::endl;
             m_positions.at(i) = index.at(ind1);
             m_squares.at(i).move({rotations.x*m_block_size.x,rotations.y*m_block_size.y});
             ++i;
