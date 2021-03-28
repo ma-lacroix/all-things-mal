@@ -125,6 +125,7 @@ void Piece::Move(sf::Vector2f c_move, Field* field){
     
     int coll_status {0};
     int index {0};
+    bool print_data {false};
     
     for(auto& m_square: m_squares){
         coll_status = field->Collision(m_square,c_move,m_block_size);
