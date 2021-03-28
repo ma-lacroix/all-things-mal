@@ -28,12 +28,12 @@ int Field::Collision(sf::RectangleShape c_rect,sf::Vector2f c_move, sf::Vector2f
     int result {0};
     
     float c_x_s = static_cast<int>(c_rect.getPosition().x+c_move.x*c_block.x);
-    float c_x_e = static_cast<int>(c_rect.getSize().x+c_x_s+c_move.x*c_block.x);
+    float c_x_e = static_cast<int>(c_rect.getSize().x+c_x_s);
     float c_y_s = static_cast<int>(c_rect.getPosition().y+c_move.y*c_block.y);
-    float c_y_e = static_cast<int>(c_rect.getSize().y+c_y_s+c_move.y*c_block.y);
+    float c_y_e = static_cast<int>(c_rect.getSize().y+c_y_s);
     
-    std::cout << "c_x_e: " << (c_x_e/c_block.x) << std::endl;
-    std::cout << "c_y_e: " << (c_y_e/c_block.x) << std::endl;
+//    std::cout << "c_x_e: " << (c_x_e/c_block.x) << std::endl;
+//    std::cout << "c_y_e: " << (c_y_e/c_block.x) << std::endl;
     
     for(auto square: m_field){
         // get field boundaries
@@ -45,26 +45,26 @@ int Field::Collision(sf::RectangleShape c_rect,sf::Vector2f c_move, sf::Vector2f
         // get c_rect boundaries
         
             
-        std::cout << "f_x_e: " << (f_x_e/c_block.x) << std::endl;
-        std::cout << "f_y_e: " << (f_y_e/c_block.x) << std::endl;
+//        std::cout << "f_x_e: " << static_cast<int>(f_x_e/c_block.x) << std::endl;
+//        std::cout << "f_y_e: " << static_cast<int>(f_y_e/c_block.x) << std::endl;
         
-        if(c_x_e == f_x_e && c_y_e == f_y_e){
+        if(c_x_s == f_x_s && c_y_e == f_y_s){
             
             if(c_move.x!=0){
-                std::cout << "lateral collision" << std::endl;
-                std::cout << "f_x_e: " << (f_x_e/c_block.x) << std::endl;
-                std::cout << "c_x_e: " << (c_x_e/c_block.x) << std::endl;
-                std::cout << "f_y_e: " << (f_y_e/c_block.x) << std::endl;
-                std::cout << "c_y_e: " << (c_y_e/c_block.x) << std::endl;
+//                std::cout << "lateral collision" << std::endl;
+//                std::cout << "f_x_e: " << static_cast<int>(f_x_e/c_block.x) << std::endl;
+//                std::cout << "c_x_e: " << static_cast<int>(c_x_e/c_block.x) << std::endl;
+//                std::cout << "f_y_e: " << static_cast<int>(f_y_e/c_block.x) << std::endl;
+//                std::cout << "c_y_e: " << static_cast<int>(c_y_e/c_block.x) << std::endl;
                 result+=1;
                 break;
             }
             if(c_move.y!=0){
-                std::cout << "bottom collision" << std::endl;
-                std::cout << "f_x_e: " << (f_x_e/c_block.x) << std::endl;
-                std::cout << "c_x_e: " << (c_x_e/c_block.x) << std::endl;
-                std::cout << "f_y_e: " << (f_y_e/c_block.x) << std::endl;
-                std::cout << "c_y_e: " << (c_y_e/c_block.x) << std::endl;
+//                std::cout << "bottom collision" << std::endl;
+//                std::cout << "f_x_e: " << static_cast<int>(f_x_e/c_block.x) << std::endl;
+//                std::cout << "c_x_e: " << static_cast<int>(c_x_e/c_block.x) << std::endl;
+//                std::cout << "f_y_e: " << static_cast<int>(f_y_e/c_block.x) << std::endl;
+//                std::cout << "c_y_e: " << static_cast<int>(c_y_e/c_block.x) << std::endl;
                 result+=2;
                 break;
             }
@@ -73,7 +73,6 @@ int Field::Collision(sf::RectangleShape c_rect,sf::Vector2f c_move, sf::Vector2f
     std::cout << " " << std::endl;
     return result;
 }
-
 void Field::Draw(sf::RenderWindow& window){
     for(auto square: m_field){
         window.draw(square);
