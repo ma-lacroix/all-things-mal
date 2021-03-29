@@ -24,7 +24,7 @@ std::vector<Piece*> gen(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int n
     std::vector<Piece*> c_pieces;
     for(int i {0};i<num_pieces;++i){
         srand((int)time(0) * i * 2);
-        int c_type = (rand() % 5)+1;
+        int c_type = (rand() % 1)+1;
         Piece* p = new Piece(c_play_size,c_play_pos,c_type);
         c_pieces.push_back(p);
     }
@@ -45,7 +45,7 @@ int main()
     sf::Vector2f screen_size {SCREEN_WIDTH,SCREEN_HEIGHT};
     sf::RenderWindow window(sf::VideoMode(screen_size.x,screen_size.y),"SuperTetris!",sf::Style::Titlebar | sf::Style::Resize);
     
-    State state = State::INTRO; // for debugging - must be set at INTRO when testing full game
+    State state = State::PLAYING; // for debugging - must be set at INTRO when testing full game
     
     sf::Font font;
     if (!font.loadFromFile(resourcePath() + "sansation.ttf")) {
@@ -87,7 +87,7 @@ int main()
             }
             
             // Start game
-            if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Backspace && state == State::INTRO){
+            if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter && state == State::INTRO){
                 state = State::DIFFICULTY;
             }
             
@@ -96,13 +96,13 @@ int main()
                     difficulty = 2.0f;
                     state = State::PLAYING;
                 }else if(event.key.code == sf::Keyboard::Num2){
-                    difficulty = 1.8f;
+                    difficulty = 1.5f;
                     state = State::PLAYING;
                 }else if(event.key.code == sf::Keyboard::Num3){
-                    difficulty = 1.6f;
+                    difficulty = 1.0f;
                     state = State::PLAYING;
                 }else if(event.key.code == sf::Keyboard::Num4){
-                    difficulty = 1.4f;
+                    difficulty = 0.5f;
                     state = State::PLAYING;
                 }
             }
@@ -125,7 +125,7 @@ int main()
         }
         totalTime = clock.getElapsedTime().asSeconds();
         
-        if(totalTime>=2.0f){
+        if(totalTime>=difficulty){
             pieces.at(c_index)->Move({0.0f,1.0f},field);
             totalTime = clock.restart().asSeconds();
         }

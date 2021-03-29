@@ -108,7 +108,7 @@ bool Piece::Check_boundaries(sf::Vector2f c_move, Field* field){
 bool Piece::Check_bottom(float max_y, sf::Vector2f c_move, Field* field){
     if(max_y+c_move.y*m_block_size.y >= m_play_pos.y+m_play_size.y){
         for(auto& m_square: m_squares){
-            field->Add_field(m_square);
+            field->Add_field(m_square,m_block_size.y);
         }
         m_is_alive = false;
         return true;
@@ -139,7 +139,7 @@ void Piece::Move(sf::Vector2f c_move, Field* field){
         m_is_alive = false;
         for(auto& m_square: m_squares){
             m_square.move({c_move.x*m_block_size.x,c_move.y*m_block_size.y});
-            field->Add_field(m_square);
+            field->Add_field(m_square,m_block_size.y);
         }
     }
     if(Check_boundaries(c_move,field) && m_is_alive && coll_status==0){

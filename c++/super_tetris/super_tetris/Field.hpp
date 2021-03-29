@@ -13,15 +13,20 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include <list>
 
 class Field {
 private:
     std::vector<sf::RectangleShape> m_field;
+    std::map<float,int> m_inventory;
+    
 public:
     Field();
     ~Field();
-    void Add_field(sf::RectangleShape);
-    void Print();
+    void DropLines(float,float);
+    void EraseLines(float, float);
+    void CheckLines(sf::RectangleShape,float);
+    void Add_field(sf::RectangleShape,float);
     int Collision(sf::RectangleShape,sf::Vector2f,sf::Vector2f);
     void Draw(sf::RenderWindow&);
 };
