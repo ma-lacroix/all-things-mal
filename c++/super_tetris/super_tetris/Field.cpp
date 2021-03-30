@@ -16,61 +16,77 @@ Field::~Field(){
     std::cout<< "Field destructor called" << std::endl;
 }
 
-void Field::DropLines(float c_line_index, float c_block_y){
-    std::cout << "dropping lines" << std::endl;
-    for(size_t i{0};i<m_field.size();++i){
-        if(m_field.at(i).getPosition().y<=(c_line_index-c_block_y)){
-            m_field.at(i).move(0.0f,c_block_y);
+void Field::ResetInventory(){
+    m_inventory.clear();
+    for(auto square: m_field){
+        std::map<float,int>::iterator it = m_inventory.find(square.getPosition().y);
+        if(it!=m_inventory.end()){
+            it->second++;
+        }else{
+            std::cout << "Creating: " << it->first << " " << square.getPosition().y << std::endl;
+            m_inventory.insert(std::make_pair(square.getPosition().y,1));
         }
     }
 }
 
-void Field::EraseLines(float c_line_index, float c_block_y){
+void Field::DropLines(float c_block_y){
+    std::cout << "dropping lines" << std::endl;
+    for(auto line: m_complete_lines){
+        for(size_t i{0};i<m_field.size();++i){
+            if(m_field.at(i).getPosition().y<line){
+                
+                std::cout << "Match: " << m_field.at(i).getPosition().x << " " << m_field.at(i).getPosition().y << std::endl;
+                m_field.at(i).move(0.0f,c_block_y);
+                std::cout << "Moved: "  << m_field.at(i).getPosition().x << " " << m_field.at(i).getPosition().y << std::endl;
+            }
+        }
+    }
+}
+
+void Field::EraseLines(float c_block_y){
     
     // O(g(x)) massively unoptimised search and find algorithm!
     
-    std::cout << "c line: " << c_line_index << std::endl;
-    for(size_t i = m_field.size()-1;i>0;--i){
-        std::cout << i << " - " << m_field.at(i).getPosition().x << " " << m_field.at(i).getPosition().y << std::endl;
-        if(m_field.at(i).getPosition().y==c_line_index){
-            m_field.erase(m_field.begin()+i);
-            std::cout << "deleting" << std::endl;
+    for(auto c_line_index: m_complete_lines){
+        std::cout << "c line: " << c_line_index << std::endl;
+        for(size_t i = m_field.size()-1;i>0;--i){
+            if(m_field.at(i).getPosition().y==c_line_index){
+                m_field.erase(m_field.begin()+i);
+            }
         }
-    }
-    for(size_t i {0};i<m_field.size();++i){
-        std::cout << i << " - " << m_field.at(i).getPosition().x << " " << m_field.at(i).getPosition().y << std::endl;
-        if(m_field.at(i).getPosition().y==c_line_index){
-            m_field.erase(m_field.begin()+i);
-            std::cout << "deleting" << std::endl;
+        for(size_t i {0};i<m_field.size();++i){
+            if(m_field.at(i).getPosition().y==c_line_index){
+                m_field.erase(m_field.begin()+i);
+            }
         }
     }
 }
 
-void Field::CheckLines(sf::RectangleShape c_rect, float c_block_y){
-    
-    std::map<float,int>::iterator it = m_inventory.find(c_rect.getPosition().y);
-    
-    if(it!=m_inventory.end()){
-        it->second++;
-    }else{
-        m_inventory.insert(std::make_pair(c_rect.getPosition().y,1));
-    }
+void Field::CheckLines(float c_block_y){
     
     for(std::map<float,int>::iterator it = m_inventory.begin();it!=m_inventory.end();++it){
-        std::cout << "Line " << it->first << " " << it->second << std::endl;
-        if(it->second == 8){
+        std::cout << it->first << " " << it->second << std::endl;
+        if(it->second >= 8){
             std::cout << "Line " << it->first << " if full! " << std::endl;
-            EraseLines(it->first,c_block_y);
-//            DropLines(it->first,c_block_y);
-            m_inventory.erase(it);
-            break;
+            m_complete_lines.push_back(it->first);
         }
     }
 }
 
-void Field::Add_field(sf::RectangleShape c_rect, float c_block_y){
+void Field::CleanUp(float c_block_y){
+    
+    ResetInventory();
+    m_complete_lines.clear();
+    CheckLines(c_block_y);
+    
+    if(m_complete_lines.size()>0){
+        EraseLines(c_block_y);
+        DropLines(c_block_y);
+    }
+}
+
+void Field::Add_field(sf::RectangleShape c_rect){
     m_field.push_back(c_rect);
-    CheckLines(c_rect,c_block_y);
 }
 
 int Field::Collision(sf::RectangleShape c_rect,sf::Vector2f c_move, sf::Vector2f c_block){

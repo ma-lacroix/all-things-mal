@@ -97,8 +97,8 @@ bool Piece::Check_boundaries(sf::Vector2f c_move, Field* field){
     std::vector<float> piece_bounds = Get_piece_bounds();
     
     if(piece_bounds.at(0)+c_move.x*m_block_size.x <= m_play_pos.x-m_block_size.x ||
-       piece_bounds.at(1)+c_move.x*m_block_size.x >= m_play_pos.x+m_play_size.x ||
-       Check_bottom(piece_bounds.at(2),c_move, field)){
+            piece_bounds.at(1)+c_move.x*m_block_size.x >= m_play_pos.x+m_play_size.x ||
+            Check_bottom(piece_bounds.at(2),c_move, field)){
         return false;
     }else{
         return true;
@@ -108,7 +108,7 @@ bool Piece::Check_boundaries(sf::Vector2f c_move, Field* field){
 bool Piece::Check_bottom(float max_y, sf::Vector2f c_move, Field* field){
     if(max_y+c_move.y*m_block_size.y >= m_play_pos.y+m_play_size.y){
         for(auto& m_square: m_squares){
-            field->Add_field(m_square,m_block_size.y);
+            field->Add_field(m_square);
         }
         m_is_alive = false;
         return true;
@@ -126,6 +126,7 @@ void Piece::Move(sf::Vector2f c_move, Field* field){
     int coll_status {0};
     int index {0};
     bool print_data {false};
+    bool clean_up_done {false};
     
     for(auto& m_square: m_squares){
         coll_status = field->Collision(m_square,c_move,m_block_size);
@@ -139,15 +140,16 @@ void Piece::Move(sf::Vector2f c_move, Field* field){
         m_is_alive = false;
         for(auto& m_square: m_squares){
             m_square.move({c_move.x*m_block_size.x,c_move.y*m_block_size.y});
-            field->Add_field(m_square,m_block_size.y);
+            field->Add_field(m_square);
         }
+        field->CleanUp(m_block_size.y);
     }
+    
     if(Check_boundaries(c_move,field) && m_is_alive && coll_status==0){
         for(auto& m_square: m_squares){
             m_square.move({c_move.x*m_block_size.x,c_move.y*m_block_size.y});
         }
     }
-    
 }
 
 void Piece::Adjust_rotation(sf::Vector2f c_move){

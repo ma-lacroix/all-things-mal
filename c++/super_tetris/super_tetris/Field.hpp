@@ -18,15 +18,18 @@
 class Field {
 private:
     std::vector<sf::RectangleShape> m_field;
+    std::vector<float> m_complete_lines;
     std::map<float,int> m_inventory;
     
 public:
     Field();
     ~Field();
-    void DropLines(float,float);
-    void EraseLines(float, float);
-    void CheckLines(sf::RectangleShape,float);
-    void Add_field(sf::RectangleShape,float);
+    void ResetInventory();
+    void DropLines(float);
+    void EraseLines(float);
+    void CheckLines(float);
+    void CleanUp(float);
+    void Add_field(sf::RectangleShape);
     int Collision(sf::RectangleShape,sf::Vector2f,sf::Vector2f);
     void Draw(sf::RenderWindow&);
 };
