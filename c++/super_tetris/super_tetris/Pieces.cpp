@@ -78,7 +78,7 @@ std::vector<float> Piece::Get_piece_bounds(){
     for(auto& m_square: m_squares){
         if(m_square.getPosition().x < min_x) {min_x = m_square.getPosition().x;}
         if(m_square.getPosition().x+m_block_size.x > max_x) {max_x = m_square.getPosition().x;}
-        if(m_square.getPosition().y+m_block_size.y > max_y) {max_y = m_square.getPosition().y;}
+        if(m_square.getPosition().y+m_block_size.y > max_y) {max_y = m_square.getPosition().y+m_block_size.y;}
     }
     
     piece_bounds.push_back(min_x);
@@ -92,13 +92,12 @@ std::vector<sf::RectangleShape> Piece::Get_m_squares(){
     return m_squares;
 }
 
-bool Piece::Check_boundaries(sf::Vector2f c_move, Field* field){
+bool Piece::Check_boundaries(float min_x, float max_x, sf::Vector2f c_move, Field* field){
     
     std::vector<float> piece_bounds = Get_piece_bounds();
     
-    if(piece_bounds.at(0)+c_move.x*m_block_size.x <= m_play_pos.x-m_block_size.x ||
-            piece_bounds.at(1)+c_move.x*m_block_size.x >= m_play_pos.x+m_play_size.x ||
-            Check_bottom(piece_bounds.at(2),c_move, field)){
+    if(min_x+c_move.x*m_block_size.x <= m_play_pos.x-m_block_size.x ||
+            max_x+c_move.x*m_block_size.x >= m_play_pos.x+m_play_size.x){
         return false;
     }else{
         return true;
@@ -106,11 +105,8 @@ bool Piece::Check_boundaries(sf::Vector2f c_move, Field* field){
 }
 
 bool Piece::Check_bottom(float max_y, sf::Vector2f c_move, Field* field){
+    
     if(max_y+c_move.y*m_block_size.y >= m_play_pos.y+m_play_size.y){
-        for(auto& m_square: m_squares){
-            field->Add_field(m_square);
-        }
-        m_is_alive = false;
         return true;
     }else{
         return false;
@@ -126,7 +122,8 @@ void Piece::Move(sf::Vector2f c_move, Field* field){
     int coll_status {0};
     int index {0};
     bool print_data {false};
-    bool clean_up_done {false};
+    
+    std::vector<float> piece_bounds = Get_piece_bounds();
     
     for(auto& m_square: m_squares){
         coll_status = field->Collision(m_square,c_move,m_block_size);
@@ -136,7 +133,7 @@ void Piece::Move(sf::Vector2f c_move, Field* field){
         ++index;
     }
     
-    if(coll_status==2){
+    if(coll_status==2 || Check_bottom(piece_bounds.at(2), c_move, field)){
         m_is_alive = false;
         for(auto& m_square: m_squares){
             m_square.move({c_move.x*m_block_size.x,c_move.y*m_block_size.y});
@@ -145,7 +142,7 @@ void Piece::Move(sf::Vector2f c_move, Field* field){
         field->CleanUp(m_block_size.y);
     }
     
-    if(Check_boundaries(c_move,field) && m_is_alive && coll_status==0){
+    if(Check_boundaries(piece_bounds.at(0),piece_bounds.at(1),c_move,field) && m_is_alive && coll_status==0){
         for(auto& m_square: m_squares){
             m_square.move({c_move.x*m_block_size.x,c_move.y*m_block_size.y});
         }

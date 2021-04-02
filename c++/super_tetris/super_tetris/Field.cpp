@@ -22,9 +22,10 @@ void Field::ResetInventory(){
         std::map<float,int>::iterator it = m_inventory.find(square.getPosition().y);
         if(it!=m_inventory.end()){
             it->second++;
+            std::cout << "Current: " << it->first << " " << it->second << std::endl;
         }else{
-            std::cout << "Creating: " << it->first << " " << square.getPosition().y << std::endl;
             m_inventory.insert(std::make_pair(square.getPosition().y,1));
+            std::cout << "Creating: " << square.getPosition().y << std::endl;
         }
     }
 }
@@ -68,7 +69,7 @@ void Field::CheckLines(float c_block_y){
         std::cout << it->first << " " << it->second << std::endl;
         if(it->second >= 8){
             std::cout << "Line " << it->first << " if full! " << std::endl;
-            m_complete_lines.push_back(it->first);
+            m_complete_lines.push_back(static_cast<int>(it->first));
         }
     }
 }
