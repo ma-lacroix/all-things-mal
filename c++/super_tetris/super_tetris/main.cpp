@@ -124,13 +124,13 @@ int main(){
         
         totalTime = clock.getElapsedTime().asSeconds();
         
-        if(totalTime>=difficulty){
+        if(totalTime>=difficulty && state == State::PLAYING){
             pieces.at(c_index)->Move({0.0f,1.0f},field);
             totalTime = clock.restart().asSeconds();
         }
         
         // Clear screen
-        window.clear(sf::Color(200,200,200));
+        window.clear(sf::Color(200,200,230));
         
         if(state==State::INTRO){
             window.draw(t_introduction);
@@ -159,4 +159,3 @@ int main(){
 
     return EXIT_SUCCESS;
 }
-
