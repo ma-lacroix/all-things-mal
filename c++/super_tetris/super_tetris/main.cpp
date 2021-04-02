@@ -34,10 +34,15 @@ std::vector<Piece*> gen(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int n
 
 
 int main(){
+    
     // time related stuff
     sf::Clock clock;
+    sf::Clock clock2;
     float totalTime {0.0f};
+    float deltaTime {0.0f};
     float difficulty {3.0f};
+    
+    sf::Vector2f nextMove {0.0f,0.0f};
     
     // Create the main window
     sf::Vector2f screen_size {SCREEN_WIDTH,SCREEN_HEIGHT};
@@ -69,6 +74,9 @@ int main(){
     // Start the game loop
     while (window.isOpen())
     {
+        
+        totalTime = clock.getElapsedTime().asSeconds();
+        deltaTime = clock2.restart().asSeconds();
         
         // Process events
         sf::Event event;
@@ -108,25 +116,43 @@ int main(){
             // Move pieces
             if(state == State::PLAYING && event.type == sf::Event::KeyPressed){
                 if(event.key.code == sf::Keyboard::Left){
-                    pieces.at(c_index)->Move({-1.0f,0.0f},field);
+//                    pieces.at(c_index)->Move({-1.0f,0.0f},field,deltaTime);
+                    nextMove = {-1.0f,0.0f};
                 }
                 if(event.key.code == sf::Keyboard::Right){
-                    pieces.at(c_index)->Move({1.0f,0.0f},field);
+//                    pieces.at(c_index)->Move({1.0f,0.0f},field,deltaTime);
+                    nextMove = {1.0f,0.0f};
                 }
                 if(event.key.code == sf::Keyboard::Down){
-                    pieces.at(c_index)->Move({0.0f,1.0f},field);
+//                    pieces.at(c_index)->Move({0.0f,1.0f},field,deltaTime);
+                    nextMove = {0.0f,1.0f};
                 }
                 if(event.key.code == sf::Keyboard::Space){
-                    pieces.at(c_index)->Rotate();
+//                    pieces.at(c_index)->Rotate();
+                    nextMove = {99.0f,0.0f};
                 }
             }
         }
         
-        totalTime = clock.getElapsedTime().asSeconds();
         
         if(totalTime>=difficulty && state == State::PLAYING){
-            pieces.at(c_index)->Move({0.0f,1.0f},field);
+//            pieces.at(c_index)->Move({0.0f,1.0f},field,deltaTime);
+            nextMove = {0.0f,1.0f};
             totalTime = clock.restart().asSeconds();
+        }
+        
+        if(field->status == Field::Status::RUN && (nextMove.x!=0.0f || nextMove.y!=0.0f)){
+            if(nextMove.x!=99.0f){
+                pieces.at(c_index)->Move(nextMove, field);
+            }else{
+                pieces.at(c_index)->Rotate();
+            }
+            nextMove = {0.0f,0.0f};
+            totalTime = clock.restart().asSeconds();
+        }
+        
+        if(field->status == Field::Status::UPDATE){
+            field->DropLines(background.Get_play_size().x/8, deltaTime);
         }
         
         // Clear screen
@@ -151,7 +177,7 @@ int main(){
         window.display();
         
         // Switch to next piece
-        if(!pieces.at(c_index)->Check_status() && c_index < pieces.size()-1){
+        if(!pieces.at(c_index)->Check_status() && c_index < pieces.size()-1 && field->status == Field::Status::RUN){
             ++c_index;
             pieces.at(c_index)->Activate_Piece();
         }

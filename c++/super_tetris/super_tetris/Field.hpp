@@ -18,14 +18,17 @@
 class Field {
 private:
     std::vector<sf::RectangleShape> m_field;
+    std::vector<sf::RectangleShape> m_field_hold; // copy of m_field used for drop animations
     std::vector<float> m_complete_lines;
     std::map<float,int> m_inventory;
     
 public:
     Field();
     ~Field();
+    enum class Status {RUN,UPDATE};
+    Status status;
     void ResetInventory();
-    void DropLines(float);
+    void DropLines(float,float);
     void EraseLines(float);
     void CheckLines(float);
     void CleanUp(float);

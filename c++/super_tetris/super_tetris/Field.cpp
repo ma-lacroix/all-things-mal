@@ -10,6 +10,7 @@
 
 Field::Field(){
     std::cout<< "Field constructor called" << std::endl;
+    status = Status::RUN;
 }
 
 Field::~Field(){
@@ -28,20 +29,26 @@ void Field::ResetInventory(){
     }
 }
 
-void Field::DropLines(float c_block_y){
-    std::cout << "dropping lines" << std::endl;
+void Field::DropLines(float c_block_y, float deltaTime){
+    
+    int counter {0};
     for(auto line: m_complete_lines){
         for(size_t i{0};i<m_field.size();++i){
-            if(m_field.at(i).getPosition().y<line){
-                m_field.at(i).move(0.0f,c_block_y);
+            if(m_field.at(i).getPosition().y<line &&
+               (m_field.at(i).getPosition().y-m_field_hold.at(i).getPosition().y) <= c_block_y){
+                m_field.at(i).move(0.0f,round(deltaTime*500.0f));
+                ++counter;
             }
         }
+    }
+    if(counter==0){
+        status=Status::RUN;
     }
 }
 
 void Field::EraseLines(float c_block_y){
     
-    // O(g(x)) massively unoptimised search and find algorithm!
+    // O(g(x)) massively unoptimised search and erase algorithm!
     
     for(auto c_line_index: m_complete_lines){
         std::cout << "c line: " << c_line_index << std::endl;
@@ -61,10 +68,12 @@ void Field::EraseLines(float c_block_y){
 void Field::CheckLines(float c_block_y){
     
     for(std::map<float,int>::iterator it = m_inventory.begin();it!=m_inventory.end();++it){
-        if(it->second >= 8){
+        if(it->second == 8){
             m_complete_lines.push_back(static_cast<int>(it->first));
         }
+        std::cout << it->first << " " << it->second << std::endl;
     }
+    std::cout << "\n" << std::endl;
 }
 
 void Field::CleanUp(float c_block_y){
@@ -75,7 +84,8 @@ void Field::CleanUp(float c_block_y){
     
     if(m_complete_lines.size()>0){
         EraseLines(c_block_y);
-        DropLines(c_block_y);
+        m_field_hold = m_field;
+        status = Status::UPDATE;
     }
 }
 
