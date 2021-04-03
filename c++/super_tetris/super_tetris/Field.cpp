@@ -18,6 +18,7 @@ Field::~Field(){
 }
 
 void Field::ResetInventory(){
+// resets the dead pieces map
     m_inventory.clear();
     for(auto square: m_field){
         std::map<float,int>::iterator it = m_inventory.find(square.getPosition().y);
@@ -29,29 +30,48 @@ void Field::ResetInventory(){
     }
 }
 
+void Field::DropAdjust(float c_block_y,int lines_counter){
+// adjust dropped pieces pixel count to match game grid
+
+    for(auto line: m_complete_lines){
+        for(size_t i{0};i<m_field.size();++i){
+            if(m_field_hold.at(i).getPosition().y<line){
+                float current = m_field.at(i).getPosition().y;
+                float goal = m_field_hold.at(i).getPosition().y+c_block_y*lines_counter;
+                float nmove = goal-current;
+                if(current!=goal){
+                    m_field.at(i).move(0.0f, nmove);
+                }
+            }
+        }
+    }
+}
+
 void Field::DropLines(float c_block_y, float deltaTime){
     
     int counter {0};
+    int lines_counter = m_complete_lines.size();
     for(auto line: m_complete_lines){
         for(size_t i{0};i<m_field.size();++i){
             if(m_field.at(i).getPosition().y<line &&
-               (m_field.at(i).getPosition().y-m_field_hold.at(i).getPosition().y) <= c_block_y){
-                m_field.at(i).move(0.0f,round(deltaTime*500.0f));
+               (m_field.at(i).getPosition().y-m_field_hold.at(i).getPosition().y) <= c_block_y*lines_counter){
+                m_field.at(i).move(0.0f,deltaTime*300.0f);
                 ++counter;
             }
         }
     }
     if(counter==0){
+        DropAdjust(c_block_y,lines_counter);
+        ResetInventory();
         status=Status::RUN;
     }
 }
 
-void Field::EraseLines(float c_block_y){
+void Field::EraseLines(){
     
     // O(g(x)) massively unoptimised search and erase algorithm!
     
     for(auto c_line_index: m_complete_lines){
-        std::cout << "c line: " << c_line_index << std::endl;
         for(size_t i = m_field.size()-1;i>0;--i){
             if(m_field.at(i).getPosition().y==c_line_index){
                 m_field.erase(m_field.begin()+i);
@@ -71,9 +91,7 @@ void Field::CheckLines(float c_block_y){
         if(it->second == 8){
             m_complete_lines.push_back(static_cast<int>(it->first));
         }
-        std::cout << it->first << " " << it->second << std::endl;
     }
-    std::cout << "\n" << std::endl;
 }
 
 void Field::CleanUp(float c_block_y){
@@ -83,7 +101,7 @@ void Field::CleanUp(float c_block_y){
     CheckLines(c_block_y);
     
     if(m_complete_lines.size()>0){
-        EraseLines(c_block_y);
+        EraseLines();
         m_field_hold = m_field;
         status = Status::UPDATE;
     }

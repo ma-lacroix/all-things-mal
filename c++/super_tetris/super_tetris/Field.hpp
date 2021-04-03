@@ -28,8 +28,9 @@ public:
     enum class Status {RUN,UPDATE};
     Status status;
     void ResetInventory();
+    void DropAdjust(float,int);
     void DropLines(float,float);
-    void EraseLines(float);
+    void EraseLines();
     void CheckLines(float);
     void CleanUp(float);
     void Add_field(sf::RectangleShape);
