@@ -153,6 +153,10 @@ int main(){
         if(field->status == Field::Status::UPDATE){
             field->DropLines(background.Get_play_size().x/8, deltaTime);
         }
+        if(field->status == Field::Status::ERASE){
+            field->EraseLines();
+        }
+        
         
         // Clear screen
         window.clear(sf::Color(200,200,230));

@@ -11,6 +11,7 @@
 Field::Field(){
     std::cout<< "Field constructor called" << std::endl;
     status = Status::RUN;
+    velocity = -0.1f;
 }
 
 Field::~Field(){
@@ -53,10 +54,14 @@ void Field::DropLines(float c_block_y, float deltaTime){
     int lines_counter = m_complete_lines.size();
     for(auto line: m_complete_lines){
         for(size_t i {0};i<m_field.size();++i){
+            int randv = sqrt(rand()%10+1);
+            velocity += deltaTime/35.0f;
             if(m_field_hold.at(i).getPosition().y==line &&
-                m_field.at(i).getPosition().y < 4000.0f){
-                    m_field.at(i).rotate(0.1f+deltaTime*100.0f);
-                    m_field.at(i).move(0.0f,deltaTime*1000.0f);
+                m_field.at(i).getPosition().y < 2000.0f){
+                    m_field.at(i).setFillColor(sf::Color(50,50,50,100));
+                    m_field.at(i).setOrigin(20.0f, 20.0f);
+                    m_field.at(i).rotate(sinf(i)/randv);
+                    m_field.at(i).move(-sinf(i)/randv,velocity);
                     ++counter;
             }
         }
@@ -69,29 +74,28 @@ void Field::DropLines(float c_block_y, float deltaTime){
         }
     }
     if(counter==0){
+        velocity = -0.1f;
         DropAdjust(c_block_y,lines_counter);
         status = Status::ERASE;
-        EraseLines();
     }
 }
 
 void Field::EraseLines(){
     
     // O(g(x)) massively unoptimised search and erase algorithm!
-    for(auto c_line_index: m_complete_lines){
-        for(size_t i = m_field.size()-1;i>0;--i){
-            if(m_field_hold.at(i).getPosition().y==c_line_index){
-                m_field.erase(m_field.begin()+i);
-            }
-        }
     
-//        for(size_t i {0};i<m_field.size();++i){
-//            if(m_field_hold.at(i).getPosition().y==c_line_index){
-//                m_field.erase(m_field.begin()+i);
-//                ++counter;
-//            }
-//        }
+    for(size_t i = m_field.size()-1;i>0;--i){
+        if(m_field_hold.at(i).getPosition().y>=2000.0f){
+            m_field.erase(m_field.begin()+i);
+        }
     }
+    
+    for(size_t i {0}; i < 1;++i){
+        if(m_field_hold.at(i).getPosition().y>=2000.0f){
+            m_field.erase(m_field.begin()+i);
+        }
+    }
+
     ResetInventory();
     status = Status::RUN;
 }

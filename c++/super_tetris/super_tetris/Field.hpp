@@ -21,6 +21,7 @@ private:
     std::vector<sf::RectangleShape> m_field_hold; // copy of m_field used for drop animations
     std::vector<float> m_complete_lines;
     std::map<float,int> m_inventory;
+    float velocity;
     
 public:
     Field();
