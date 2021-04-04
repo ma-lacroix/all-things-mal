@@ -140,7 +140,7 @@ int main(){
             totalTime = clock.restart().asSeconds();
         }
         
-        if(field->status == Field::Status::RUN && (nextMove.x!=0.0f || nextMove.y!=0.0f)){
+        if(field->m_status == Field::Status::RUN && (nextMove.x!=0.0f || nextMove.y!=0.0f)){
             if(nextMove.x!=99.0f){
                 pieces.at(c_index)->Move(nextMove, field);
             }else{
@@ -150,11 +150,9 @@ int main(){
             totalTime = clock.restart().asSeconds();
         }
         
-        if(field->status == Field::Status::UPDATE){
+        if(field->m_status == Field::Status::UPDATE){
+            background.updateScore(field->GetComplSize());
             field->DropLines(background.Get_play_size().x/8, deltaTime);
-        }
-        if(field->status == Field::Status::ERASE){
-            field->EraseLines();
         }
         
         
@@ -180,7 +178,7 @@ int main(){
         window.display();
         
         // Switch to next piece
-        if(!pieces.at(c_index)->Check_status() && c_index < pieces.size()-1 && field->status == Field::Status::RUN){
+        if(!pieces.at(c_index)->Check_status() && c_index < pieces.size()-1 && field->m_status == Field::Status::RUN){
             ++c_index;
             pieces.at(c_index)->Activate_Piece();
         }

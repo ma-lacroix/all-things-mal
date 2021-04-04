@@ -21,13 +21,14 @@ private:
     std::vector<sf::RectangleShape> m_field_hold; // copy of m_field used for drop animations
     std::vector<float> m_complete_lines;
     std::map<float,int> m_inventory;
-    float velocity;
+    float m_velocity;
     
 public:
     Field();
     ~Field();
     enum class Status {RUN,ERASE,UPDATE};
-    Status status;
+    Status m_status;
+    size_t GetComplSize();
     void ResetInventory();
     void DropAdjust(float,int);
     void DropLines(float,float);

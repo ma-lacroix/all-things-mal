@@ -10,12 +10,16 @@
 
 Field::Field(){
     std::cout<< "Field constructor called" << std::endl;
-    status = Status::RUN;
-    velocity = -0.1f;
+    m_status = Status::RUN;
+    m_velocity = -0.1f;
 }
 
 Field::~Field(){
     std::cout<< "Field destructor called" << std::endl;
+}
+
+size_t Field::GetComplSize(){
+    return m_complete_lines.size();
 }
 
 void Field::ResetInventory(){
@@ -36,7 +40,7 @@ void Field::DropAdjust(float c_block_y,int lines_counter){
 
     for(auto line: m_complete_lines){
         for(size_t i{0};i<m_field.size();++i){
-            if(m_field_hold.at(i).getPosition().y<line){
+            if(m_field_hold.at(i).getPosition().y<line && m_field.at(i).getPosition().y < 2000.0f){
                 float current = m_field.at(i).getPosition().y;
                 float goal = m_field_hold.at(i).getPosition().y+c_block_y*lines_counter;
                 float nmove = goal-current;
@@ -55,13 +59,13 @@ void Field::DropLines(float c_block_y, float deltaTime){
     for(auto line: m_complete_lines){
         for(size_t i {0};i<m_field.size();++i){
             int randv = sqrt(rand()%10+1);
-            velocity += deltaTime/35.0f;
+            m_velocity += deltaTime/35.0f;
             if(m_field_hold.at(i).getPosition().y==line &&
                 m_field.at(i).getPosition().y < 2000.0f){
                     m_field.at(i).setFillColor(sf::Color(50,50,50,100));
                     m_field.at(i).setOrigin(20.0f, 20.0f);
                     m_field.at(i).rotate(sinf(i)/randv);
-                    m_field.at(i).move(-sinf(i)/randv,velocity);
+                    m_field.at(i).move(-sinf(i)/randv,m_velocity);
                     ++counter;
             }
         }
@@ -74,9 +78,9 @@ void Field::DropLines(float c_block_y, float deltaTime){
         }
     }
     if(counter==0){
-        velocity = -0.1f;
+        m_velocity = -0.1f;
         DropAdjust(c_block_y,lines_counter);
-        status = Status::ERASE;
+        EraseLines();
     }
 }
 
@@ -97,7 +101,7 @@ void Field::EraseLines(){
     }
 
     ResetInventory();
-    status = Status::RUN;
+    m_status = Status::RUN;
 }
 
 void Field::CheckLines(float c_block_y){
@@ -117,7 +121,7 @@ void Field::CleanUp(float c_block_y){
     
     if(m_complete_lines.size()>0){
         m_field_hold = m_field;
-        status = Status::UPDATE;
+        m_status = Status::UPDATE;
     }
 }
 

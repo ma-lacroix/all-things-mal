@@ -23,13 +23,18 @@ private:
     sf::Font m_font;
     sf::Text m_msg_next;
     sf::Text m_msg_score;
+    sf::Text m_score;
+    int m_lines;
+    
 public:
     Background(float, float,sf::Color,sf::Font);
     ~Background();
     sf::Vector2f Get_play_size();
     sf::Vector2f Get_play_pos();
+    void updateScore(int);
     void Draw(sf::RenderWindow&,Piece*);
     void Draw(sf::RenderWindow&);
+    
 };
 
 #endif /* Background_hpp */

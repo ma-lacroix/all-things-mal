@@ -39,11 +39,18 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     m_msg_score.setCharacterSize(s_size.y*0.03);
     m_msg_score.setFillColor(sf::Color::Blue);
     
+    m_score.setString("0");
+    m_score.setOrigin(0.5f, 0.5f);
+    m_score.setFont(m_font);
+    m_score.setCharacterSize(s_size.y*0.03);
+    m_score.setFillColor(sf::Color::Black);
+    
     m_main_bg.setPosition(s_size.x*0.05, s_size.y*0.1);
     m_second_bg.setPosition(s_size.x*0.7, s_size.y*0.15);
     m_third_bg.setPosition(s_size.x*0.7, s_size.y*0.35);
     m_msg_next.setPosition(s_size.x*0.7, s_size.y*0.1);
     m_msg_score.setPosition(s_size.x*0.7, s_size.y*0.30);
+    m_score.setPosition(s_size.x*0.75, s_size.y*0.4);
     
 }
 
@@ -55,12 +62,18 @@ sf::Vector2f Background::Get_play_pos(){
     return m_main_bg.getPosition();
 }
 
+void Background::updateScore(int lines){
+    m_lines+=lines;
+    m_score.setString(std::to_string(m_lines));
+}
+
 void Background::Draw(sf::RenderWindow& window, Piece* p){
     window.draw(m_main_bg);
     window.draw(m_second_bg);
     window.draw(m_third_bg);
     window.draw(m_msg_next);
     window.draw(m_msg_score);
+    window.draw(m_score);
     p->DrawNext(window);
 }
 
@@ -70,6 +83,7 @@ void Background::Draw(sf::RenderWindow& window){
     window.draw(m_third_bg);
     window.draw(m_msg_next);
     window.draw(m_msg_score);
+    window.draw(m_score);
 }
 
 Background::~Background(){std::cout << "Background destructor called" << std::endl;}
