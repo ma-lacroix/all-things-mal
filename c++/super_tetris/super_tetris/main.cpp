@@ -48,7 +48,7 @@ int main(){
     sf::Vector2f screen_size {SCREEN_WIDTH,SCREEN_HEIGHT};
     sf::RenderWindow window(sf::VideoMode(screen_size.x,screen_size.y),"SuperTetris!",sf::Style::Titlebar | sf::Style::Resize);
     
-    State state = State::PLAYING; // for debugging - must be set at INTRO when testing full game
+    State state = State::INTRO; // for debugging - must be set at INTRO when testing full game
     
     sf::Font font;
     if (!font.loadFromFile(resourcePath() + "sansation.ttf")) {

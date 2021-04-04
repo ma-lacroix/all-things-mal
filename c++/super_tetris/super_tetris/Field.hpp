@@ -25,7 +25,7 @@ private:
 public:
     Field();
     ~Field();
-    enum class Status {RUN,UPDATE};
+    enum class Status {RUN,ERASE,UPDATE};
     Status status;
     void ResetInventory();
     void DropAdjust(float,int);

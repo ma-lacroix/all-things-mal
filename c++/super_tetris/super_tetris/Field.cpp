@@ -52,6 +52,14 @@ void Field::DropLines(float c_block_y, float deltaTime){
     int counter {0};
     int lines_counter = m_complete_lines.size();
     for(auto line: m_complete_lines){
+        for(size_t i {0};i<m_field.size();++i){
+            if(m_field_hold.at(i).getPosition().y==line &&
+                m_field.at(i).getPosition().y < 4000.0f){
+                    m_field.at(i).rotate(0.1f+deltaTime*100.0f);
+                    m_field.at(i).move(0.0f,deltaTime*1000.0f);
+                    ++counter;
+            }
+        }
         for(size_t i{0};i<m_field.size();++i){
             if(m_field.at(i).getPosition().y<line &&
                (m_field.at(i).getPosition().y-m_field_hold.at(i).getPosition().y) <= c_block_y*lines_counter){
@@ -62,27 +70,30 @@ void Field::DropLines(float c_block_y, float deltaTime){
     }
     if(counter==0){
         DropAdjust(c_block_y,lines_counter);
-        ResetInventory();
-        status=Status::RUN;
+        status = Status::ERASE;
+        EraseLines();
     }
 }
 
 void Field::EraseLines(){
     
     // O(g(x)) massively unoptimised search and erase algorithm!
-    
     for(auto c_line_index: m_complete_lines){
         for(size_t i = m_field.size()-1;i>0;--i){
-            if(m_field.at(i).getPosition().y==c_line_index){
+            if(m_field_hold.at(i).getPosition().y==c_line_index){
                 m_field.erase(m_field.begin()+i);
             }
         }
-        for(size_t i {0};i<m_field.size();++i){
-            if(m_field.at(i).getPosition().y==c_line_index){
-                m_field.erase(m_field.begin()+i);
-            }
-        }
+    
+//        for(size_t i {0};i<m_field.size();++i){
+//            if(m_field_hold.at(i).getPosition().y==c_line_index){
+//                m_field.erase(m_field.begin()+i);
+//                ++counter;
+//            }
+//        }
     }
+    ResetInventory();
+    status = Status::RUN;
 }
 
 void Field::CheckLines(float c_block_y){
@@ -101,7 +112,6 @@ void Field::CleanUp(float c_block_y){
     CheckLines(c_block_y);
     
     if(m_complete_lines.size()>0){
-        EraseLines();
         m_field_hold = m_field;
         status = Status::UPDATE;
     }
