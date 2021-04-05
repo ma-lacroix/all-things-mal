@@ -1,7 +1,7 @@
 //  SuperTetris
 //
 //  Created by Marc-Antoine Lacroix on 21/03/2021.
-//  Art by Johnny khalil
+//  Art by Johnny Khalil
 //  Copyright © 2021 Marc-Antoine Lacroix. All rights reserved.
 //
 
