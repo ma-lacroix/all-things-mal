@@ -11,26 +11,31 @@
 
 Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
     
+    
+    if(!m_texture.loadFromFile(resourcePath() + "blocks_2.png")){
+        return EXIT_FAILURE;
+    }
+    
     switch (c_type) {
         case 1: // line
             this->m_positions = {{0.0f,1.0f},{1.0f,1.0f},{2.0f,1.0f},{3.0f,1.0f}};
-            this->m_color = sf::Color::Blue;
+            this->m_color = sf::Color(255,255,255);
             break;
         case 2: // T
             this->m_positions = {{0.0f,1.0f},{1.0f,1.0f},{2.0f,1.0f},{1.0f,2.0f}};
-            this->m_color = sf::Color::Yellow;
+            this->m_color = sf::Color(255,200,10);
             break;
         case 3: // square
             this->m_positions = {{1.0f,1.0f},{2.0f,1.0f},{1.0f,2.0f},{2.0f,2.0f}};
-            this->m_color = sf::Color::Green;
+            this->m_color = sf::Color(10,10,255);
             break;
         case 4: // S
             this->m_positions = {{1.0f,1.0f},{1.0f,2.0f},{2.0f,2.0f},{2.0f,3.0f}};
-            this->m_color = sf::Color::Red;
+            this->m_color = sf::Color(255,10,10);
             break;
         case 5: // L
             this->m_positions = {{1.0f,1.0f},{2.0f,1.0f},{3.0f,1.0f},{3.0f,2.0f}};
-            this->m_color = sf::Color::Magenta;
+            this->m_color = sf::Color(10,255,10);
             break;
         default:
             break;
@@ -41,15 +46,23 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
     this->m_play_pos = c_play_pos;
     this->m_is_alive = false;
     
+    int i {0};
     for(auto& pos: m_positions){
         sf::RectangleShape m_square;
         m_square.setSize(m_block_size*0.7f); // to fit "next box"
         m_square.setPosition({(pos.x*m_block_size.x*0.7f+c_play_size.x*1.20f),(pos.y*m_block_size.y*0.7f+c_play_pos.y*1.75f)});
         m_square.setFillColor(m_color);
+        m_square.setTexture(&m_texture);
+        m_square.setTextureRect(sf::IntRect(17+i*47,14,20,40));
         m_square.setOutlineColor(sf::Color::Black);
-        m_square.setOutlineThickness(1.0f);
+        m_square.setOutlineThickness(3.0f);
         m_squares.push_back(m_square);
+        ++i;
     }
+    for(auto square: m_squares){
+        
+    }
+
 }
 
 Piece::~Piece(){

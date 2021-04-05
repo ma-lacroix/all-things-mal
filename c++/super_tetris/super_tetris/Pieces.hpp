@@ -14,6 +14,7 @@
 #include <iostream>
 #include <vector>
 #include "Field.hpp"
+#include "ResourcePath.hpp"
 
 
 class Piece {
@@ -24,6 +25,7 @@ private:
     sf::Vector2f m_play_size;
     sf::Vector2f m_play_pos;
     sf::Color m_color;
+    sf::Texture m_texture;
     bool m_is_alive;
     
 public:

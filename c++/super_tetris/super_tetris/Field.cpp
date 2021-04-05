@@ -62,7 +62,7 @@ void Field::DropLines(float c_block_y, float deltaTime){
             m_velocity += deltaTime/35.0f;
             if(m_field_hold.at(i).getPosition().y==line &&
                 m_field.at(i).getPosition().y < 2000.0f){
-                    m_field.at(i).setFillColor(sf::Color(50,50,50,100));
+//                    m_field.at(i).setFillColor(sf::Color(50,50,50,30));
                     m_field.at(i).setOrigin(20.0f, 20.0f);
                     m_field.at(i).rotate(sinf(i)/randv);
                     m_field.at(i).move(-sinf(i)/randv,m_velocity);

@@ -1,6 +1,7 @@
 //  SuperTetris
 //
 //  Created by Marc-Antoine Lacroix on 21/03/2021.
+//  Art by Johnny khalil
 //  Copyright © 2021 Marc-Antoine Lacroix. All rights reserved.
 //
 
@@ -48,22 +49,23 @@ int main(){
     sf::Vector2f screen_size {SCREEN_WIDTH,SCREEN_HEIGHT};
     sf::RenderWindow window(sf::VideoMode(screen_size.x,screen_size.y),"SuperTetris!",sf::Style::Titlebar | sf::Style::Resize);
     
-    State state = State::INTRO; // for debugging - must be set at INTRO when testing full game
+    State state = State::PLAYING; // for debugging - must be set at INTRO when testing full game
     
     sf::Font font;
-    if (!font.loadFromFile(resourcePath() + "sansation.ttf")) {
+    if (!font.loadFromFile(resourcePath() + "Excludedi.ttf")) {
         return EXIT_FAILURE;
     }
+    
     
     Background background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
     std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),30);
     Field* field = new Field();
     
-    sf::Text t_introduction("Welcome to SuperTetris", font, 50);
+    sf::Text t_introduction("Welcome to \n\nSuperTetris", font, 50);
     t_introduction.setFillColor(sf::Color::Red);
     t_introduction.setPosition(screen_size.x/5,screen_size.y/2);
     
-    sf::Text t_difficulty("SELECT DIFFICULTY: \n 1- Easy peasy \n 2- I can handle it \n 3- Dude, seriously \n 4- You &#%$", font, 50);
+    sf::Text t_difficulty("SELECT DIFFICULTY: \n 1- Easy peasy \n 2- I can handle it \n 3- Dude, seriously \n 4- You *#%@", font, 50);
     t_difficulty.setFillColor(sf::Color::Red);
     t_difficulty.setPosition(screen_size.x/5,screen_size.y/2);
     
@@ -99,16 +101,16 @@ int main(){
             
             if(state == State::DIFFICULTY && event.type == sf::Event::KeyPressed){
                 if(event.key.code == sf::Keyboard::Num1){
-                    difficulty = 2.0f;
-                    state = State::PLAYING;
-                }else if(event.key.code == sf::Keyboard::Num2){
                     difficulty = 1.5f;
                     state = State::PLAYING;
-                }else if(event.key.code == sf::Keyboard::Num3){
+                }else if(event.key.code == sf::Keyboard::Num2){
                     difficulty = 1.0f;
                     state = State::PLAYING;
-                }else if(event.key.code == sf::Keyboard::Num4){
+                }else if(event.key.code == sf::Keyboard::Num3){
                     difficulty = 0.5f;
+                    state = State::PLAYING;
+                }else if(event.key.code == sf::Keyboard::Num4){
+                    difficulty = 0.1f;
                     state = State::PLAYING;
                 }
             }

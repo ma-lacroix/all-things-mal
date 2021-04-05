@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		DB0526C32609DC5F00280855 /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB0526C12609DC5F00280855 /* Background.cpp */; };
 		DB0526C8260A141200280855 /* Pieces.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB0526C6260A141200280855 /* Pieces.cpp */; };
+		DB734561261B1B7A006E9F1D /* Excludedi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB73455F261B16EB006E9F1D /* Excludedi.ttf */; };
+		DB734566261B9F57006E9F1D /* blocks_2.png in Resources */ = {isa = PBXBuildFile; fileRef = DB734564261B9F57006E9F1D /* blocks_2.png */; };
+		DB734567261B9F57006E9F1D /* blocks_1.png in Resources */ = {isa = PBXBuildFile; fileRef = DB734565261B9F57006E9F1D /* blocks_1.png */; };
 		DB79A5FD2608C82D000F917B /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB79A5FC2608C82D000F917B /* ResourcePath.mm */; };
 		DB79A6002608C82D000F917B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB79A5FF2608C82D000F917B /* main.cpp */; };
-		DB79A6072608C82D000F917B /* sansation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DB79A6062608C82D000F917B /* sansation.ttf */; };
 		DBAAE615260D1E5100794073 /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBAAE613260D1E5100794073 /* Field.cpp */; };
 /* End PBXBuildFile section */
 
@@ -20,12 +22,14 @@
 		DB0526C22609DC5F00280855 /* Background.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Background.hpp; sourceTree = "<group>"; };
 		DB0526C6260A141200280855 /* Pieces.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Pieces.cpp; sourceTree = "<group>"; };
 		DB0526C7260A141200280855 /* Pieces.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Pieces.hpp; sourceTree = "<group>"; };
+		DB73455F261B16EB006E9F1D /* Excludedi.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Excludedi.ttf; sourceTree = "<group>"; };
+		DB734564261B9F57006E9F1D /* blocks_2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blocks_2.png; sourceTree = "<group>"; };
+		DB734565261B9F57006E9F1D /* blocks_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blocks_1.png; sourceTree = "<group>"; };
 		DB79A5F72608C82D000F917B /* super_tetris.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = super_tetris.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB79A5FB2608C82D000F917B /* super_tetris-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "super_tetris-Info.plist"; path = "../super_tetris-Info.plist"; sourceTree = "<group>"; };
 		DB79A5FC2608C82D000F917B /* ResourcePath.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
 		DB79A5FE2608C82D000F917B /* ResourcePath.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcePath.hpp; sourceTree = "<group>"; };
 		DB79A5FF2608C82D000F917B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		DB79A6062608C82D000F917B /* sansation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = sansation.ttf; path = ../sansation.ttf; sourceTree = "<group>"; };
 		DB79A6102608C96E000F917B /* super_tetris.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = super_tetris.entitlements; sourceTree = "<group>"; };
 		DBAAE613260D1E5100794073 /* Field.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Field.cpp; sourceTree = "<group>"; };
 		DBAAE614260D1E5100794073 /* Field.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Field.hpp; sourceTree = "<group>"; };
@@ -88,7 +92,9 @@
 		DB79A6012608C82D000F917B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				DB79A6062608C82D000F917B /* sansation.ttf */,
+				DB734565261B9F57006E9F1D /* blocks_1.png */,
+				DB734564261B9F57006E9F1D /* blocks_2.png */,
+				DB73455F261B16EB006E9F1D /* Excludedi.ttf */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -151,7 +157,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB79A6072608C82D000F917B /* sansation.ttf in Resources */,
+				DB734566261B9F57006E9F1D /* blocks_2.png in Resources */,
+				DB734567261B9F57006E9F1D /* blocks_1.png in Resources */,
+				DB734561261B1B7A006E9F1D /* Excludedi.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,6 +21,7 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     m_main_bg.setOutlineColor(m_color);
     m_main_bg.setOutlineThickness(3.0f);
     
+    
     m_second_bg.setSize({s_size.x*0.275f,s_size.x*0.275f});
     m_second_bg.setOutlineColor(m_color);
     m_second_bg.setOutlineThickness(3.0f);
