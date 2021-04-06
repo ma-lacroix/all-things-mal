@@ -26,6 +26,8 @@ private:
     sf::Vector2f m_play_pos;
     sf::Color m_color;
     sf::Texture m_texture;
+    sf::Vector2i m_texture_start;
+    sf::IntRect m_texture_rect;
     bool m_is_alive;
     
 public:

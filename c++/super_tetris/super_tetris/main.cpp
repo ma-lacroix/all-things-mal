@@ -65,13 +65,13 @@ int main(){
     t_introduction.setFillColor(sf::Color::Red);
     t_introduction.setPosition(screen_size.x/5,screen_size.y/2);
     
-    sf::Text t_difficulty("SELECT DIFFICULTY: \n 1- Easy peasy \n 2- I can handle it \n 3- Dude, seriously \n 4- You *#%@", font, 50);
+    sf::Text t_difficulty("SELECT DIFFICULTY: \n 1- Easy peasy \n 2- I can handle it \n 3- Dude, seriously \n 4- You #@#@", font, 50);
     t_difficulty.setFillColor(sf::Color::Red);
     t_difficulty.setPosition(screen_size.x/5,screen_size.y/2);
     
     sf::Text t_game_over("Game over!", font, 70);
     t_game_over.setFillColor(sf::Color::Red);
-    t_game_over.setPosition(screen_size.x/4,screen_size.y/2);
+    t_game_over.setPosition(screen_size.x/5,screen_size.y/2);
     
     // Start the game loop
     while (window.isOpen())
