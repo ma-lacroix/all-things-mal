@@ -11,7 +11,6 @@
 
 Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
     
-    
     if(!m_texture.loadFromFile(resourcePath() + "tetris_blocks_2.png")){
         return EXIT_FAILURE;
     }
@@ -50,6 +49,7 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
     this->m_play_size = c_play_size;
     this->m_play_pos = c_play_pos;
     this->m_is_alive = false;
+    m_rotIndex = 1;
     
     int i {0};
     for(auto& pos: m_positions){
@@ -64,7 +64,8 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
         // end designs test
         
         m_square.setSize(m_block_size*0.7f); // to fit "next box"
-        m_square.setPosition({(pos.x*m_block_size.x*0.6f+c_play_size.x*1.25f),(pos.y*m_block_size.y*0.6f+c_play_pos.y*1.75f)});
+        m_square.setOrigin(m_block_size/2.0f);
+        m_square.setPosition({(pos.x*m_block_size.x*0.7f+c_play_size.x*1.25f),(pos.y*m_block_size.y*0.6f+c_play_pos.y*1.75f)});
 //        m_square.setFillColor(m_color);
         m_square.setTexture(&m_texture);
         m_square.setTextureRect(m_texture_rect);
@@ -73,10 +74,6 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
         m_squares.push_back(m_square);
         ++i;
     }
-    for(auto square: m_squares){
-        
-    }
-
 }
 
 Piece::~Piece(){
@@ -89,7 +86,7 @@ void Piece::Activate_Piece(){
     // move piece from "next box" to game board
     int i {0};
     for(auto& pos: m_positions){
-        m_squares.at(i).setPosition({pos.x*m_block_size.x+m_play_pos.x,pos.y*m_block_size.y+m_play_pos.y});
+        m_squares.at(i).setPosition({pos.x*m_block_size.x+m_play_pos.x+m_block_size.x/2,pos.y*m_block_size.y+m_play_pos.y+m_block_size.y/2});
         m_squares.at(i).setSize(m_block_size);
         ++i;
     }
@@ -123,7 +120,7 @@ bool Piece::Check_boundaries(float min_x, float max_x, sf::Vector2f c_move, Fiel
     
     std::vector<float> piece_bounds = Get_piece_bounds();
     
-    if(min_x+c_move.x*m_block_size.x <= m_play_pos.x-m_block_size.x ||
+    if(min_x+c_move.x*m_block_size.x-m_block_size.x <= m_play_pos.x-m_block_size.x ||
             max_x+c_move.x*m_block_size.x >= m_play_pos.x+m_play_size.x){
         return false;
     }else{
@@ -183,18 +180,30 @@ void Piece::Adjust_rotation(sf::Vector2f c_move){
     }
 }
 
+void Piece::Rotate_Textures(){
+    
+    std::cout << m_rotIndex << std::endl;
+    for(auto& m_square: m_squares){
+        m_square.rotate(-90.0f);
+//        m_square.move(-m_block_size.x/2, 0.0f);
+    }
+    ++m_rotIndex;
+    if(m_rotIndex==5) m_rotIndex=1;
+}
+
 void Piece::Rotation_Outbound(){
     // adjusts piece if out of bounds after rotation
     
     std::vector<float> piece_bounds = Get_piece_bounds();
     
     if(piece_bounds.at(0) < m_play_pos.x){
-        Adjust_rotation({m_play_pos.x-piece_bounds.at(0),0.0f});
+        Adjust_rotation({m_play_pos.x-piece_bounds.at(0)+m_block_size.x/2,0.0f});
     }else if(piece_bounds.at(1) > m_play_pos.x+m_play_size.x-m_block_size.x){
-        Adjust_rotation({m_play_pos.x+m_play_size.x-piece_bounds.at(1)-m_block_size.x,0.0f});
+        Adjust_rotation({m_play_pos.x+m_play_size.x-piece_bounds.at(1)-m_block_size.x*0.5f,0.0f});
     }else if(piece_bounds.at(2) > m_play_pos.y+m_play_size.y-m_block_size.y){
         Adjust_rotation({0.0f,m_play_pos.y+m_play_size.y-piece_bounds.at(2)-m_block_size.y});
     }
+    Rotate_Textures();
 }
 
 void Piece::Rotate(){
@@ -212,11 +221,11 @@ void Piece::Rotate(){
         for(auto m_pos: m_positions){
             int ind1 = static_cast<int>(12.0f+m_pos.y-m_pos.x*4);
             int ind2 = static_cast<int>(m_pos.y*4+m_pos.x);
+            
             rotations.x = index.at(ind1).x-index.at(ind2).x;
             rotations.y = index.at(ind1).y-index.at(ind2).y;
             m_positions.at(i) = index.at(ind1);
             m_squares.at(i).move({rotations.x*m_block_size.x,rotations.y*m_block_size.y});
-//            m_squares.at(i).rotate(-90.0f);
             ++i;
         }
         

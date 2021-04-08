@@ -29,6 +29,7 @@ private:
     sf::Vector2i m_texture_start;
     sf::IntRect m_texture_rect;
     bool m_is_alive;
+    int m_rotIndex;
     
 public:
     Piece(sf::Vector2f,sf::Vector2f,int);
@@ -41,6 +42,7 @@ public:
     bool Check_status();
     void Move(sf::Vector2f,Field*);
     void Adjust_rotation(sf::Vector2f);
+    void Rotate_Textures();
     void Rotate();
     void Rotation_Outbound();
     void Draw(sf::RenderWindow&);
