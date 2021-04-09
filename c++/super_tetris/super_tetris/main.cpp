@@ -12,6 +12,7 @@
 #include "ResourcePath.hpp"
 #include "Background.hpp"
 #include "Pieces.hpp"
+#include "Messages.hpp"
 
 // globals
 enum class State {INTRO,DIFFICULTY,PLAYING,GAME_OVER};
@@ -49,13 +50,14 @@ int main(){
     sf::Vector2f screen_size {SCREEN_WIDTH,SCREEN_HEIGHT};
     sf::RenderWindow window(sf::VideoMode(screen_size.x,screen_size.y),"SuperTetris!",sf::Style::Titlebar | sf::Style::Resize);
     
-    State state = State::PLAYING; // for debugging - must be set at INTRO when testing full game
+    State state = State::INTRO; // for debugging - must be set at INTRO when testing full game
     
     sf::Font font;
     if (!font.loadFromFile(resourcePath() + "Excludedi.ttf")) {
         return EXIT_FAILURE;
     }
     
+    Message* awesome = new Message(font,300,"AWESOME!",{SCREEN_WIDTH/2,SCREEN_HEIGHT/2},10.0f);
     
     Background background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
     std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),30);
@@ -143,6 +145,7 @@ int main(){
         }
         
         if(field->m_status == Field::Status::RUN && (nextMove.x!=0.0f || nextMove.y!=0.0f)){
+            awesome->Reset();
             if(nextMove.x!=99.0f){
                 pieces.at(c_index)->Move(nextMove, field);
             }else{
@@ -154,6 +157,7 @@ int main(){
         
         if(field->m_status == Field::Status::UPDATE){
             background.updateScore(field->GetComplSize());
+            awesome->Move(deltaTime);
             field->DropLines(background.Get_play_size().x/8, deltaTime);
         }
         
@@ -170,6 +174,9 @@ int main(){
                 background.Draw(window,pieces.at(c_index+1));
                 field->Draw(window);
                 pieces.at(c_index)->Draw(window);
+                if(field->m_status == Field::Status::UPDATE){
+                    awesome->Draw(window);
+                }
             }else{
                 state = State::GAME_OVER;
             }

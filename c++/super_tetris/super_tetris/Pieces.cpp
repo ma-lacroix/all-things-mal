@@ -11,7 +11,7 @@
 
 Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
     
-    if(!m_texture.loadFromFile(resourcePath() + "tetris_blocks_2.png")){
+    if(!m_texture.loadFromFile(resourcePath() + "tetris_blocks_1.png")){
         return EXIT_FAILURE;
     }
     
@@ -49,7 +49,6 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
     this->m_play_size = c_play_size;
     this->m_play_pos = c_play_pos;
     this->m_is_alive = false;
-    m_rotIndex = 1;
     
     int i {0};
     for(auto& pos: m_positions){
@@ -182,13 +181,10 @@ void Piece::Adjust_rotation(sf::Vector2f c_move){
 
 void Piece::Rotate_Textures(){
     
-    std::cout << m_rotIndex << std::endl;
     for(auto& m_square: m_squares){
         m_square.rotate(-90.0f);
-//        m_square.move(-m_block_size.x/2, 0.0f);
     }
-    ++m_rotIndex;
-    if(m_rotIndex==5) m_rotIndex=1;
+    
 }
 
 void Piece::Rotation_Outbound(){

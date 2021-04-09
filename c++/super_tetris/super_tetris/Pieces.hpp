@@ -29,7 +29,6 @@ private:
     sf::Vector2i m_texture_start;
     sf::IntRect m_texture_rect;
     bool m_is_alive;
-    int m_rotIndex;
     
 public:
     Piece(sf::Vector2f,sf::Vector2f,int);
