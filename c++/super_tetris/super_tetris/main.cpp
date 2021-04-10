@@ -22,7 +22,7 @@ int c_index {0};
 
 void resizedView(const sf::RenderWindow& window, sf::View& view, const float view_height) {
     float aspectRatio = float(window.getSize().x)/float(window.getSize().y);
-    view.setSize(view_height,view_height * aspectRatio);
+    view.setSize(view_height * aspectRatio,view_height);
 }
 
 std::vector<Piece*> gen(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int num_pieces){
@@ -79,17 +79,17 @@ int main(){
     std::vector<Message*> messages = gen2(font,300,{SCREEN_WIDTH,SCREEN_HEIGHT/3},10.0f);
     Field* field = new Field();
     
-    sf::Text t_introduction("Welcome to \n\nSuperTetris", font, 50);
+    sf::Text t_introduction("Welcome to \n\nSuperTetris\n\n\nPress Enter!", font, 80);
     t_introduction.setFillColor(sf::Color::Red);
-    t_introduction.setPosition(screen_size.x/5,screen_size.y/2);
+    t_introduction.setPosition(screen_size.x/10,screen_size.y/3);
     
-    sf::Text t_difficulty("SELECT DIFFICULTY: \n 1- Easy peasy \n 2- I can handle it \n 3- Dude, seriously \n 4- You #@#@", font, 50);
-    t_difficulty.setFillColor(sf::Color::Red);
-    t_difficulty.setPosition(screen_size.x/5,screen_size.y/2);
+    sf::Text t_difficulty("SELECT DIFFICULTY: \n 1- Easy peasy \n 2- I can handle it \n 3- Dude, seriously \n 4- You #@#@", font, 80);
+    t_difficulty.setFillColor(sf::Color::Black);
+    t_difficulty.setPosition(screen_size.x/10,screen_size.y/4);
     
-    sf::Text t_game_over("Game over!", font, 70);
+    sf::Text t_game_over("Game over!", font, 80);
     t_game_over.setFillColor(sf::Color::Red);
-    t_game_over.setPosition(screen_size.x/5,screen_size.y/2);
+    t_game_over.setPosition(screen_size.x/10,screen_size.y/3);
     
     // Start the game loop
     while (window.isOpen())
@@ -113,7 +113,7 @@ int main(){
             }
             
             if(event.type == sf::Event::Resized){
-                resizedView(window,view,SCREEN_WIDTH);
+                resizedView(window,view,SCREEN_HEIGHT);
                 printf("New window width: %i New window height: %i\n", event.size.width, event.size.height);
             }
             

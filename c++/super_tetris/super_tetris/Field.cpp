@@ -63,7 +63,7 @@ void Field::DropLines(float c_block_y, float deltaTime, std::vector<Message*> c_
             m_velocity += deltaTime/(35.0f*lines_counter);
             if(m_field_hold.at(i).getPosition().y==line &&
                 m_field.at(i).getPosition().y < 2000.0f){
-                    m_field.at(i).setFillColor(sf::Color(255,0,0,255));
+                    m_field.at(i).setFillColor(sf::Color(120,120,130,255));
                     m_field.at(i).setOrigin(20.0f, 20.0f);
                     m_field.at(i).rotate(sinf(i)/randv);
                     m_field.at(i).move(-sinf(i)/randv,m_velocity);
@@ -168,5 +168,7 @@ void Field::Draw(sf::RenderWindow& window,std::vector<Message*> c_messages){
     for(auto square: m_field){
         window.draw(square);
     }
-    c_messages.at(m_complete_lines.size())->Draw(window);
+    if(m_status == Status::UPDATE){
+        c_messages.at(m_complete_lines.size())->Draw(window);
+    }
 }

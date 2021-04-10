@@ -29,7 +29,7 @@ Message::~Message(){
 }
 
 void Message::Move(float deltaTime){
-    if(m_text.getPosition().x>-2000.0f){
+    if(m_text.getPosition().x>-3000.0f){
         m_text.move({-deltaTime*m_speed*100.0f,0.0f});
     }
 }
