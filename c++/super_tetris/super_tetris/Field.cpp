@@ -11,7 +11,8 @@
 Field::Field(){
     std::cout<< "Field constructor called" << std::endl;
     m_status = Status::RUN;
-    m_velocity = -0.1f;
+    m_velocity_init = -0.30f; // decrease to make block explosions bigger
+    m_velocity = m_velocity_init;
 }
 
 Field::~Field(){
@@ -52,20 +53,21 @@ void Field::DropAdjust(float c_block_y,int lines_counter){
     }
 }
 
-void Field::DropLines(float c_block_y, float deltaTime){
+void Field::DropLines(float c_block_y, float deltaTime, std::vector<Message*> c_messages){
     
     int counter {0};
     int lines_counter = m_complete_lines.size();
     for(auto line: m_complete_lines){
         for(size_t i {0};i<m_field.size();++i){
             int randv = sqrt(rand()%10+1);
-            m_velocity += deltaTime/35.0f;
+            m_velocity += deltaTime/(35.0f*lines_counter);
             if(m_field_hold.at(i).getPosition().y==line &&
                 m_field.at(i).getPosition().y < 2000.0f){
-//                    m_field.at(i).setFillColor(sf::Color(50,50,50,30));
+                    m_field.at(i).setFillColor(sf::Color(255,0,0,255));
                     m_field.at(i).setOrigin(20.0f, 20.0f);
                     m_field.at(i).rotate(sinf(i)/randv);
                     m_field.at(i).move(-sinf(i)/randv,m_velocity);
+                    c_messages.at(lines_counter)->Move(deltaTime/(lines_counter*3));
                     ++counter;
             }
         }
@@ -78,7 +80,8 @@ void Field::DropLines(float c_block_y, float deltaTime){
         }
     }
     if(counter==0){
-        m_velocity = -0.1f;
+        c_messages.at(lines_counter)->Reset();
+        m_velocity = m_velocity_init;
         DropAdjust(c_block_y,lines_counter);
         EraseLines();
     }
@@ -120,6 +123,7 @@ void Field::CleanUp(float c_block_y){
     CheckLines(c_block_y);
     
     if(m_complete_lines.size()>0){
+        m_velocity = m_velocity_init*m_complete_lines.size();
         m_field_hold = m_field;
         m_status = Status::UPDATE;
     }
@@ -160,8 +164,9 @@ int Field::Collision(sf::RectangleShape c_rect,sf::Vector2f c_move, sf::Vector2f
     return result;
 }
 
-void Field::Draw(sf::RenderWindow& window){
+void Field::Draw(sf::RenderWindow& window,std::vector<Message*> c_messages){
     for(auto square: m_field){
         window.draw(square);
     }
+    c_messages.at(m_complete_lines.size())->Draw(window);
 }

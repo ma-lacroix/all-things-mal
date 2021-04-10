@@ -20,6 +20,10 @@ const float SCREEN_WIDTH {800.0f};
 const float SCREEN_HEIGHT {1500.0f};
 int c_index {0};
 
+void resizedView(const sf::RenderWindow& window, sf::View& view, const float view_height) {
+    float aspectRatio = float(window.getSize().x)/float(window.getSize().y);
+    view.setSize(view_height,view_height * aspectRatio);
+}
 
 std::vector<Piece*> gen(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int num_pieces){
     
@@ -32,6 +36,18 @@ std::vector<Piece*> gen(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int n
     }
     c_pieces.at(0)->Activate_Piece();
     return c_pieces;
+}
+
+std::vector<Message*> gen2(sf::Font c_font,int c_size,sf::Vector2f c_pos,float c_speed){
+    
+    std::vector<std::string> msgs = {"","GOOD!","ALL\n RIGHT!","YEAH\n YEAH\n YEAH!","AWEEE!"};
+    std::vector<Message*> c_messages;
+    for(int i {0};i<5;++i){
+        Message* m = new Message(c_font,c_size,msgs.at(i),c_pos,c_speed);
+        c_messages.push_back(m);
+    }
+    return c_messages;
+    
 }
 
 
@@ -49,6 +65,7 @@ int main(){
     // Create the main window
     sf::Vector2f screen_size {SCREEN_WIDTH,SCREEN_HEIGHT};
     sf::RenderWindow window(sf::VideoMode(screen_size.x,screen_size.y),"SuperTetris!",sf::Style::Titlebar | sf::Style::Resize);
+    sf::View view(screen_size/2.0f,screen_size);
     
     State state = State::INTRO; // for debugging - must be set at INTRO when testing full game
     
@@ -57,10 +74,9 @@ int main(){
         return EXIT_FAILURE;
     }
     
-    Message* awesome = new Message(font,300,"AWESOME!",{SCREEN_WIDTH/2,SCREEN_HEIGHT/2},10.0f);
-    
     Background background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
     std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),30);
+    std::vector<Message*> messages = gen2(font,300,{SCREEN_WIDTH,SCREEN_HEIGHT/3},10.0f);
     Field* field = new Field();
     
     sf::Text t_introduction("Welcome to \n\nSuperTetris", font, 50);
@@ -94,6 +110,11 @@ int main(){
             // Escape pressed: exit
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape) {
                 window.close();
+            }
+            
+            if(event.type == sf::Event::Resized){
+                resizedView(window,view,SCREEN_WIDTH);
+                printf("New window width: %i New window height: %i\n", event.size.width, event.size.height);
             }
             
             // Start game
@@ -145,7 +166,6 @@ int main(){
         }
         
         if(field->m_status == Field::Status::RUN && (nextMove.x!=0.0f || nextMove.y!=0.0f)){
-            awesome->Reset();
             if(nextMove.x!=99.0f){
                 pieces.at(c_index)->Move(nextMove, field);
             }else{
@@ -157,13 +177,13 @@ int main(){
         
         if(field->m_status == Field::Status::UPDATE){
             background.updateScore(field->GetComplSize());
-            awesome->Move(deltaTime);
-            field->DropLines(background.Get_play_size().x/8, deltaTime);
+            field->DropLines(background.Get_play_size().x/8, deltaTime,messages);
         }
         
         
         // Clear screen
         window.clear(sf::Color(200,200,230));
+        window.setView(view);
         
         if(state==State::INTRO){
             window.draw(t_introduction);
@@ -172,11 +192,8 @@ int main(){
         }else if(state==State::PLAYING){
             if(c_index+1 <= pieces.size()-1){
                 background.Draw(window,pieces.at(c_index+1));
-                field->Draw(window);
+                field->Draw(window,messages);
                 pieces.at(c_index)->Draw(window);
-                if(field->m_status == Field::Status::UPDATE){
-                    awesome->Draw(window);
-                }
             }else{
                 state = State::GAME_OVER;
             }

@@ -29,7 +29,6 @@ Message::~Message(){
 }
 
 void Message::Move(float deltaTime){
-    std::cout << m_text.getPosition().x << " " << m_text.getPosition().y << std::endl;
     if(m_text.getPosition().x>-2000.0f){
         m_text.move({-deltaTime*m_speed*100.0f,0.0f});
     }
