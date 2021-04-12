@@ -20,7 +20,7 @@ Message::Message(sf::Font c_font,int c_size,std::string c_message,sf::Vector2f c
     m_text.setString(m_message);
     m_text.setCharacterSize(m_font_size);
     m_text.setPosition(m_position);
-    m_text.setFillColor(sf::Color(0,0,0,100));
+    m_text.setFillColor(sf::Color(0,0,0,200));
 
 }
 

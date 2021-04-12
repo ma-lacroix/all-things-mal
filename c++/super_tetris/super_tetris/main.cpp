@@ -67,7 +67,7 @@ int main(){
     sf::RenderWindow window(sf::VideoMode(screen_size.x,screen_size.y),"SuperTetris!",sf::Style::Titlebar | sf::Style::Resize);
     sf::View view(screen_size/2.0f,screen_size);
     
-    State state = State::INTRO; // for debugging - must be set at INTRO when testing full game
+    State state = State::PLAYING; // for debugging - must be set at INTRO when testing full game
     
     sf::Font font;
     if (!font.loadFromFile(resourcePath() + "Excludedi.ttf")) {

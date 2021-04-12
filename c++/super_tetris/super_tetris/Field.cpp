@@ -63,11 +63,11 @@ void Field::DropLines(float c_block_y, float deltaTime, std::vector<Message*> c_
             m_velocity += deltaTime/(35.0f*lines_counter);
             if(m_field_hold.at(i).getPosition().y==line &&
                 m_field.at(i).getPosition().y < 2000.0f){
-                    m_field.at(i).setFillColor(sf::Color(120,120,130,255));
+//                    m_field.at(i).setFillColor(sf::Color(120,120,130,255));
                     m_field.at(i).setOrigin(20.0f, 20.0f);
                     m_field.at(i).rotate(sinf(i)/randv);
                     m_field.at(i).move(-sinf(i)/randv,m_velocity);
-                    c_messages.at(lines_counter)->Move(deltaTime/(lines_counter*3));
+                    c_messages.at(lines_counter)->Move(deltaTime/(lines_counter*4));
                     ++counter;
             }
         }
