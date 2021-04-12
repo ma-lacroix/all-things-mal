@@ -16,9 +16,14 @@
 
 class Background {
 private:
+    sf::RectangleShape m_background_bg;
+    sf::Texture m_background_texture;
     sf::RectangleShape m_main_bg;
+    sf::Texture m_main_texture;
     sf::RectangleShape m_second_bg;
+    sf::Texture m_second_texture;
     sf::RectangleShape m_third_bg;
+    sf::Texture m_third_texture;
     sf::Color m_color;
     sf::Font m_font;
     sf::Text m_msg_next;

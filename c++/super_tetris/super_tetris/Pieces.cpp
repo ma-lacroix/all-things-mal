@@ -11,7 +11,7 @@
 
 Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
     
-    if(!m_texture.loadFromFile(resourcePath() + "tetris_blocks_1.png")){
+    if(!m_texture.loadFromFile(resourcePath() + "p_tetris_blocks_1.png")){
         return EXIT_FAILURE;
     }
     
@@ -64,7 +64,7 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
         
         m_square.setSize(m_block_size*0.7f); // to fit "next box"
         m_square.setOrigin(m_block_size/2.0f);
-        m_square.setPosition({(pos.x*m_block_size.x*0.7f+c_play_size.x*1.25f),(pos.y*m_block_size.y*0.6f+c_play_pos.y*1.75f)});
+        m_square.setPosition({(pos.x*m_block_size.x*0.70f+c_play_size.x*1.25f),(pos.y*m_block_size.y*0.6f+c_play_pos.y*2.2f)});
 //        m_square.setFillColor(m_color);
         m_square.setTexture(&m_texture);
         m_square.setTextureRect(m_texture_rect);

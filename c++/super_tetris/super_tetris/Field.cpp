@@ -11,7 +11,7 @@
 Field::Field(){
     std::cout<< "Field constructor called" << std::endl;
     m_status = Status::RUN;
-    m_velocity_init = -0.30f; // decrease to make block explosions bigger
+    m_velocity_init = -0.20f; // decrease to make block explosions bigger
     m_velocity = m_velocity_init;
 }
 

@@ -13,32 +13,43 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     
     std::cout << "Background constructor called" << std::endl;
     
+    if(!m_background_texture.loadFromFile(resourcePath() + "b_background.png")){
+        return EXIT_FAILURE;
+    }
+    
+    if(!m_main_texture.loadFromFile(resourcePath() + "b_playing_area.png")){
+        return EXIT_FAILURE;
+    }
+    
+    if(!m_second_texture.loadFromFile(resourcePath() + "b_next.png")){
+        return EXIT_FAILURE;
+    }
+    
+    if(!m_third_texture.loadFromFile(resourcePath() + "b_score.png")){
+        return EXIT_FAILURE;
+    }
+    
     sf::Vector2f s_size {SCREEN_WIDTH,SCREEN_HEIGHT};
     this->m_color=c_color;
     this->m_font=c_font;
     
+    m_background_bg.setSize(s_size);
+    m_background_bg.setTexture(&m_background_texture);
+    
     m_main_bg.setSize({s_size.x*0.6f,s_size.y*0.8f});
     m_main_bg.setOutlineColor(m_color);
     m_main_bg.setOutlineThickness(3.0f);
-    
+    m_main_bg.setTexture(&m_main_texture);
     
     m_second_bg.setSize({s_size.x*0.275f,s_size.x*0.275f});
     m_second_bg.setOutlineColor(m_color);
     m_second_bg.setOutlineThickness(3.0f);
+    m_second_bg.setTexture(&m_second_texture);
     
     m_third_bg.setSize({s_size.x*0.275f,s_size.x*0.275f});
     m_third_bg.setOutlineColor(m_color);
     m_third_bg.setOutlineThickness(3.0f);
-    
-    m_msg_next.setString("Next:");
-    m_msg_next.setFont(m_font);
-    m_msg_next.setCharacterSize(s_size.y*0.03);
-    m_msg_next.setFillColor(sf::Color::Blue);
-    
-    m_msg_score.setString("Score:");
-    m_msg_score.setFont(m_font);
-    m_msg_score.setCharacterSize(s_size.y*0.03);
-    m_msg_score.setFillColor(sf::Color::Blue);
+    m_third_bg.setTexture(&m_third_texture);
     
     m_score.setString("0");
     m_score.setOrigin(0.5f, 0.5f);
@@ -46,12 +57,13 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     m_score.setCharacterSize(s_size.y*0.03);
     m_score.setFillColor(sf::Color::Black);
     
+    m_background_bg.setPosition(0.0f,0.0f);
     m_main_bg.setPosition(s_size.x*0.05, s_size.y*0.1);
     m_second_bg.setPosition(s_size.x*0.7, s_size.y*0.15);
     m_third_bg.setPosition(s_size.x*0.7, s_size.y*0.35);
     m_msg_next.setPosition(s_size.x*0.7, s_size.y*0.1);
     m_msg_score.setPosition(s_size.x*0.7, s_size.y*0.30);
-    m_score.setPosition(s_size.x*0.75, s_size.y*0.4);
+    m_score.setPosition(s_size.x*0.75, s_size.y*0.41);
     
 }
 
@@ -69,6 +81,7 @@ void Background::updateScore(int lines){
 }
 
 void Background::Draw(sf::RenderWindow& window, Piece* p){
+    window.draw(m_background_bg);
     window.draw(m_main_bg);
     window.draw(m_second_bg);
     window.draw(m_third_bg);
@@ -79,6 +92,7 @@ void Background::Draw(sf::RenderWindow& window, Piece* p){
 }
 
 void Background::Draw(sf::RenderWindow& window){
+    window.draw(m_background_bg);
     window.draw(m_main_bg);
     window.draw(m_second_bg);
     window.draw(m_third_bg);
