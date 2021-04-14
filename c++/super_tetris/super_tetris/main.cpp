@@ -13,12 +13,12 @@
 #include "Background.hpp"
 #include "Pieces.hpp"
 #include "Messages.hpp"
+#include "Menu.hpp"
 
 // globals
 enum class State {INTRO,DIFFICULTY,PLAYING,GAME_OVER};
 const float SCREEN_WIDTH {800.0f};
 const float SCREEN_HEIGHT {1500.0f};
-int c_index {0};
 
 void resizedView(const sf::RenderWindow& window, sf::View& view, const float view_height) {
     float aspectRatio = float(window.getSize().x)/float(window.getSize().y);
@@ -58,16 +58,18 @@ int main(){
     sf::Clock clock2;
     float totalTime {0.0f};
     float deltaTime {0.0f};
-    float difficulty {3.0f};
+    float difficulty {1.5f};
     
     sf::Vector2f nextMove {0.0f,0.0f};
+    int piece_counter {0};
+    int c_index {0};
     
     // Create the main window
     sf::Vector2f screen_size {SCREEN_WIDTH,SCREEN_HEIGHT};
     sf::RenderWindow window(sf::VideoMode(screen_size.x,screen_size.y),"SuperTetris!",sf::Style::Titlebar | sf::Style::Resize);
     sf::View view(screen_size/2.0f,screen_size);
     
-    State state = State::PLAYING; // for debugging - must be set at INTRO when testing full game
+    State state = State::INTRO; // for debugging - must be set at INTRO when testing full game
     
     sf::Font font;
     if (!font.loadFromFile(resourcePath() + "Excludedi.ttf")) {
@@ -78,18 +80,7 @@ int main(){
     std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),30);
     std::vector<Message*> messages = gen2(font,300,{SCREEN_WIDTH,SCREEN_HEIGHT/3},10.0f);
     Field* field = new Field();
-    
-    sf::Text t_introduction("Welcome to \n\nSuperTetris\n\n\nPress Enter!", font, 80);
-    t_introduction.setFillColor(sf::Color::Red);
-    t_introduction.setPosition(screen_size.x/10,screen_size.y/3);
-    
-    sf::Text t_difficulty("SELECT DIFFICULTY: \n 1- Easy peasy \n 2- I can handle it \n 3- Dude, seriously \n 4- You #@#@", font, 80);
-    t_difficulty.setFillColor(sf::Color::Black);
-    t_difficulty.setPosition(screen_size.x/10,screen_size.y/4);
-    
-    sf::Text t_game_over("Game over!", font, 80);
-    t_game_over.setFillColor(sf::Color::Red);
-    t_game_over.setPosition(screen_size.x/10,screen_size.y/3);
+    Menu* menu = new Menu(font,screen_size);
     
     // Start the game loop
     while (window.isOpen())
@@ -141,24 +132,24 @@ int main(){
             // Move pieces
             if(state == State::PLAYING && event.type == sf::Event::KeyPressed){
                 if(event.key.code == sf::Keyboard::Left){
-//                    pieces.at(c_index)->Move({-1.0f,0.0f},field,deltaTime);
                     nextMove = {-1.0f,0.0f};
                 }
                 if(event.key.code == sf::Keyboard::Right){
-//                    pieces.at(c_index)->Move({1.0f,0.0f},field,deltaTime);
                     nextMove = {1.0f,0.0f};
                 }
                 if(event.key.code == sf::Keyboard::Down){
-//                    pieces.at(c_index)->Move({0.0f,1.0f},field,deltaTime);
                     nextMove = {0.0f,1.0f};
                 }
                 if(event.key.code == sf::Keyboard::Space){
-//                    pieces.at(c_index)->Rotate();
                     nextMove = {99.0f,0.0f};
                 }
             }
         }
         
+        if(piece_counter==5){
+            difficulty-=0.15f; // increase difficulty every 10 pieces
+            piece_counter = 0;
+        }
         
         if(totalTime>=difficulty && state == State::PLAYING){
             nextMove = {0.0f,1.0f};
@@ -180,15 +171,14 @@ int main(){
             field->DropLines(background.Get_play_size().x/8, deltaTime,messages);
         }
         
-        
         // Clear screen
         window.clear(sf::Color(200,200,230));
         window.setView(view);
         
         if(state==State::INTRO){
-            window.draw(t_introduction);
+            menu->Draw(window,0);
         }else if(state==State::DIFFICULTY){
-            window.draw(t_difficulty);
+            menu->Draw(window,2);
         }else if(state==State::PLAYING){
             if(c_index+1 <= pieces.size()-1){
                 background.Draw(window,pieces.at(c_index+1));
@@ -198,7 +188,7 @@ int main(){
                 state = State::GAME_OVER;
             }
         }else{
-            window.draw(t_game_over);
+            menu->Draw(window,1);
         }
         // Update the window
         window.display();
@@ -207,6 +197,7 @@ int main(){
         if(!pieces.at(c_index)->Check_status() && c_index < pieces.size()-1 && field->m_status == Field::Status::RUN){
             ++c_index;
             pieces.at(c_index)->Activate_Piece();
+            ++piece_counter;
         }
     }
 

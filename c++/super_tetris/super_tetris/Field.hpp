@@ -13,7 +13,6 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
-#include <list>
 #include "Messages.hpp"
 
 class Field {

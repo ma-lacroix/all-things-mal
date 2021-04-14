@@ -19,6 +19,7 @@
 		DB79A5FD2608C82D000F917B /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB79A5FC2608C82D000F917B /* ResourcePath.mm */; };
 		DB79A6002608C82D000F917B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB79A5FF2608C82D000F917B /* main.cpp */; };
 		DBAAE615260D1E5100794073 /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBAAE613260D1E5100794073 /* Field.cpp */; };
+		DBD2BC032627733B0013427C /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBD2BC012627733B0013427C /* Menu.cpp */; };
 		DBDD32E52620EFE000F2FD61 /* Messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBDD32E32620EFE000F2FD61 /* Messages.cpp */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +43,8 @@
 		DB79A6102608C96E000F917B /* super_tetris.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = super_tetris.entitlements; sourceTree = "<group>"; };
 		DBAAE613260D1E5100794073 /* Field.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Field.cpp; sourceTree = "<group>"; };
 		DBAAE614260D1E5100794073 /* Field.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Field.hpp; sourceTree = "<group>"; };
+		DBD2BC012627733B0013427C /* Menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
+		DBD2BC022627733B0013427C /* Menu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Menu.hpp; sourceTree = "<group>"; };
 		DBDD32E32620EFE000F2FD61 /* Messages.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Messages.cpp; sourceTree = "<group>"; };
 		DBDD32E42620EFE000F2FD61 /* Messages.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Messages.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -82,6 +85,8 @@
 				DBDD32E32620EFE000F2FD61 /* Messages.cpp */,
 				DBDD32E42620EFE000F2FD61 /* Messages.hpp */,
 				DB79A5FF2608C82D000F917B /* main.cpp */,
+				DBD2BC012627733B0013427C /* Menu.cpp */,
+				DBD2BC022627733B0013427C /* Menu.hpp */,
 				DB0526C6260A141200280855 /* Pieces.cpp */,
 				DB0526C7260A141200280855 /* Pieces.hpp */,
 				DBAAE613260D1E5100794073 /* Field.cpp */,
@@ -215,6 +220,7 @@
 				DBDD32E52620EFE000F2FD61 /* Messages.cpp in Sources */,
 				DBAAE615260D1E5100794073 /* Field.cpp in Sources */,
 				DB0526C32609DC5F00280855 /* Background.cpp in Sources */,
+				DBD2BC032627733B0013427C /* Menu.cpp in Sources */,
 				DB79A6002608C82D000F917B /* main.cpp in Sources */,
 				DB79A5FD2608C82D000F917B /* ResourcePath.mm in Sources */,
 			);

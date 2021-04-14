@@ -55,21 +55,17 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
         
         sf::RectangleShape m_square;
         
-        // designs test
         m_texture_rect.left = m_texture.getSize().x/9 * m_texture_start.x + m_positions.at(i).x * m_texture.getSize().x/9;
         m_texture_rect.width = m_texture.getSize().x/9;
         m_texture_rect.top = m_texture.getSize().y/6 * m_texture_start.y  + m_positions.at(i).y * m_texture.getSize().y/6;
         m_texture_rect.height = m_texture.getSize().y/6;
-        // end designs test
         
         m_square.setSize(m_block_size*0.7f); // to fit "next box"
         m_square.setOrigin(m_block_size/2.0f);
         m_square.setPosition({(pos.x*m_block_size.x*0.70f+c_play_size.x*1.25f),(pos.y*m_block_size.y*0.6f+c_play_pos.y*2.2f)});
-//        m_square.setFillColor(m_color);
         m_square.setTexture(&m_texture);
         m_square.setTextureRect(m_texture_rect);
         m_square.setOutlineColor(sf::Color::Black);
-        m_square.setOutlineThickness(1.0f);
         m_squares.push_back(m_square);
         ++i;
     }
@@ -85,7 +81,7 @@ void Piece::Activate_Piece(){
     // move piece from "next box" to game board
     int i {0};
     for(auto& pos: m_positions){
-        m_squares.at(i).setPosition({pos.x*m_block_size.x+m_play_pos.x+m_block_size.x/2,pos.y*m_block_size.y+m_play_pos.y+m_block_size.y/2});
+        m_squares.at(i).setPosition({pos.x*m_block_size.x+m_play_pos.x+m_block_size.x*5/2,pos.y*m_block_size.y+m_play_pos.y+m_block_size.y/2});
         m_squares.at(i).setSize(m_block_size);
         ++i;
     }

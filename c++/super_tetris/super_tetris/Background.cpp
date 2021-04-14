@@ -39,14 +39,10 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     m_main_bg.setSize({s_size.x*0.6f,s_size.y*0.8f});
     m_main_bg.setTexture(&m_main_texture);
     
-    m_second_bg.setSize({s_size.x*0.275f,s_size.x*0.275f});
-    m_second_bg.setOutlineColor(m_color);
-    m_second_bg.setOutlineThickness(3.0f);
+    m_second_bg.setSize({s_size.x*0.270f,s_size.x*0.275f});
     m_second_bg.setTexture(&m_second_texture);
     
-    m_third_bg.setSize({s_size.x*0.275f,s_size.x*0.275f});
-    m_third_bg.setOutlineColor(m_color);
-    m_third_bg.setOutlineThickness(3.0f);
+    m_third_bg.setSize({s_size.x*0.270f,s_size.x*0.275f});
     m_third_bg.setTexture(&m_third_texture);
     
     m_score.setString("0");
@@ -61,8 +57,7 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     m_third_bg.setPosition(s_size.x*0.7, s_size.y*0.67);
     m_msg_next.setPosition(s_size.x*0.7, s_size.y*0.1);
     m_msg_score.setPosition(s_size.x*0.7, s_size.y*0.30);
-    m_score.setPosition(s_size.x*0.75, s_size.y*0.73);
-    
+    m_score.setPosition(s_size.x*0.75, s_size.y*0.73);  
 }
 
 sf::Vector2f Background::Get_play_size(){
