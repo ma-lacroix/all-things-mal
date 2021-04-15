@@ -19,6 +19,9 @@ private:
     std::vector<sf::Text> m_others;
     std::vector<sf::Text> m_difficulty;
     std::size_t m_selection;
+    int m_s_size;
+    int m_b_size;
+    sf::Font m_font;
     sf::Text t_introduction;
     sf::Text t_game_over;
     sf::Text t_difficulty;

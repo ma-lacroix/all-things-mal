@@ -178,7 +178,7 @@ int main(){
         if(state==State::INTRO){
             menu->Draw(window,0);
         }else if(state==State::DIFFICULTY){
-            menu->Draw(window,2);
+            menu->Draw(window,1);
         }else if(state==State::PLAYING){
             if(c_index+1 <= pieces.size()-1){
                 background.Draw(window,pieces.at(c_index+1));
@@ -188,7 +188,7 @@ int main(){
                 state = State::GAME_OVER;
             }
         }else{
-            menu->Draw(window,1);
+            menu->Draw(window,2);
         }
         // Update the window
         window.display();

@@ -10,38 +10,27 @@
 
 Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
     
+    this->m_font = c_font;
+    m_s_size = 50.0f;
+    m_b_size = 80.0f;
     m_selection = 1.0f;
     
-    t_introduction = sf::Text("Welcome to \n\nSuperTetris\n\n\nPress Enter!", c_font, 80);
+    t_introduction = sf::Text("Welcome to \n\nSuperTetris\n\n\nPress Enter!", m_font, m_b_size);
     t_introduction.setFillColor(sf::Color::Black);
     t_introduction.setPosition(c_screen_size.x/10,c_screen_size.y/3);
     
-    t_game_over = sf::Text("Game over!", c_font, 80);
+    t_game_over = sf::Text("Game over!", m_font, m_b_size);
     t_game_over.setFillColor(sf::Color::Red);
     t_game_over.setPosition(c_screen_size.x/10,c_screen_size.y/3);
     
     m_others.push_back(t_introduction);
     m_others.push_back(t_game_over);
     
-    t_difficulty = sf::Text("SELECT DIFFICULTY:", c_font, 80);
-    t_difficulty.setFillColor(sf::Color::Black);
-    t_difficulty.setPosition(c_screen_size.x/10,c_screen_size.y/4);
-    
-    t_easy = sf::Text("1 - Easy peasy", c_font, 80);
-    t_easy.setFillColor(sf::Color::Black);
-    t_easy.setPosition(c_screen_size.x/10,c_screen_size.y/4 + 25.0f);
-    
-    t_medium = sf::Text("2 - I can handle it", c_font, 80);
-    t_medium.setFillColor(sf::Color::Black);
-    t_medium.setPosition(c_screen_size.x/10,c_screen_size.y/4 + 50.0f);
-    
-    t_hard = sf::Text("3- Dude, seriously", c_font, 80);
-    t_hard.setFillColor(sf::Color::Black);
-    t_hard.setPosition(c_screen_size.x/10,c_screen_size.y/4 + 75.0f);
-    
-    t_vhard = sf::Text("4- Ah you #@#@&%##", c_font, 80);
-    t_vhard.setFillColor(sf::Color::Black);
-    t_vhard.setPosition(c_screen_size.x/10,c_screen_size.y/4 + 100.0f);
+    t_difficulty.setString("SELECT DIFFICULTY:");
+    t_easy.setString("1 - Easy peasy");
+    t_medium.setString("2 - I can handle it");
+    t_hard.setString("3- Dude, seriously");
+    t_vhard = sf::Text("4- Ah you #@#@&%##", m_font, m_s_size);
     
     m_difficulty.push_back(t_difficulty);
     m_difficulty.push_back(t_easy);
@@ -49,6 +38,13 @@ Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
     m_difficulty.push_back(t_hard);
     m_difficulty.push_back(t_vhard);
     
+    float dist {100.0f};
+    for(size_t i {0};i<m_difficulty.size();++i){
+        m_difficulty.at(i).setFont(m_font);
+        m_difficulty.at(i).setCharacterSize(m_s_size);
+        m_difficulty.at(i).setFillColor(sf::Color::Black);
+        m_difficulty.at(i).setPosition(c_screen_size.x/50,c_screen_size.y/4 + i*dist);
+    }
 }
 
 Menu::~Menu(){
@@ -99,12 +95,11 @@ void Menu::Draw(sf::RenderWindow& window, int c_index){
     if(c_index==0){
         window.draw(m_others.at(0));
     }else if(c_index==1){
-        window.draw(m_others.at(1));
+        for(auto& msg: m_difficulty){
+            window.draw(msg);
+        }
     }else{
-        window.draw(t_difficulty);
-//        for(auto& msg: m_difficulty){
-//            window.draw(msg);
-//        }
+        window.draw(m_others.at(1));
     }
     
 }
