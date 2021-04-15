@@ -11,6 +11,7 @@
 Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
     
     this->m_font = c_font;
+    m_vs_size = 30.0f;
     m_s_size = 50.0f;
     m_b_size = 65.0f;
     m_selection = 1.0f;
@@ -26,11 +27,16 @@ Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
     
     t_game_over = sf::Text("Game over!", m_font, m_b_size);
     t_game_over.setFillColor(sf::Color::Red);
-    t_game_over.setPosition(c_screen_size.x/8,c_screen_size.y/3);
+    t_game_over.setPosition(c_screen_size.x*0.2,c_screen_size.y*0.4);
+    
+    t_credits = sf::Text("Game development:\nMarc-Antoine Lacroix\n\nArt conception:\nJohnny Khalil", m_font, m_vs_size);
+    t_credits.setFillColor(sf::Color::Red);
+    t_credits.setPosition(c_screen_size.x*0.05,c_screen_size.y*0.8);
     
     m_others.push_back(t_introduction);
     m_others.push_back(t_begin);
     m_others.push_back(t_game_over);
+    m_others.push_back(t_credits);
     
     t_difficulty.setString("SELECT DIFFICULTY:");
     t_easy.setString("1 - Easy peasy");
@@ -131,6 +137,7 @@ void Menu::Draw(sf::RenderWindow& window, int c_index){
         }
     }else{
         window.draw(m_others.at(2));
+        window.draw(m_others.at(3));
     }
     
 }

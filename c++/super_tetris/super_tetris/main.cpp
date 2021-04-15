@@ -210,6 +210,5 @@ int main(){
             ++piece_counter;
         }
     }
-
     return EXIT_SUCCESS;
 }
