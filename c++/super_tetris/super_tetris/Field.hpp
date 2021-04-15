@@ -11,9 +11,11 @@
 
 #include <stdio.h>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <iostream>
 #include "Messages.hpp"
+#include "ResourcePath.hpp"
 
 class Field {
 private:
@@ -21,6 +23,10 @@ private:
     std::vector<sf::RectangleShape> m_field_hold; // copy of m_field used for drop animations
     std::vector<float> m_complete_lines;
     std::map<float,int> m_inventory;
+    sf::Sound n_stop;
+    sf::SoundBuffer n4;
+    sf::Sound n_explode;
+    sf::SoundBuffer n5;
     float m_velocity_init;
     float m_velocity;
     

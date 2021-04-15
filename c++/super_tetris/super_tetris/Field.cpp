@@ -13,6 +13,13 @@ Field::Field(){
     m_status = Status::RUN;
     m_velocity_init = -0.20f; // decrease to make block explosions bigger
     m_velocity = m_velocity_init;
+    
+    n4.loadFromFile(resourcePath() + "n_impact1.wav");
+    n_stop.setBuffer(n4);
+    n_stop.setVolume(80);
+    
+    n5.loadFromFile(resourcePath() + "n_explode2.wav");
+    n_explode.setBuffer(n5);
 }
 
 Field::~Field(){
@@ -121,11 +128,14 @@ void Field::CleanUp(float c_block_y){
     ResetInventory();
     m_complete_lines.clear();
     CheckLines(c_block_y);
+    n_stop.play();
     
     if(m_complete_lines.size()>0){
         m_velocity = m_velocity_init*m_complete_lines.size();
         m_field_hold = m_field;
         m_status = Status::UPDATE;
+        n_explode.setVolume(40.0f + 50.0f*static_cast<float>(m_complete_lines.size()));
+        n_explode.play();
     }
 }
 

@@ -26,8 +26,6 @@ private:
     sf::Texture m_third_texture;
     sf::Color m_color;
     sf::Font m_font;
-    sf::Text m_msg_next;
-    sf::Text m_msg_score;
     sf::Text m_score;
     int m_lines;
     
@@ -37,6 +35,7 @@ public:
     sf::Vector2f Get_play_size();
     sf::Vector2f Get_play_pos();
     void updateScore(int);
+    void rotateBox();
     void Draw(sf::RenderWindow&,Piece*);
     void Draw(sf::RenderWindow&);
     

@@ -6,6 +6,7 @@
 //
 
 #include <SFML/Audio.hpp>
+#include <SFML/Audio.hpp>
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
@@ -109,22 +110,18 @@ int main(){
             }
             
             // Start game
-            if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Enter && state == State::INTRO){
+            if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space && state == State::INTRO){
                 state = State::DIFFICULTY;
+                menu->Play_d_menu();
             }
             
             if(state == State::DIFFICULTY && event.type == sf::Event::KeyPressed){
-                if(event.key.code == sf::Keyboard::Num1){
-                    difficulty = 1.5f;
-                    state = State::PLAYING;
-                }else if(event.key.code == sf::Keyboard::Num2){
-                    difficulty = 1.0f;
-                    state = State::PLAYING;
-                }else if(event.key.code == sf::Keyboard::Num3){
-                    difficulty = 0.5f;
-                    state = State::PLAYING;
-                }else if(event.key.code == sf::Keyboard::Num4){
-                    difficulty = 0.1f;
+                if(event.key.code == sf::Keyboard::Up){
+                    menu->Move_selector(-1.0f);
+                }else if(event.key.code == sf::Keyboard::Down){
+                    menu->Move_selector(1.0f);
+                }else if(event.key.code == sf::Keyboard::Enter){
+                    difficulty = menu->Get_difficulty();
                     state = State::PLAYING;
                 }
             }
@@ -146,7 +143,7 @@ int main(){
             }
         }
         
-        if(piece_counter==5){
+        if(piece_counter==5 && difficulty-0.15f>0.0f){
             difficulty-=0.15f; // increase difficulty every 10 pieces
             piece_counter = 0;
         }
@@ -167,6 +164,17 @@ int main(){
         }
         
         if(field->m_status == Field::Status::UPDATE){
+            
+            // screen shake
+            int randv = rand()%23;
+            view.setCenter(screen_size.x/2.0f+randv,screen_size.y/2.0f+randv*1.1f);
+            if(randv%2==0){
+                view.rotate(-0.001f);
+            }
+            if(randv%2!=0){
+                view.rotate(0.001f);
+            }
+            background.rotateBox();
             background.updateScore(field->GetComplSize());
             field->DropLines(background.Get_play_size().x/8, deltaTime,messages);
         }
@@ -177,8 +185,10 @@ int main(){
         
         if(state==State::INTRO){
             menu->Draw(window,0);
+            view.move(-sinf(totalTime*3.1416)/250.0f,cosf(totalTime*3.1416)/250.0f); //screen shake
         }else if(state==State::DIFFICULTY){
             menu->Draw(window,1);
+            view.move(-sinf(totalTime*3.1416)/250.0f,cosf(totalTime*3.1416)/250.0f); //screen shake
         }else if(state==State::PLAYING){
             if(c_index+1 <= pieces.size()-1){
                 background.Draw(window,pieces.at(c_index+1));

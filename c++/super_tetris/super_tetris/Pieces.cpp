@@ -69,6 +69,7 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
         m_squares.push_back(m_square);
         ++i;
     }
+    
 }
 
 Piece::~Piece(){

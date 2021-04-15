@@ -55,8 +55,6 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     m_main_bg.setPosition(s_size.x*0.019, s_size.y*0.19);
     m_second_bg.setPosition(s_size.x*0.7, s_size.y*0.35);
     m_third_bg.setPosition(s_size.x*0.7, s_size.y*0.67);
-    m_msg_next.setPosition(s_size.x*0.7, s_size.y*0.1);
-    m_msg_score.setPosition(s_size.x*0.7, s_size.y*0.30);
     m_score.setPosition(s_size.x*0.75, s_size.y*0.73);  
 }
 
@@ -73,13 +71,30 @@ void Background::updateScore(int lines){
     m_score.setString(std::to_string(m_lines));
 }
 
+void Background::rotateBox(){
+    int randv = rand()%23;
+    if(randv%2==0){
+        m_second_bg.rotate(0.008);
+        m_third_bg.rotate(0.01);
+        m_score.rotate(0.01);
+        m_third_bg.move(-randv%3/50.0f,randv%4/50.0f);
+        m_score.move(-randv%3/50.0f,randv%4/50.0f);
+    }
+    if(randv%2!=0){
+        m_second_bg.rotate(-0.008);
+        m_third_bg.rotate(-0.02);
+        m_score.rotate(-0.02);
+        m_third_bg.move(randv%3/50.0f,-randv%4/50.0f);
+        m_score.move(randv%3/50.0f,-randv%4/50.0f);
+    }
+       
+}
+
 void Background::Draw(sf::RenderWindow& window, Piece* p){
     window.draw(m_background_bg);
     window.draw(m_main_bg);
     window.draw(m_second_bg);
     window.draw(m_third_bg);
-    window.draw(m_msg_next);
-    window.draw(m_msg_score);
     window.draw(m_score);
     p->DrawNext(window);
 }
@@ -89,8 +104,6 @@ void Background::Draw(sf::RenderWindow& window){
     window.draw(m_main_bg);
     window.draw(m_second_bg);
     window.draw(m_third_bg);
-    window.draw(m_msg_next);
-    window.draw(m_msg_score);
     window.draw(m_score);
 }
 
