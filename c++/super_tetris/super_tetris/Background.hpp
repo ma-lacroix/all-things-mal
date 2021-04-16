@@ -24,6 +24,11 @@ private:
     sf::Texture m_second_texture;
     sf::RectangleShape m_third_bg;
     sf::Texture m_third_texture;
+    sf::RectangleShape m_rose1;
+    sf::RectangleShape m_rose2;
+    sf::RectangleShape m_rose3;
+    sf::RectangleShape m_rose4;
+    sf::Texture m_rose_texture;
     sf::Color m_color;
     sf::Font m_font;
     sf::Text m_score;

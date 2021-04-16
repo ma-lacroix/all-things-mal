@@ -19,13 +19,15 @@
 		DB79A5FD2608C82D000F917B /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = DB79A5FC2608C82D000F917B /* ResourcePath.mm */; };
 		DB79A6002608C82D000F917B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB79A5FF2608C82D000F917B /* main.cpp */; };
 		DBAAE615260D1E5100794073 /* Field.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBAAE613260D1E5100794073 /* Field.cpp */; };
+		DBB546F82629CDCF0080DBA6 /* n_impact2.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBB546F62629CDCF0080DBA6 /* n_impact2.wav */; };
+		DBB546F92629CDCF0080DBA6 /* n_rotate.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBB546F72629CDCF0080DBA6 /* n_rotate.wav */; };
+		DBB546FC2629D2100080DBA6 /* b_rose.png in Resources */ = {isa = PBXBuildFile; fileRef = DBB546FB2629D2100080DBA6 /* b_rose.png */; };
 		DBD2BC032627733B0013427C /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBD2BC012627733B0013427C /* Menu.cpp */; };
 		DBD2BC082628639D0013427C /* n_enter.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBD2BC052628639D0013427C /* n_enter.wav */; };
 		DBD2BC092628639D0013427C /* n_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBD2BC062628639D0013427C /* n_start.wav */; };
 		DBD2BC0A2628639D0013427C /* n_switch.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBD2BC072628639D0013427C /* n_switch.wav */; };
 		DBD2BC0F262880DB0013427C /* n_explode1.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBD2BC0D262880DB0013427C /* n_explode1.wav */; };
 		DBD2BC10262880DB0013427C /* n_explode2.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBD2BC0E262880DB0013427C /* n_explode2.wav */; };
-		DBD2BC1D262886850013427C /* n_impact2.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBD2BC1B262886850013427C /* n_impact2.wav */; };
 		DBD2BC1E262886850013427C /* n_impact1.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBD2BC1C262886850013427C /* n_impact1.wav */; };
 		DBDD32E52620EFE000F2FD61 /* Messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBDD32E32620EFE000F2FD61 /* Messages.cpp */; };
 /* End PBXBuildFile section */
@@ -50,6 +52,9 @@
 		DB79A6102608C96E000F917B /* super_tetris.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = super_tetris.entitlements; sourceTree = "<group>"; };
 		DBAAE613260D1E5100794073 /* Field.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Field.cpp; sourceTree = "<group>"; };
 		DBAAE614260D1E5100794073 /* Field.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Field.hpp; sourceTree = "<group>"; };
+		DBB546F62629CDCF0080DBA6 /* n_impact2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = n_impact2.wav; path = ../../../../../../Downloads/n_impact2.wav; sourceTree = "<group>"; };
+		DBB546F72629CDCF0080DBA6 /* n_rotate.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_rotate.wav; sourceTree = "<group>"; };
+		DBB546FB2629D2100080DBA6 /* b_rose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_rose.png; sourceTree = "<group>"; };
 		DBD2BC012627733B0013427C /* Menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
 		DBD2BC022627733B0013427C /* Menu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Menu.hpp; sourceTree = "<group>"; };
 		DBD2BC052628639D0013427C /* n_enter.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_enter.wav; sourceTree = "<group>"; };
@@ -57,7 +62,6 @@
 		DBD2BC072628639D0013427C /* n_switch.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_switch.wav; sourceTree = "<group>"; };
 		DBD2BC0D262880DB0013427C /* n_explode1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_explode1.wav; sourceTree = "<group>"; };
 		DBD2BC0E262880DB0013427C /* n_explode2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_explode2.wav; sourceTree = "<group>"; };
-		DBD2BC1B262886850013427C /* n_impact2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_impact2.wav; sourceTree = "<group>"; };
 		DBD2BC1C262886850013427C /* n_impact1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_impact1.wav; sourceTree = "<group>"; };
 		DBDD32E32620EFE000F2FD61 /* Messages.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Messages.cpp; sourceTree = "<group>"; };
 		DBDD32E42620EFE000F2FD61 /* Messages.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Messages.hpp; sourceTree = "<group>"; };
@@ -127,6 +131,7 @@
 				DB54AA362624DAB200F0F047 /* b_background.png */,
 				DB54AA342624DAB200F0F047 /* b_next.png */,
 				DB54AA332624DAB200F0F047 /* b_playing_area.png */,
+				DBB546FB2629D2100080DBA6 /* b_rose.png */,
 				DB54AA352624DAB200F0F047 /* b_score.png */,
 				DBD2BC052628639D0013427C /* n_enter.wav */,
 				DBD2BC062628639D0013427C /* n_start.wav */,
@@ -134,7 +139,8 @@
 				DBD2BC0D262880DB0013427C /* n_explode1.wav */,
 				DBD2BC0E262880DB0013427C /* n_explode2.wav */,
 				DBD2BC1C262886850013427C /* n_impact1.wav */,
-				DBD2BC1B262886850013427C /* n_impact2.wav */,
+				DBB546F62629CDCF0080DBA6 /* n_impact2.wav */,
+				DBB546F72629CDCF0080DBA6 /* n_rotate.wav */,
 				DB1D7595261CEAD5002504AA /* p_tetris_blocks_1.png */,
 				DB1D7594261CEAD5002504AA /* p_tetris_blocks_2.png */,
 				DB73455F261B16EB006E9F1D /* Excludedi.ttf */,
@@ -204,13 +210,15 @@
 				DBD2BC0A2628639D0013427C /* n_switch.wav in Resources */,
 				DB54AA382624DAB200F0F047 /* b_next.png in Resources */,
 				DBD2BC082628639D0013427C /* n_enter.wav in Resources */,
+				DBB546F82629CDCF0080DBA6 /* n_impact2.wav in Resources */,
 				DB54AA3A2624DAB200F0F047 /* b_background.png in Resources */,
+				DBB546F92629CDCF0080DBA6 /* n_rotate.wav in Resources */,
+				DBB546FC2629D2100080DBA6 /* b_rose.png in Resources */,
 				DBD2BC1E262886850013427C /* n_impact1.wav in Resources */,
 				DB1D7597261CEAD5002504AA /* p_tetris_blocks_1.png in Resources */,
 				DB1D7596261CEAD5002504AA /* p_tetris_blocks_2.png in Resources */,
 				DB54AA392624DAB200F0F047 /* b_score.png in Resources */,
 				DB54AA372624DAB200F0F047 /* b_playing_area.png in Resources */,
-				DBD2BC1D262886850013427C /* n_impact2.wav in Resources */,
 				DBD2BC0F262880DB0013427C /* n_explode1.wav in Resources */,
 				DBD2BC092628639D0013427C /* n_start.wav in Resources */,
 				DBD2BC10262880DB0013427C /* n_explode2.wav in Resources */,

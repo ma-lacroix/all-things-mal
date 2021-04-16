@@ -14,7 +14,7 @@ Field::Field(){
     m_velocity_init = -0.20f; // decrease to make block explosions bigger
     m_velocity = m_velocity_init;
     
-    n4.loadFromFile(resourcePath() + "n_impact1.wav");
+    n4.loadFromFile(resourcePath() + "n_impact2.wav");
     n_stop.setBuffer(n4);
     n_stop.setVolume(80);
     

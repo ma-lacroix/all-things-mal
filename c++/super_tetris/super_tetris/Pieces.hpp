@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include <vector>
 #include "Field.hpp"
@@ -28,6 +29,8 @@ private:
     sf::Texture m_texture;
     sf::Vector2i m_texture_start;
     sf::IntRect m_texture_rect;
+    sf::Sound n_rotate;
+    sf::SoundBuffer n6;
     bool m_is_alive;
     
 public:

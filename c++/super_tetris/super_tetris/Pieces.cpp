@@ -70,6 +70,10 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
         ++i;
     }
     
+    n6.loadFromFile(resourcePath() + "n_rotate.wav");
+    n_rotate.setBuffer(n6);
+    n_rotate.setVolume(50.0f);
+    
 }
 
 Piece::~Piece(){
@@ -211,6 +215,7 @@ void Piece::Rotate(){
         // 90 degrees =>  i = 12+y-(x*4)
         int i {0};
         sf::Vector2f rotations;
+        n_rotate.play();
         for(auto m_pos: m_positions){
             int ind1 = static_cast<int>(12.0f+m_pos.y-m_pos.x*4);
             int ind2 = static_cast<int>(m_pos.y*4+m_pos.x);
