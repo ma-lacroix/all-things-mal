@@ -22,6 +22,8 @@
 		DBB546F82629CDCF0080DBA6 /* n_impact2.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBB546F62629CDCF0080DBA6 /* n_impact2.wav */; };
 		DBB546F92629CDCF0080DBA6 /* n_rotate.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBB546F72629CDCF0080DBA6 /* n_rotate.wav */; };
 		DBB546FC2629D2100080DBA6 /* b_rose.png in Resources */ = {isa = PBXBuildFile; fileRef = DBB546FB2629D2100080DBA6 /* b_rose.png */; };
+		DBB5470B262A30450080DBA6 /* s_menu.ogg in Resources */ = {isa = PBXBuildFile; fileRef = DBB54709262A30450080DBA6 /* s_menu.ogg */; };
+		DBB5470C262A30450080DBA6 /* s_playing.ogg in Resources */ = {isa = PBXBuildFile; fileRef = DBB5470A262A30450080DBA6 /* s_playing.ogg */; };
 		DBD2BC032627733B0013427C /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBD2BC012627733B0013427C /* Menu.cpp */; };
 		DBD2BC082628639D0013427C /* n_enter.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBD2BC052628639D0013427C /* n_enter.wav */; };
 		DBD2BC092628639D0013427C /* n_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBD2BC062628639D0013427C /* n_start.wav */; };
@@ -55,6 +57,8 @@
 		DBB546F62629CDCF0080DBA6 /* n_impact2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = n_impact2.wav; path = ../../../../../../Downloads/n_impact2.wav; sourceTree = "<group>"; };
 		DBB546F72629CDCF0080DBA6 /* n_rotate.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_rotate.wav; sourceTree = "<group>"; };
 		DBB546FB2629D2100080DBA6 /* b_rose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_rose.png; sourceTree = "<group>"; };
+		DBB54709262A30450080DBA6 /* s_menu.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = s_menu.ogg; path = ../../../../../../Downloads/s_menu.ogg; sourceTree = "<group>"; };
+		DBB5470A262A30450080DBA6 /* s_playing.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = s_playing.ogg; path = ../../../../../../Downloads/s_playing.ogg; sourceTree = "<group>"; };
 		DBD2BC012627733B0013427C /* Menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
 		DBD2BC022627733B0013427C /* Menu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Menu.hpp; sourceTree = "<group>"; };
 		DBD2BC052628639D0013427C /* n_enter.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_enter.wav; sourceTree = "<group>"; };
@@ -133,6 +137,8 @@
 				DB54AA332624DAB200F0F047 /* b_playing_area.png */,
 				DBB546FB2629D2100080DBA6 /* b_rose.png */,
 				DB54AA352624DAB200F0F047 /* b_score.png */,
+				DBB54709262A30450080DBA6 /* s_menu.ogg */,
+				DBB5470A262A30450080DBA6 /* s_playing.ogg */,
 				DBD2BC052628639D0013427C /* n_enter.wav */,
 				DBD2BC062628639D0013427C /* n_start.wav */,
 				DBD2BC072628639D0013427C /* n_switch.wav */,
@@ -210,6 +216,8 @@
 				DBD2BC0A2628639D0013427C /* n_switch.wav in Resources */,
 				DB54AA382624DAB200F0F047 /* b_next.png in Resources */,
 				DBD2BC082628639D0013427C /* n_enter.wav in Resources */,
+				DBB5470B262A30450080DBA6 /* s_menu.ogg in Resources */,
+				DBB5470C262A30450080DBA6 /* s_playing.ogg in Resources */,
 				DBB546F82629CDCF0080DBA6 /* n_impact2.wav in Resources */,
 				DB54AA3A2624DAB200F0F047 /* b_background.png in Resources */,
 				DBB546F92629CDCF0080DBA6 /* n_rotate.wav in Resources */,

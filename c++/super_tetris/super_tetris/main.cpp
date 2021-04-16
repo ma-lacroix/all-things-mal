@@ -2,6 +2,7 @@
 //
 //  Created by Marc-Antoine Lacroix on 21/03/2021.
 //  Art by Johnny Khalil
+//  Music by Tri-Tachyon & Alexandr Zhelanov (obtained on Opengameart.org)
 //  Copyright © 2021 Marc-Antoine Lacroix. All rights reserved.
 //
 
@@ -41,7 +42,7 @@ std::vector<Piece*> gen(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int n
 
 std::vector<Message*> gen2(sf::Font c_font,int c_size,sf::Vector2f c_pos,float c_speed){
     
-    std::vector<std::string> msgs = {"","GOOD!","ALL\n RIGHT!","YEAH\n YEAH\n YEAH!","AWEEE!"};
+    std::vector<std::string> msgs = {"","GOOD!","ALL\n RIGHT!","YEAH\n YEAH\n YEAH!","OW!\nNOW!\nBROWN!\nCOW!\n"};
     std::vector<Message*> c_messages;
     for(int i {0};i<5;++i){
         Message* m = new Message(c_font,c_size,msgs.at(i),c_pos,c_speed);
@@ -53,6 +54,22 @@ std::vector<Message*> gen2(sf::Font c_font,int c_size,sf::Vector2f c_pos,float c
 
 
 int main(){
+    
+    // music
+    sf::Music s_menu;
+    if (!s_menu.openFromFile(resourcePath() + "s_menu.ogg")) {
+        return EXIT_FAILURE;
+    }
+    s_menu.setVolume(40.0f);
+    s_menu.setPlayingOffset(sf::seconds(6.5f));
+    
+    sf::Music s_playing;
+    if (!s_playing.openFromFile(resourcePath() + "s_playing.ogg")) {
+        return EXIT_FAILURE;
+    }
+    s_playing.setVolume(40.0f);
+    s_playing.setLoop(true);
+    
     
     // time related stuff
     sf::Clock clock;
@@ -78,7 +95,7 @@ int main(){
     }
     
     Background background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
-    std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),30);
+    std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),100);
     std::vector<Message*> messages = gen2(font,300,{SCREEN_WIDTH,SCREEN_HEIGHT/3},10.0f);
     Field* field = new Field();
     Menu* menu = new Menu(font,screen_size);
@@ -89,6 +106,22 @@ int main(){
         
         totalTime = clock.getElapsedTime().asSeconds();
         deltaTime = clock2.restart().asSeconds();
+        
+        // music management
+        if(state == State::INTRO || state == State::DIFFICULTY ){
+            if(s_menu.getStatus()!=sf::Music::Playing){
+                s_menu.play();
+            }
+        }
+        
+        if(state == State::PLAYING){
+            if(s_menu.getStatus()==sf::Music::Playing){
+                s_menu.stop();
+            }
+            if(s_playing.getStatus()!=sf::Music::Playing){
+                s_playing.play();
+            }
+        }
         
         // Process events
         sf::Event event;

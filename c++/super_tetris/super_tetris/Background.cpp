@@ -98,6 +98,7 @@ void Background::updateScore(int lines){
 void Background::rotateBox(){
     int randv = rand()%23;
     if(randv%2==0){
+        
         m_second_bg.rotate(0.008);
         m_third_bg.rotate(0.01);
         m_score.rotate(0.01);
@@ -109,8 +110,11 @@ void Background::rotateBox(){
         m_rose2.rotate(0.02);
         m_rose3.move(-randv%3/350.0f,randv%6/175.0f);
         m_rose4.move(-randv%3/250.0f,randv%6/200.0f);
+    
     }
+    
     if(randv%2!=0){
+        
         m_second_bg.rotate(-0.008);
         m_third_bg.rotate(-0.01);
         m_score.rotate(-0.01);
@@ -122,6 +126,7 @@ void Background::rotateBox(){
         m_rose2.move(-randv%3/450.0f,randv%5/230.0f);
         m_rose3.move(-randv%7/500.0f,randv%4/180.0f);
         m_rose4.move(-randv%7/650.0f,randv%4/130.0f);
+    
     }
        
 }
