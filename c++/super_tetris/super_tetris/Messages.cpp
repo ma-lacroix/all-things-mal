@@ -21,7 +21,28 @@ Message::Message(sf::Font c_font,int c_size,std::string c_message,sf::Vector2f c
     m_text.setCharacterSize(m_font_size);
     m_text.setPosition(m_position);
     m_text.setFillColor(sf::Color(0,0,0,200));
-
+    
+    n8.loadFromFile(resourcePath() + "n_good.wav");
+    n_good.setBuffer(n8);
+    n_good.setVolume(90);
+    
+    n9.loadFromFile(resourcePath() + "n_all_right.wav");
+    n_all_right.setBuffer(n9);
+    n_all_right.setVolume(90);
+    
+    n10.loadFromFile(resourcePath() + "n_yyy.wav");
+    n_yyy.setBuffer(n10);
+    n_yyy.setVolume(90);
+    
+    n11.loadFromFile(resourcePath() + "n_onbc.wav");
+    n_onbc.setBuffer(n11);
+    n_onbc.setVolume(90);
+    
+    m_sounds.push_back(n_good);
+    m_sounds.push_back(n_all_right);
+    m_sounds.push_back(n_yyy);
+    m_sounds.push_back(n_onbc);
+    
 }
 
 Message::~Message(){
@@ -36,6 +57,12 @@ void Message::Move(float deltaTime){
 
 void Message::Reset(){
     m_text.setPosition(m_position);
+}
+
+void Message::Play_noise(int c_ind){
+    if(m_sounds.at(c_ind).getStatus()!=sf::Sound::Status::Playing){
+        m_sounds.at(c_ind).play();
+    }
 }
 
 void Message::Draw(sf::RenderWindow& window){

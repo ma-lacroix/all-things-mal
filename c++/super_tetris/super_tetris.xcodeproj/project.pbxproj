@@ -24,6 +24,10 @@
 		DBB546FC2629D2100080DBA6 /* b_rose.png in Resources */ = {isa = PBXBuildFile; fileRef = DBB546FB2629D2100080DBA6 /* b_rose.png */; };
 		DBB5470B262A30450080DBA6 /* s_menu.ogg in Resources */ = {isa = PBXBuildFile; fileRef = DBB54709262A30450080DBA6 /* s_menu.ogg */; };
 		DBB5470C262A30450080DBA6 /* s_playing.ogg in Resources */ = {isa = PBXBuildFile; fileRef = DBB5470A262A30450080DBA6 /* s_playing.ogg */; };
+		DBCB83BF262B27FF001A2263 /* n_good.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBCB83BB262B27FF001A2263 /* n_good.wav */; };
+		DBCB83C0262B27FF001A2263 /* n_yyy.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBCB83BC262B27FF001A2263 /* n_yyy.wav */; };
+		DBCB83C1262B27FF001A2263 /* n_onbc.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBCB83BD262B27FF001A2263 /* n_onbc.wav */; };
+		DBCB83C2262B27FF001A2263 /* n_all_right.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBCB83BE262B27FF001A2263 /* n_all_right.wav */; };
 		DBD2BC032627733B0013427C /* Menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DBD2BC012627733B0013427C /* Menu.cpp */; };
 		DBD2BC082628639D0013427C /* n_enter.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBD2BC052628639D0013427C /* n_enter.wav */; };
 		DBD2BC092628639D0013427C /* n_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = DBD2BC062628639D0013427C /* n_start.wav */; };
@@ -59,6 +63,10 @@
 		DBB546FB2629D2100080DBA6 /* b_rose.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_rose.png; sourceTree = "<group>"; };
 		DBB54709262A30450080DBA6 /* s_menu.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = s_menu.ogg; path = ../../../../../../Downloads/s_menu.ogg; sourceTree = "<group>"; };
 		DBB5470A262A30450080DBA6 /* s_playing.ogg */ = {isa = PBXFileReference; lastKnownFileType = file; name = s_playing.ogg; path = ../../../../../../Downloads/s_playing.ogg; sourceTree = "<group>"; };
+		DBCB83BB262B27FF001A2263 /* n_good.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_good.wav; sourceTree = "<group>"; };
+		DBCB83BC262B27FF001A2263 /* n_yyy.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_yyy.wav; sourceTree = "<group>"; };
+		DBCB83BD262B27FF001A2263 /* n_onbc.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_onbc.wav; sourceTree = "<group>"; };
+		DBCB83BE262B27FF001A2263 /* n_all_right.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_all_right.wav; sourceTree = "<group>"; };
 		DBD2BC012627733B0013427C /* Menu.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Menu.cpp; sourceTree = "<group>"; };
 		DBD2BC022627733B0013427C /* Menu.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Menu.hpp; sourceTree = "<group>"; };
 		DBD2BC052628639D0013427C /* n_enter.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = n_enter.wav; sourceTree = "<group>"; };
@@ -147,6 +155,10 @@
 				DBD2BC1C262886850013427C /* n_impact1.wav */,
 				DBB546F62629CDCF0080DBA6 /* n_impact2.wav */,
 				DBB546F72629CDCF0080DBA6 /* n_rotate.wav */,
+				DBCB83BE262B27FF001A2263 /* n_all_right.wav */,
+				DBCB83BB262B27FF001A2263 /* n_good.wav */,
+				DBCB83BD262B27FF001A2263 /* n_onbc.wav */,
+				DBCB83BC262B27FF001A2263 /* n_yyy.wav */,
 				DB1D7595261CEAD5002504AA /* p_tetris_blocks_1.png */,
 				DB1D7594261CEAD5002504AA /* p_tetris_blocks_2.png */,
 				DB73455F261B16EB006E9F1D /* Excludedi.ttf */,
@@ -215,10 +227,14 @@
 				DB734561261B1B7A006E9F1D /* Excludedi.ttf in Resources */,
 				DBD2BC0A2628639D0013427C /* n_switch.wav in Resources */,
 				DB54AA382624DAB200F0F047 /* b_next.png in Resources */,
+				DBCB83C1262B27FF001A2263 /* n_onbc.wav in Resources */,
 				DBD2BC082628639D0013427C /* n_enter.wav in Resources */,
 				DBB5470B262A30450080DBA6 /* s_menu.ogg in Resources */,
+				DBCB83C0262B27FF001A2263 /* n_yyy.wav in Resources */,
 				DBB5470C262A30450080DBA6 /* s_playing.ogg in Resources */,
 				DBB546F82629CDCF0080DBA6 /* n_impact2.wav in Resources */,
+				DBCB83BF262B27FF001A2263 /* n_good.wav in Resources */,
+				DBCB83C2262B27FF001A2263 /* n_all_right.wav in Resources */,
 				DB54AA3A2624DAB200F0F047 /* b_background.png in Resources */,
 				DBB546F92629CDCF0080DBA6 /* n_rotate.wav in Resources */,
 				DBB546FC2629D2100080DBA6 /* b_rose.png in Resources */,

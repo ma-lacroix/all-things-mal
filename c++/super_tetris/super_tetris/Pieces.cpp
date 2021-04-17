@@ -41,6 +41,16 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
             this->m_color = sf::Color(10,255,10);
             this->m_texture_start = {1,2};
             break;
+        case 6: // S
+            this->m_positions = {{1.0f,0.0f},{1.0f,1.0f},{0.0f,1.0f},{0.0f,2.0f}};
+            this->m_color = sf::Color(255,10,10);
+            this->m_texture_start = {3,2};
+            break;
+        case 7: // L
+            this->m_positions = {{1.0f,0.0f},{1.0f,1.0f},{1.0f,2.0f},{0.0f,2.0f}};
+            this->m_color = sf::Color(10,255,10);
+            this->m_texture_start = {1,2};
+            break;
         default:
             break;
     }

@@ -101,9 +101,9 @@ void Background::rotateBox(){
         
         m_second_bg.rotate(0.008);
         m_third_bg.rotate(0.01);
-        m_score.rotate(0.01);
-        m_third_bg.move(-randv%3/100.0f,randv%4/100.0f);
-        m_score.move(-randv%3/50.0f,randv%4/100.0f);
+        m_score.rotate(0.012);
+        m_third_bg.move(-randv%3/60.0f,randv%4/60.0f);
+        m_score.move(-randv%3/100.0f,randv%4/100.0f);
         
         m_rose1.move(-randv%3/100.0f,randv%4/500.0f);
         m_rose2.move(-randv%5/190.0f,randv%4/180.0f);
@@ -117,8 +117,8 @@ void Background::rotateBox(){
         
         m_second_bg.rotate(-0.008);
         m_third_bg.rotate(-0.01);
-        m_score.rotate(-0.01);
-        m_third_bg.move(randv%3/80.0f,-randv%4/80.0f);
+        m_score.rotate(-0.012);
+        m_third_bg.move(randv%3/50.0f,-randv%4/50.0f);
         m_score.move(randv%3/80.0f,-randv%4/80.0f);
         
         m_rose1.move(-randv%3/50.0f,randv%5/500.0f);

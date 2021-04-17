@@ -64,13 +64,13 @@ void Field::DropLines(float c_block_y, float deltaTime, std::vector<Message*> c_
     
     int counter {0};
     int lines_counter = m_complete_lines.size();
+    c_messages.at(lines_counter)->Play_noise(lines_counter-1);
     for(auto line: m_complete_lines){
         for(size_t i {0};i<m_field.size();++i){
             int randv = sqrt(rand()%10+1);
             m_velocity += deltaTime/(35.0f*lines_counter);
             if(m_field_hold.at(i).getPosition().y==line &&
                 m_field.at(i).getPosition().y < 2000.0f){
-//                    m_field.at(i).setFillColor(sf::Color(120,120,130,255));
                     m_field.at(i).setOrigin(20.0f, 20.0f);
                     m_field.at(i).rotate(sinf(i)/randv);
                     m_field.at(i).move(-sinf(i)/randv,m_velocity);
