@@ -44,12 +44,12 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
         case 6: // S
             this->m_positions = {{1.0f,0.0f},{1.0f,1.0f},{0.0f,1.0f},{0.0f,2.0f}};
             this->m_color = sf::Color(255,10,10);
-            this->m_texture_start = {3,2};
+            this->m_texture_start = {8,1};
             break;
         case 7: // L
             this->m_positions = {{1.0f,0.0f},{1.0f,1.0f},{1.0f,2.0f},{0.0f,2.0f}};
             this->m_color = sf::Color(10,255,10);
-            this->m_texture_start = {1,2};
+            this->m_texture_start = {10,1};
             break;
         default:
             break;
@@ -65,8 +65,8 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
         
         sf::RectangleShape m_square;
         
-        m_texture_rect.left = m_texture.getSize().x/9 * m_texture_start.x + m_positions.at(i).x * m_texture.getSize().x/9;
-        m_texture_rect.width = m_texture.getSize().x/9;
+        m_texture_rect.left = m_texture.getSize().x/13 * m_texture_start.x + m_positions.at(i).x * m_texture.getSize().x/13;
+        m_texture_rect.width = m_texture.getSize().x/13;
         m_texture_rect.top = m_texture.getSize().y/6 * m_texture_start.y  + m_positions.at(i).y * m_texture.getSize().y/6;
         m_texture_rect.height = m_texture.getSize().y/6;
         
