@@ -91,6 +91,13 @@ void Menu::Move_selector(float c_move){
     Update_menu_selection();
 }
 
+void Menu::Move_options(float c_totalTime){
+    for(auto& diff: m_difficulty){
+        diff.move(-sinf(c_totalTime*3.1416)/200.0f,cosf(c_totalTime*3.1416)/200.0f);
+        c_totalTime+=0.25f;
+    }
+}
+
 void Menu::Update_menu_selection(){
     
     for(size_t i {0};i<m_difficulty.size();++i){

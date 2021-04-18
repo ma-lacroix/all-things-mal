@@ -16,6 +16,12 @@
 
 class Background {
 private:
+    sf::RectangleShape m_intro_bg;
+    sf::Texture m_intro_texture;
+    sf::RectangleShape m_flicker_bg;
+    sf::Texture m_flicker_texture;
+    sf::RectangleShape m_press_space_bg;
+    sf::Texture m_press_space_texture;
     sf::RectangleShape m_background_bg;
     sf::Texture m_background_texture;
     sf::RectangleShape m_main_bg;
@@ -41,6 +47,8 @@ public:
     sf::Vector2f Get_play_pos();
     void updateScore(int);
     void rotateBox();
+    void moveMsg(float);
+    void Draw(sf::RenderWindow&,bool);
     void Draw(sf::RenderWindow&,Piece*);
     void Draw(sf::RenderWindow&);
     

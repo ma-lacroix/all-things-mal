@@ -87,7 +87,7 @@ int main(){
     sf::RenderWindow window(sf::VideoMode(screen_size.x,screen_size.y),"SuperTetris!",sf::Style::Titlebar | sf::Style::Resize);
     sf::View view(screen_size/2.0f,screen_size);
     
-    State state = State::PLAYING; // for debugging - must be set at INTRO when testing full game
+    State state = State::INTRO; // for debugging - must be set at INTRO when testing full game
     
     sf::Font font;
     if (!font.loadFromFile(resourcePath() + "Excludedi.ttf")) {
@@ -216,12 +216,24 @@ int main(){
         window.clear(sf::Color(200,200,230));
         window.setView(view);
         
+        
         if(state==State::INTRO){
-            menu->Draw(window,0);
-            view.move(-sinf(totalTime*3.1416)/250.0f,cosf(totalTime*3.1416)/250.0f); //screen shake
+            background.moveMsg(totalTime);
+            if(totalTime >= 2.0f){
+                totalTime = clock.restart().asSeconds();
+            }
+            if(totalTime>=1.0f){
+                background.Draw(window, true);
+            }
+            if(totalTime<1.0f){
+                view.zoom(1.0f);
+                background.Draw(window, false);
+            }
+            
         }else if(state==State::DIFFICULTY){
+            menu->Move_options(totalTime);
             menu->Draw(window,1);
-            view.move(-sinf(totalTime*3.1416)/250.0f,cosf(totalTime*3.1416)/250.0f); //screen shake
+//            view.move(-sinf(totalTime*3.1416)/250.0f,cosf(totalTime*3.1416)/250.0f); //screen shake
         }else if(state==State::PLAYING){
             if(c_index+1 <= pieces.size()-1){
                 background.Draw(window,pieces.at(c_index+1));

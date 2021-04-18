@@ -46,6 +46,7 @@ public:
     ~Menu();
     float Get_difficulty();
     void Move_selector(float);
+    void Move_options(float);
     void Update_menu_selection();
     void Play_d_menu();
     void Draw(sf::RenderWindow&, int);

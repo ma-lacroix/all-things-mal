@@ -13,6 +13,18 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     
     std::cout << "Background constructor called" << std::endl;
     
+    if(!m_intro_texture.loadFromFile(resourcePath() + "b_intro.png")){
+        return EXIT_FAILURE;
+    }
+    
+    if(!m_flicker_texture.loadFromFile(resourcePath() + "b_flickers.png")){
+        return EXIT_FAILURE;
+    }
+    
+    if(!m_press_space_texture.loadFromFile(resourcePath() + "b_press_space.png")){
+        return EXIT_FAILURE;
+    }
+    
     if(!m_background_texture.loadFromFile(resourcePath() + "b_background.png")){
         return EXIT_FAILURE;
     }
@@ -36,6 +48,17 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     sf::Vector2f s_size {SCREEN_WIDTH,SCREEN_HEIGHT};
     this->m_color=c_color;
     this->m_font=c_font;
+    
+    m_intro_bg.setSize(s_size);
+    m_intro_bg.setTexture(&m_intro_texture);
+    
+    m_flicker_bg.setSize({483.0f,284.0f});
+    m_flicker_bg.setOrigin(241.0f,196.0f);
+    m_flicker_bg.setTexture(&m_flicker_texture);
+    
+    m_press_space_bg.setSize({348.0f,90.0f});
+    m_press_space_bg.setOrigin(174.0f,45.0f);
+    m_press_space_bg.setTexture(&m_press_space_texture);
     
     m_background_bg.setSize(s_size);
     m_background_bg.setTexture(&m_background_texture);
@@ -71,6 +94,10 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     m_score.setCharacterSize(s_size.y*0.03);
     m_score.setFillColor(sf::Color::Black);
     
+    m_intro_bg.setPosition(0.0f,0.0f);
+    m_flicker_bg.setPosition(s_size.x*0.5, s_size.y*0.7);
+    m_press_space_bg.setPosition(s_size.x*0.51, s_size.y*0.67);
+    
     m_background_bg.setPosition(0.0f,0.0f);
     m_main_bg.setPosition(s_size.x*0.019, s_size.y*0.19);
     m_second_bg.setPosition(s_size.x*0.7, s_size.y*0.35);
@@ -102,11 +129,11 @@ void Background::rotateBox(){
         m_second_bg.rotate(0.008);
         m_third_bg.rotate(0.01);
         m_score.rotate(0.012);
-        m_third_bg.move(-randv%3/60.0f,randv%4/60.0f);
+        m_third_bg.move(-randv%3/50.0f,randv%4/50.0f);
         m_score.move(-randv%3/100.0f,randv%4/100.0f);
         
-        m_rose1.move(-randv%3/100.0f,randv%4/500.0f);
-        m_rose2.move(-randv%5/190.0f,randv%4/180.0f);
+        m_rose1.move(-randv%3/50.0f,randv%4/50.0f);
+        m_rose2.move(-randv%5/19.0f,randv%4/18.0f);
         m_rose2.rotate(0.02);
         m_rose3.move(-randv%3/350.0f,randv%6/175.0f);
         m_rose4.move(-randv%3/250.0f,randv%6/200.0f);
@@ -121,14 +148,26 @@ void Background::rotateBox(){
         m_third_bg.move(randv%3/50.0f,-randv%4/50.0f);
         m_score.move(randv%3/80.0f,-randv%4/80.0f);
         
-        m_rose1.move(-randv%3/50.0f,randv%5/500.0f);
+        m_rose1.move(-randv%3/50.0f,randv%5/60.0f);
         m_rose1.rotate(0.03f);
-        m_rose2.move(-randv%3/450.0f,randv%5/230.0f);
+        m_rose2.move(-randv%3/19.0f,randv%5/18.0f);
         m_rose3.move(-randv%7/500.0f,randv%4/180.0f);
         m_rose4.move(-randv%7/650.0f,randv%4/130.0f);
     
     }
        
+}
+
+void Background::moveMsg(float c_totalTime){
+    m_press_space_bg.move(-sinf(c_totalTime*3.1416)/100.0f,cosf(c_totalTime*3.1416)/100.0f);
+}
+
+void Background::Draw(sf::RenderWindow& window, bool c_show){
+    window.draw(m_intro_bg);
+    window.draw(m_press_space_bg);
+    if(c_show){
+        window.draw(m_flicker_bg);
+    }
 }
 
 void Background::Draw(sf::RenderWindow& window, Piece* p){

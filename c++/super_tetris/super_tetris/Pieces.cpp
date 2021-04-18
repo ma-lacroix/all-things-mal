@@ -83,7 +83,6 @@ Piece::Piece(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int c_type){
     n6.loadFromFile(resourcePath() + "n_rotate.wav");
     n_rotate.setBuffer(n6);
     n_rotate.setVolume(50.0f);
-    
 }
 
 Piece::~Piece(){
