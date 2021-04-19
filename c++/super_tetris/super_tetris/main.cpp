@@ -18,7 +18,7 @@
 #include "Menu.hpp"
 
 // globals
-enum class State {INTRO,DIFFICULTY,PLAYING,GAME_OVER};
+enum class State {INTRO,DIFFICULTY,PLAYING,PAUSE,GAME_OVER};
 const float SCREEN_WIDTH {800.0f};
 const float SCREEN_HEIGHT {1500.0f};
 
@@ -173,6 +173,15 @@ int main(){
                 if(event.key.code == sf::Keyboard::Space){
                     nextMove = {99.0f,0.0f};
                 }
+                if(event.key.code == sf::Keyboard::P){
+                    state = State::PAUSE;
+                    s_playing.pause();
+                    
+                }
+            }
+            if(state == State::PAUSE && event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Space){
+                state = State::PLAYING;
+                s_playing.play();
             }
         }
         
@@ -226,7 +235,6 @@ int main(){
                 background.Draw(window, true);
             }
             if(totalTime<1.0f){
-                view.zoom(1.0f);
                 background.Draw(window, false);
             }
             
@@ -242,6 +250,8 @@ int main(){
             }else{
                 state = State::GAME_OVER;
             }
+        }else if(state==State::PAUSE){
+            menu->Draw(window, 3);
         }else{
             menu->Draw(window,2);
         }

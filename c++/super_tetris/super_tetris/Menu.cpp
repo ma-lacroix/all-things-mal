@@ -25,6 +25,10 @@ Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
     t_begin.setOrigin(0.0f, m_s_size/2.0f);
     t_begin.setPosition(c_screen_size.x/10,c_screen_size.y/1.5);
     
+    t_pause = sf::Text("Pause\nSpacebar to restart", m_font, m_s_size);
+    t_pause.setFillColor(sf::Color::Red);
+    t_pause.setPosition(c_screen_size.x*0.01,c_screen_size.y*0.5);
+    
     t_game_over = sf::Text("Game over!", m_font, m_b_size);
     t_game_over.setFillColor(sf::Color::Red);
     t_game_over.setPosition(c_screen_size.x*0.2,c_screen_size.y*0.4);
@@ -37,8 +41,9 @@ Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
     m_others.push_back(t_begin);
     m_others.push_back(t_game_over);
     m_others.push_back(t_credits);
+    m_others.push_back(t_pause);
     
-    t_difficulty.setString("SELECT DIFFICULTY:");
+    t_difficulty.setString("SELECT DIFFICULTY AND\nPress enter:");
     t_easy.setString("1 - Easy peasy");
     t_medium.setString("2 - I can handle it");
     t_hard.setString("3- Dude, seriously");
@@ -56,7 +61,13 @@ Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
         m_difficulty.at(i).setFont(m_font);
         m_difficulty.at(i).setCharacterSize(m_s_size);
         m_difficulty.at(i).setFillColor(sf::Color::Black);
-        m_difficulty.at(i).setPosition(c_screen_size.x/20.0f,c_screen_size.y/4 + i*dist);
+        if(i==0){
+            m_difficulty.at(i).setFillColor(sf::Color::Red);
+            m_difficulty.at(0).setPosition(c_screen_size.x*0.05f,c_screen_size.y*0.3f);
+        }else{
+            m_difficulty.at(i).setFillColor(sf::Color::Black);
+            m_difficulty.at(i).setPosition(c_screen_size.x/20.0f,c_screen_size.y*0.4f + i*dist);
+        }
     }
     Update_menu_selection();
     
@@ -92,9 +103,12 @@ void Menu::Move_selector(float c_move){
 }
 
 void Menu::Move_options(float c_totalTime){
-    for(auto& diff: m_difficulty){
-        diff.move(-sinf(c_totalTime*3.1416)/200.0f,cosf(c_totalTime*3.1416)/200.0f);
-        c_totalTime+=0.25f;
+    
+//    m_difficulty.at(0).move(-sinf(c_totalTime*3.1416)/200.0f,cosf(c_totalTime*3.1416)/200.0f);
+    for(size_t i {0};i<m_difficulty.size();++i){
+        if(i==m_selection){
+            m_difficulty.at(i).move(-sinf(c_totalTime*3.1416)/200.0f,cosf(c_totalTime*3.1416)/200.0f);
+        }
     }
 }
 
@@ -142,9 +156,11 @@ void Menu::Draw(sf::RenderWindow& window, int c_index){
         for(auto& msg: m_difficulty){
             window.draw(msg);
         }
-    }else{
+    }else if(c_index==2){
         window.draw(m_others.at(2));
         window.draw(m_others.at(3));
+    }else{
+        window.draw(m_others.at(4));
     }
     
 }

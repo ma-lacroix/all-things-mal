@@ -27,6 +27,7 @@ private:
     sf::Font m_font;
     sf::Text t_introduction;
     sf::Text t_begin;
+    sf::Text t_pause;
     sf::Text t_game_over;
     sf::Text t_credits;
     sf::Text t_difficulty;
