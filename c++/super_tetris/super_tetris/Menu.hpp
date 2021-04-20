@@ -35,6 +35,7 @@ private:
     sf::Text t_medium;
     sf::Text t_hard;
     sf::Text t_vhard;
+    sf::Text t_instructions;
     sf::Sound n_start;
     sf::SoundBuffer n1;
     sf::Sound n_switch;

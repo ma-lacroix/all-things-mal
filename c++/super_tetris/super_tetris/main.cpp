@@ -28,7 +28,6 @@ void resizedView(const sf::RenderWindow& window, sf::View& view, const float vie
 }
 
 std::vector<Piece*> gen(sf::Vector2f c_play_size, sf::Vector2f c_play_pos, int num_pieces){
-    
     std::vector<Piece*> c_pieces;
     for(int i {0};i<num_pieces;++i){
         srand((int)time(0) * i * 2);
@@ -147,6 +146,7 @@ int main(){
                 state = State::DIFFICULTY;
                 menu->Play_d_menu();
             }
+            
             
             if(state == State::DIFFICULTY && event.type == sf::Event::KeyPressed){
                 if(event.key.code == sf::Keyboard::Up){
