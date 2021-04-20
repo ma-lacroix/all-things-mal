@@ -136,6 +136,26 @@ int main(){
                 window.close();
             }
             
+            // restart
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R) {
+                for(Piece* p: pieces){
+                    delete p;
+                }
+                pieces.clear();
+                delete field;
+                s_menu.stop();
+                s_playing.stop();
+                totalTime = 0.0f;
+                deltaTime = 0.0f;
+                difficulty = 1.5f;
+                nextMove = {0.0f,0.0f};
+                piece_counter = 0;
+                c_index = 0;
+                pieces = gen(background.Get_play_size(),background.Get_play_pos(),100);
+                field = new Field();
+                state = State::DIFFICULTY;
+            }
+            
             if(event.type == sf::Event::Resized){
                 resizedView(window,view,SCREEN_HEIGHT);
                 printf("New window width: %i New window height: %i\n", event.size.width, event.size.height);
@@ -259,7 +279,8 @@ int main(){
         window.display();
         
         // Switch to next piece
-        if(!pieces.at(c_index)->Check_status() && c_index < pieces.size()-1 && field->m_status == Field::Status::RUN){
+        if(state==State::PLAYING && !pieces.at(c_index)->Check_status() &&
+                    c_index < pieces.size()-1 && field->m_status == Field::Status::RUN){
             ++c_index;
             pieces.at(c_index)->Activate_Piece();
             ++piece_counter;
