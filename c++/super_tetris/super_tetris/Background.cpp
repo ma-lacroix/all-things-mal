@@ -25,6 +25,10 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
         return EXIT_FAILURE;
     }
     
+    if(!m_menu_texture.loadFromFile(resourcePath() + "b_menu.png")){
+        return EXIT_FAILURE;
+    }
+    
     if(!m_background_texture.loadFromFile(resourcePath() + "b_background.png")){
         return EXIT_FAILURE;
     }
@@ -55,6 +59,9 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     m_flicker_bg.setSize({483.0f,284.0f});
     m_flicker_bg.setOrigin(241.0f,196.0f);
     m_flicker_bg.setTexture(&m_flicker_texture);
+    
+    m_menu_bg.setSize(s_size);
+    m_menu_bg.setTexture(&m_menu_texture);
     
     m_press_space_bg.setSize({348.0f,90.0f});
     m_press_space_bg.setOrigin(174.0f,45.0f);
@@ -168,6 +175,10 @@ void Background::Draw(sf::RenderWindow& window, bool c_show){
     if(c_show){
         window.draw(m_flicker_bg);
     }
+}
+
+void Background::Draw(sf::RenderWindow& window, int c_code){
+    window.draw(m_menu_bg);
 }
 
 void Background::Draw(sf::RenderWindow& window, Piece* p){

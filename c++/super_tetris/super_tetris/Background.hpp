@@ -18,6 +18,8 @@ class Background {
 private:
     sf::RectangleShape m_intro_bg;
     sf::Texture m_intro_texture;
+    sf::RectangleShape m_menu_bg;
+    sf::Texture m_menu_texture;
     sf::RectangleShape m_flicker_bg;
     sf::Texture m_flicker_texture;
     sf::RectangleShape m_press_space_bg;
@@ -49,6 +51,7 @@ public:
     void rotateBox();
     void moveMsg(float);
     void Draw(sf::RenderWindow&,bool);
+    void Draw(sf::RenderWindow&,int);
     void Draw(sf::RenderWindow&,Piece*);
     void Draw(sf::RenderWindow&);
     

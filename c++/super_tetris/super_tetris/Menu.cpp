@@ -10,11 +10,32 @@
 
 Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
     
+    if(!m_easy_textu_1.loadFromFile(resourcePath()+"b_m_easy_peasy_deselected.png")){
+        return EXIT_FAILURE;
+    }
+    if(!m_easy_textu_2.loadFromFile(resourcePath()+"b_m_easy_peasy_selected.png")){
+        return EXIT_FAILURE;
+    }
+    
+    if(!m_medium_textu_1.loadFromFile(resourcePath()+"b_m_dude_seriously_deselected.png")){
+        return EXIT_FAILURE;
+    }
+    if(!m_medium_textu_2.loadFromFile(resourcePath()+"b_m_dude_seriously_selected.png")){
+        return EXIT_FAILURE;
+    }
+    
+    if(!m_hard_textu_1.loadFromFile(resourcePath()+"b_m_f_this_deselected.png")){
+        return EXIT_FAILURE;
+    }
+    if(!m_hard_textu_2.loadFromFile(resourcePath()+"b_m_f_this_selected.png")){
+        return EXIT_FAILURE;
+    }
+    
     this->m_font = c_font;
     m_vs_size = 30.0f;
     m_s_size = 50.0f;
     m_b_size = 65.0f;
-    m_selection = 1.0f;
+    m_selection = 0.0f;
     
     t_pause = sf::Text("Pause\n\nSpacebar to restart", m_font, m_s_size);
     t_pause.setFillColor(sf::Color::Red);
@@ -32,38 +53,46 @@ Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
     m_others.push_back(t_credits);
     m_others.push_back(t_pause);
     
-    t_difficulty.setString("SELECT DIFFICULTY AND\nPress enter:");
+    t_difficulty.setString("");
     t_easy.setString("1 - Easy peasy");
     t_medium.setString("2 - I can handle it");
-    t_hard.setString("3- Dude, seriously");
-    t_vhard.setString("4- Ah you #@#@#@#@");
+    t_vhard.setString("3- Ah you #@#@#@#@");
     t_instructions.setString("Arrows: move pieces\nSpacebar: rotate\nP: pause game\nR: restart");
+    
+    m_easy_1.setTexture(&m_easy_textu_1);
+    m_easy_2.setTexture(&m_easy_textu_2);
+    m_medium_1.setTexture(&m_medium_textu_1);
+    m_medium_2.setTexture(&m_medium_textu_2);
+    m_hard_1.setTexture(&m_hard_textu_1);
+    m_hard_2.setTexture(&m_hard_textu_2);
+    
+    m_diff_des.push_back(m_easy_1);
+    m_diff_sel.push_back(m_easy_2);
+    m_diff_des.push_back(m_medium_1);
+    m_diff_sel.push_back(m_medium_2);
+    m_diff_des.push_back(m_hard_1);
+    m_diff_sel.push_back(m_hard_2);
+    
+    for(size_t i {0};i<m_diff_des.size();++i){
+        m_diff_des.at(i).setSize(c_screen_size);
+        m_diff_sel.at(i).setSize(c_screen_size);
+    }
     
     m_difficulty.push_back(t_difficulty);
     m_difficulty.push_back(t_easy);
     m_difficulty.push_back(t_medium);
-    m_difficulty.push_back(t_hard);
     m_difficulty.push_back(t_vhard);
-    m_difficulty.push_back(t_instructions);
     
     float dist {100.0f};
+    
     for(size_t i {0};i<m_difficulty.size();++i){
         m_difficulty.at(i).setOrigin(0.0f, m_s_size/2.0f);
         m_difficulty.at(i).setFont(m_font);
-        if(i==0){
-            m_difficulty.at(i).setCharacterSize(m_s_size);
-            m_difficulty.at(i).setFillColor(sf::Color::Black);
-            m_difficulty.at(i).setPosition(c_screen_size.x*0.05f,c_screen_size.y*0.3f);
-        }else if(i==5){
-            m_difficulty.at(i).setCharacterSize(m_vs_size);
-            m_difficulty.at(i).setFillColor(sf::Color::Blue);
-            m_difficulty.at(i).setPosition(c_screen_size.x*0.05f,c_screen_size.y*0.8f);
-        }else{
-            m_difficulty.at(i).setCharacterSize(m_s_size);
-            m_difficulty.at(i).setFillColor(sf::Color::Black);
-            m_difficulty.at(i).setPosition(c_screen_size.x/20.0f,c_screen_size.y*0.4f + i*dist);
-        }
+        m_difficulty.at(i).setCharacterSize(m_s_size);
+        m_difficulty.at(i).setFillColor(sf::Color::Black);
+        m_difficulty.at(i).setPosition(c_screen_size.x/20.0f,c_screen_size.y*0.5f + i*dist);
     }
+    
     Update_menu_selection();
     
     // sounds
@@ -90,7 +119,7 @@ Menu::~Menu(){
 
 void Menu::Move_selector(float c_move){
 
-        if(m_selection+c_move>=1.0f && m_selection+c_move<=4.0f){
+        if(m_selection+c_move>=0.0f && m_selection+c_move<=2.0f){
         m_selection+=c_move;
         n_switch.play();
         }
@@ -100,35 +129,32 @@ void Menu::Move_selector(float c_move){
 void Menu::Move_options(float c_totalTime){
     
 //    m_difficulty.at(0).move(-sinf(c_totalTime*3.1416)/200.0f,cosf(c_totalTime*3.1416)/200.0f);
-    for(size_t i {0};i<m_difficulty.size();++i){
+    for(size_t i {0};i<m_diff_sel.size();++i){
         if(i==m_selection){
-            m_difficulty.at(i).move(-sinf(c_totalTime*3.1416)/200.0f,0.0f);
+            m_diff_sel.at(i).move(-sinf(c_totalTime*3.1416)/200.0f,0.0f);
         }
     }
 }
 
 void Menu::Update_menu_selection(){
     
-    for(size_t i {0};i<m_difficulty.size()-1;++i){
-        if(i!=m_selection){
-            m_difficulty.at(i).setCharacterSize(m_s_size);
-            m_difficulty.at(i).setOutlineThickness(0.0f);
+    for(size_t i {0};i<m_diff_des.size();++i){
+        if(i==m_selection){
+            m_diff_sel.at(i).setFillColor(sf::Color(255,255,255,255));
+            m_diff_des.at(i).setFillColor(sf::Color(255,255,255,0));
         }else{
-            m_difficulty.at(i).setCharacterSize(m_b_size);
-            m_difficulty.at(i).setOutlineColor(sf::Color::Red);
-            m_difficulty.at(i).setOutlineThickness(3.0f);
+            m_diff_des.at(i).setFillColor(sf::Color(255,255,255,255));
+            m_diff_sel.at(i).setFillColor(sf::Color(255,255,255,0));
         }
     }
 }
 
 float Menu::Get_difficulty(){
-    if(m_selection==1.0f){
-        m_level = 1.5f;
-    }else if(m_selection==2.0f){
+    if(m_selection==0.0f){
         m_level = 1.0f;
-    }else if(m_selection==3.0f){
+    }else if(m_selection==1.0f){
         m_level = 0.5f;
-    }else if(m_selection==4.0f){
+    }else if(m_selection==2.0f){
         m_level = 0.1f;
     }
     
@@ -145,7 +171,13 @@ void Menu::Play_d_menu(){
 void Menu::Draw(sf::RenderWindow& window, int c_index){
     
     if(c_index==1){
-        for(auto& msg: m_difficulty){
+//        for(auto& msg: m_difficulty){
+//            window.draw(msg);
+//        }
+        for(auto& msg: m_diff_sel){
+            window.draw(msg);
+        }
+        for(auto& msg: m_diff_des){
             window.draw(msg);
         }
     }else if(c_index==2){

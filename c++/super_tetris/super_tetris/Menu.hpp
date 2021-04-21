@@ -20,6 +20,8 @@ class Menu {
 private:
     std::vector<sf::Text> m_others;
     std::vector<sf::Text> m_difficulty;
+    std::vector<sf::RectangleShape> m_diff_des;
+    std::vector<sf::RectangleShape> m_diff_sel;
     std::size_t m_selection;
     int m_vs_size;
     int m_s_size;
@@ -36,6 +38,18 @@ private:
     sf::Text t_hard;
     sf::Text t_vhard;
     sf::Text t_instructions;
+    sf::RectangleShape m_easy_1;
+    sf::Texture m_easy_textu_1;
+    sf::RectangleShape m_easy_2;
+    sf::Texture m_easy_textu_2;
+    sf::RectangleShape m_medium_1;
+    sf::Texture m_medium_textu_1;
+    sf::RectangleShape m_medium_2;
+    sf::Texture m_medium_textu_2;
+    sf::RectangleShape m_hard_1;
+    sf::Texture m_hard_textu_1;
+    sf::RectangleShape m_hard_2;
+    sf::Texture m_hard_textu_2;
     sf::Sound n_start;
     sf::SoundBuffer n1;
     sf::Sound n_switch;

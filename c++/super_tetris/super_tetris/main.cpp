@@ -259,6 +259,7 @@ int main(){
             }
             
         }else if(state==State::DIFFICULTY){
+            background.Draw(window,0);
             menu->Move_options(totalTime);
             menu->Draw(window,1);
 //            view.move(-sinf(totalTime*3.1416)/250.0f,cosf(totalTime*3.1416)/250.0f); //screen shake

@@ -10,6 +10,13 @@
 		DB0526C32609DC5F00280855 /* Background.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB0526C12609DC5F00280855 /* Background.cpp */; };
 		DB0526C8260A141200280855 /* Pieces.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DB0526C6260A141200280855 /* Pieces.cpp */; };
 		DB1D7597261CEAD5002504AA /* p_tetris_blocks_1.png in Resources */ = {isa = PBXBuildFile; fileRef = DB1D7595261CEAD5002504AA /* p_tetris_blocks_1.png */; };
+		DB45C9BF2630C05F000B6CFC /* b_m_easy_peasy_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = DB45C9B82630C05E000B6CFC /* b_m_easy_peasy_selected.png */; };
+		DB45C9C02630C05F000B6CFC /* b_m_f_this_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = DB45C9B92630C05E000B6CFC /* b_m_f_this_selected.png */; };
+		DB45C9C12630C05F000B6CFC /* b_menu.png in Resources */ = {isa = PBXBuildFile; fileRef = DB45C9BA2630C05F000B6CFC /* b_menu.png */; };
+		DB45C9C22630C05F000B6CFC /* b_m_easy_peasy_deselected.png in Resources */ = {isa = PBXBuildFile; fileRef = DB45C9BB2630C05F000B6CFC /* b_m_easy_peasy_deselected.png */; };
+		DB45C9C32630C05F000B6CFC /* b_m_dude_seriously_deselected.png in Resources */ = {isa = PBXBuildFile; fileRef = DB45C9BC2630C05F000B6CFC /* b_m_dude_seriously_deselected.png */; };
+		DB45C9C42630C05F000B6CFC /* b_m_f_this_deselected.png in Resources */ = {isa = PBXBuildFile; fileRef = DB45C9BD2630C05F000B6CFC /* b_m_f_this_deselected.png */; };
+		DB45C9C52630C05F000B6CFC /* b_m_dude_seriously_selected.png in Resources */ = {isa = PBXBuildFile; fileRef = DB45C9BE2630C05F000B6CFC /* b_m_dude_seriously_selected.png */; };
 		DB54AA372624DAB200F0F047 /* b_playing_area.png in Resources */ = {isa = PBXBuildFile; fileRef = DB54AA332624DAB200F0F047 /* b_playing_area.png */; };
 		DB54AA382624DAB200F0F047 /* b_next.png in Resources */ = {isa = PBXBuildFile; fileRef = DB54AA342624DAB200F0F047 /* b_next.png */; };
 		DB54AA392624DAB200F0F047 /* b_score.png in Resources */ = {isa = PBXBuildFile; fileRef = DB54AA352624DAB200F0F047 /* b_score.png */; };
@@ -46,6 +53,13 @@
 		DB0526C6260A141200280855 /* Pieces.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Pieces.cpp; sourceTree = "<group>"; };
 		DB0526C7260A141200280855 /* Pieces.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Pieces.hpp; sourceTree = "<group>"; };
 		DB1D7595261CEAD5002504AA /* p_tetris_blocks_1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = p_tetris_blocks_1.png; path = ../../../../../../Downloads/p_tetris_blocks_1.png; sourceTree = "<group>"; };
+		DB45C9B82630C05E000B6CFC /* b_m_easy_peasy_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_m_easy_peasy_selected.png; sourceTree = "<group>"; };
+		DB45C9B92630C05E000B6CFC /* b_m_f_this_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_m_f_this_selected.png; sourceTree = "<group>"; };
+		DB45C9BA2630C05F000B6CFC /* b_menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_menu.png; sourceTree = "<group>"; };
+		DB45C9BB2630C05F000B6CFC /* b_m_easy_peasy_deselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_m_easy_peasy_deselected.png; sourceTree = "<group>"; };
+		DB45C9BC2630C05F000B6CFC /* b_m_dude_seriously_deselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_m_dude_seriously_deselected.png; sourceTree = "<group>"; };
+		DB45C9BD2630C05F000B6CFC /* b_m_f_this_deselected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_m_f_this_deselected.png; sourceTree = "<group>"; };
+		DB45C9BE2630C05F000B6CFC /* b_m_dude_seriously_selected.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_m_dude_seriously_selected.png; sourceTree = "<group>"; };
 		DB54AA332624DAB200F0F047 /* b_playing_area.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_playing_area.png; sourceTree = "<group>"; };
 		DB54AA342624DAB200F0F047 /* b_next.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_next.png; sourceTree = "<group>"; };
 		DB54AA352624DAB200F0F047 /* b_score.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = b_score.png; sourceTree = "<group>"; };
@@ -144,6 +158,13 @@
 		DB79A6012608C82D000F917B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DB45C9BC2630C05F000B6CFC /* b_m_dude_seriously_deselected.png */,
+				DB45C9BE2630C05F000B6CFC /* b_m_dude_seriously_selected.png */,
+				DB45C9BB2630C05F000B6CFC /* b_m_easy_peasy_deselected.png */,
+				DB45C9B82630C05E000B6CFC /* b_m_easy_peasy_selected.png */,
+				DB45C9BD2630C05F000B6CFC /* b_m_f_this_deselected.png */,
+				DB45C9B92630C05E000B6CFC /* b_m_f_this_selected.png */,
+				DB45C9BA2630C05F000B6CFC /* b_menu.png */,
 				DBCB83C6262CB9B5001A2263 /* b_flickers.png */,
 				DBCB83C7262CB9B5001A2263 /* b_intro.png */,
 				DBCB83C5262CB9B4001A2263 /* b_press_space.png */,
@@ -236,7 +257,9 @@
 				DBCB83C8262CB9B5001A2263 /* b_press_space.png in Resources */,
 				DBCB83C1262B27FF001A2263 /* n_onbc.wav in Resources */,
 				DBD2BC082628639D0013427C /* n_enter.wav in Resources */,
+				DB45C9C12630C05F000B6CFC /* b_menu.png in Resources */,
 				DBB5470B262A30450080DBA6 /* s_menu.ogg in Resources */,
+				DB45C9C52630C05F000B6CFC /* b_m_dude_seriously_selected.png in Resources */,
 				DBCB83C0262B27FF001A2263 /* n_yyy.wav in Resources */,
 				DBB5470C262A30450080DBA6 /* s_playing.ogg in Resources */,
 				DBB546F82629CDCF0080DBA6 /* n_impact2.wav in Resources */,
@@ -246,11 +269,16 @@
 				DBCB83C2262B27FF001A2263 /* n_all_right.wav in Resources */,
 				DB54AA3A2624DAB200F0F047 /* b_background.png in Resources */,
 				DBB546F92629CDCF0080DBA6 /* n_rotate.wav in Resources */,
+				DB45C9C42630C05F000B6CFC /* b_m_f_this_deselected.png in Resources */,
 				DBB546FC2629D2100080DBA6 /* b_rose.png in Resources */,
 				DBD2BC1E262886850013427C /* n_impact1.wav in Resources */,
+				DB45C9C02630C05F000B6CFC /* b_m_f_this_selected.png in Resources */,
 				DB1D7597261CEAD5002504AA /* p_tetris_blocks_1.png in Resources */,
+				DB45C9C22630C05F000B6CFC /* b_m_easy_peasy_deselected.png in Resources */,
+				DB45C9BF2630C05F000B6CFC /* b_m_easy_peasy_selected.png in Resources */,
 				DB54AA392624DAB200F0F047 /* b_score.png in Resources */,
 				DB54AA372624DAB200F0F047 /* b_playing_area.png in Resources */,
+				DB45C9C32630C05F000B6CFC /* b_m_dude_seriously_deselected.png in Resources */,
 				DBD2BC0F262880DB0013427C /* n_explode1.wav in Resources */,
 				DBD2BC092628639D0013427C /* n_start.wav in Resources */,
 				DBD2BC10262880DB0013427C /* n_explode2.wav in Resources */,
