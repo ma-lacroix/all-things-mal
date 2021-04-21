@@ -32,12 +32,6 @@ private:
     sf::Text t_pause;
     sf::Text t_game_over;
     sf::Text t_credits;
-    sf::Text t_difficulty;
-    sf::Text t_easy;
-    sf::Text t_medium;
-    sf::Text t_hard;
-    sf::Text t_vhard;
-    sf::Text t_instructions;
     sf::RectangleShape m_easy_1;
     sf::Texture m_easy_textu_1;
     sf::RectangleShape m_easy_2;

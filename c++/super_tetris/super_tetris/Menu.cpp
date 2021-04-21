@@ -53,12 +53,6 @@ Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
     m_others.push_back(t_credits);
     m_others.push_back(t_pause);
     
-    t_difficulty.setString("");
-    t_easy.setString("1 - Easy peasy");
-    t_medium.setString("2 - I can handle it");
-    t_vhard.setString("3- Ah you #@#@#@#@");
-    t_instructions.setString("Arrows: move pieces\nSpacebar: rotate\nP: pause game\nR: restart");
-    
     m_easy_1.setTexture(&m_easy_textu_1);
     m_easy_2.setTexture(&m_easy_textu_2);
     m_medium_1.setTexture(&m_medium_textu_1);
@@ -76,21 +70,6 @@ Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
     for(size_t i {0};i<m_diff_des.size();++i){
         m_diff_des.at(i).setSize(c_screen_size);
         m_diff_sel.at(i).setSize(c_screen_size);
-    }
-    
-    m_difficulty.push_back(t_difficulty);
-    m_difficulty.push_back(t_easy);
-    m_difficulty.push_back(t_medium);
-    m_difficulty.push_back(t_vhard);
-    
-    float dist {100.0f};
-    
-    for(size_t i {0};i<m_difficulty.size();++i){
-        m_difficulty.at(i).setOrigin(0.0f, m_s_size/2.0f);
-        m_difficulty.at(i).setFont(m_font);
-        m_difficulty.at(i).setCharacterSize(m_s_size);
-        m_difficulty.at(i).setFillColor(sf::Color::Black);
-        m_difficulty.at(i).setPosition(c_screen_size.x/20.0f,c_screen_size.y*0.5f + i*dist);
     }
     
     Update_menu_selection();
