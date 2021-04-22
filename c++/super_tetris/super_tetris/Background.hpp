@@ -49,6 +49,7 @@ public:
     sf::Vector2f Get_play_pos();
     void updateScore(int);
     void rotateBox();
+    void Explode();
     void moveMsg(float);
     void Draw(sf::RenderWindow&,bool);
     void Draw(sf::RenderWindow&,int);

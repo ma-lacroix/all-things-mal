@@ -165,6 +165,43 @@ void Background::rotateBox(){
        
 }
 
+void Background::Explode(){
+// more intense version of rotate() - to be refactored
+    
+    int randv = rand()%23;
+    if(randv%2==0){
+        
+        m_second_bg.rotate(0.01);
+        m_third_bg.rotate(0.1);
+        m_score.rotate(0.12);
+        m_main_bg.move(-randv%5/10.0f,randv%5/10.0f);
+        m_third_bg.move(-randv%3/10.0f,randv%4/10.0f);
+        m_score.move(-randv%3/10.0f,randv%4/10.0f);
+        m_rose1.move(-randv%3,randv%4);
+        m_rose2.move(-randv%5,randv%4);
+        m_rose2.rotate(0.02);
+        m_rose3.move(-randv%3,randv%6);
+        m_rose4.move(-randv%3,randv%6);
+    }
+    
+    if(randv%2!=0){
+        m_second_bg.rotate(-0.01);
+        m_third_bg.rotate(-0.1);
+        m_score.rotate(-0.12);
+        m_main_bg.move(randv%5/10.0f,-randv%5/10.0f);
+        m_third_bg.move(randv%3/10.0f,-randv%4/10.0f);
+        m_score.move(randv%3/10.0f,-randv%4/10.0f);
+        m_rose1.move(-randv%3,randv%5);
+        m_rose1.rotate(0.3f);
+        m_rose2.move(-randv%3,randv%5);
+        m_rose3.move(-randv%7,randv%4);
+        m_rose4.move(-randv%7,randv%4);
+    
+    }
+       
+}
+
+
 void Background::moveMsg(float c_totalTime){
     m_press_space_bg.move(-sinf(c_totalTime*3.1416)/100.0f,cosf(c_totalTime*3.1416)/100.0f);
 }

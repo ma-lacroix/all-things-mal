@@ -40,6 +40,7 @@ void Field::ResetInventory(){
         }else{
             m_inventory.insert(std::make_pair(square.getPosition().y,1));
         }
+        
     }
 }
 
@@ -172,6 +173,35 @@ int Field::Collision(sf::RectangleShape c_rect,sf::Vector2f c_move, sf::Vector2f
         }
     }
     return result;
+}
+
+bool Field::CheckEndGame(){
+    for(std::map<float,int>::iterator it = m_inventory.begin();it!=m_inventory.end();++it){
+        if(it->first <= 375.0 && it->second >= 2){ // 375.0f is where pieces are spawned
+            n_explode.setVolume(200.0f);
+            n_explode.setPitch(0.8f);
+            n_explode.play();
+            return true;
+        }
+    }
+    return false;
+}
+
+void Field::Explode(float deltaTime){
+    int counter {0};
+    for(size_t i {0};i<m_field.size();++i){
+        int randv = sqrt(rand()%10+1);
+        m_velocity += deltaTime/(350.0f);
+        if(m_field.at(i).getPosition().y < 2000.0f){
+            m_field.at(i).setOrigin(20.0f, 20.0f);
+            m_field.at(i).rotate(sinf(i)/randv);
+            m_field.at(i).move(-sinf(i)/randv,m_velocity);
+            ++counter;
+        }
+    }
+    if(counter==0){
+        m_status = Status::GAME_OVER;
+    }
 }
 
 void Field::Draw(sf::RenderWindow& window,std::vector<Message*> c_messages){

@@ -69,6 +69,14 @@ int main(){
     s_playing.setVolume(40.0f);
     s_playing.setLoop(true);
     
+    sf::Sound n_pause;
+    sf::SoundBuffer n10;
+    if(!n10.loadFromFile(resourcePath() + "n_pause.wav")){
+        return EXIT_FAILURE;
+    }
+    n_pause.setBuffer(n10);
+    n_pause.setVolume(60.0f);
+    
     
     // time related stuff
     sf::Clock clock;
@@ -93,11 +101,12 @@ int main(){
         return EXIT_FAILURE;
     }
     
-    Background background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
-    std::vector<Piece*> pieces = gen(background.Get_play_size(),background.Get_play_pos(),100);
-    std::vector<Message*> messages = gen2(font,300,{SCREEN_WIDTH,SCREEN_HEIGHT/3},10.0f);
     Field* field = new Field();
     Menu* menu = new Menu(font,screen_size);
+    Background* background = new Background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
+    std::vector<Piece*> pieces = gen(background->Get_play_size(),background->Get_play_pos(),100);
+    std::vector<Message*> messages = gen2(font,300,{SCREEN_WIDTH,SCREEN_HEIGHT/3},10.0f);
+    
     
     // Start the game loop
     while (window.isOpen())
@@ -143,6 +152,7 @@ int main(){
                 }
                 pieces.clear();
                 delete field;
+//                delete background;
                 s_menu.stop();
                 s_playing.stop();
                 totalTime = 0.0f;
@@ -151,8 +161,9 @@ int main(){
                 nextMove = {0.0f,0.0f};
                 piece_counter = 0;
                 c_index = 0;
-                pieces = gen(background.Get_play_size(),background.Get_play_pos(),100);
+//                Background* background = new Background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
                 field = new Field();
+                pieces = gen(background->Get_play_size(),background->Get_play_pos(),100);
                 state = State::DIFFICULTY;
             }
             
@@ -196,6 +207,7 @@ int main(){
                 if(event.key.code == sf::Keyboard::P){
                     state = State::PAUSE;
                     s_playing.pause();
+                    n_pause.play();
                     
                 }
             }
@@ -236,9 +248,26 @@ int main(){
             if(randv%2!=0){
                 view.rotate(0.001f);
             }
-            background.rotateBox();
-            background.updateScore(field->GetComplSize());
-            field->DropLines(background.Get_play_size().x/8, deltaTime,messages);
+            background->rotateBox();
+            background->updateScore(field->GetComplSize());
+            field->DropLines(background->Get_play_size().x/8, deltaTime,messages);
+        }
+        
+        if(field->m_status==Field::Status::RUN){
+            if(field->CheckEndGame()){
+                field->m_status=Field::Status::EXPLODE;
+            }
+        }
+        
+        if(field->m_status==Field::Status::EXPLODE){
+            int randv = rand()%23;
+            view.setCenter(screen_size.x/2.0f+randv,screen_size.y/2.0f+randv*1.5f);
+            background->Explode();
+            field->Explode(deltaTime);
+        }
+        
+        if(field->m_status==Field::Status::GAME_OVER){
+            state=State::GAME_OVER;
         }
         
         // Clear screen
@@ -247,25 +276,25 @@ int main(){
         
         
         if(state==State::INTRO){
-            background.moveMsg(totalTime);
+            background->moveMsg(totalTime);
             if(totalTime >= 2.0f){
                 totalTime = clock.restart().asSeconds();
             }
             if(totalTime>=1.0f){
-                background.Draw(window, true);
+                background->Draw(window, true);
             }
             if(totalTime<1.0f){
-                background.Draw(window, false);
+                background->Draw(window, false);
             }
             
         }else if(state==State::DIFFICULTY){
-            background.Draw(window,0);
+            background->Draw(window,0);
             menu->Move_options(totalTime);
             menu->Draw(window,1);
 //            view.move(-sinf(totalTime*3.1416)/250.0f,cosf(totalTime*3.1416)/250.0f); //screen shake
         }else if(state==State::PLAYING){
             if(c_index+1 <= pieces.size()-1){
-                background.Draw(window,pieces.at(c_index+1));
+                background->Draw(window,pieces.at(c_index+1));
                 field->Draw(window,messages);
                 pieces.at(c_index)->Draw(window);
             }else{
@@ -274,6 +303,7 @@ int main(){
         }else if(state==State::PAUSE){
             menu->Draw(window, 3);
         }else{
+            view.setCenter(screen_size.x/2.0f,screen_size.y/2.0f);
             menu->Draw(window,2);
         }
         // Update the window

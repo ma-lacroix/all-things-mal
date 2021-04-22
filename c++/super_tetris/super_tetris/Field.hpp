@@ -33,7 +33,7 @@ private:
 public:
     Field();
     ~Field();
-    enum class Status {RUN,ERASE,UPDATE};
+    enum class Status {RUN,ERASE,UPDATE,EXPLODE,GAME_OVER};
     Status m_status;
     size_t GetComplSize();
     void ResetInventory();
@@ -44,6 +44,8 @@ public:
     void CleanUp(float);
     void Add_field(sf::RectangleShape);
     int Collision(sf::RectangleShape,sf::Vector2f,sf::Vector2f);
+    bool CheckEndGame();
+    void Explode(float);
     void Draw(sf::RenderWindow&,std::vector<Message*>);
 };
 

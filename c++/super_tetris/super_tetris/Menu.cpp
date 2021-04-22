@@ -41,7 +41,7 @@ Menu::Menu(sf::Font c_font, sf::Vector2f c_screen_size){
     t_pause.setFillColor(sf::Color::Red);
     t_pause.setPosition(c_screen_size.x*0.01,c_screen_size.y*0.5);
     
-    t_game_over = sf::Text("Game over!", m_font, m_b_size);
+    t_game_over = sf::Text("GAME OVER!\n\n\n PRESS 'R'", m_font, m_b_size);
     t_game_over.setFillColor(sf::Color::Red);
     t_game_over.setPosition(c_screen_size.x*0.2,c_screen_size.y*0.4);
     
