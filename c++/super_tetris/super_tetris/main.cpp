@@ -18,7 +18,7 @@
 #include "Menu.hpp"
 
 // globals
-enum class State {INTRO,DIFFICULTY,PLAYING,PAUSE,GAME_OVER};
+enum class State {INTRO,DIFFICULTY,PLAYING,PAUSE,GAME_OVER,RESET};
 const float SCREEN_WIDTH {800.0f};
 const float SCREEN_HEIGHT {1500.0f};
 
@@ -104,7 +104,7 @@ int main(){
     Field* field = new Field();
     Menu* menu = new Menu(font,screen_size);
     Background* background = new Background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
-    std::vector<Piece*> pieces = gen(background->Get_play_size(),background->Get_play_pos(),100);
+    std::vector<Piece*> pieces = gen(background->Get_play_size(),background->Get_play_pos(),200);
     std::vector<Message*> messages = gen2(font,300,{SCREEN_WIDTH,SCREEN_HEIGHT/3},10.0f);
     
     
@@ -147,12 +147,12 @@ int main(){
             
             // restart
             if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::R) {
+                state = State::RESET;
                 for(Piece* p: pieces){
                     delete p;
                 }
                 pieces.clear();
                 delete field;
-//                delete background;
                 s_menu.stop();
                 s_playing.stop();
                 totalTime = 0.0f;
@@ -161,9 +161,9 @@ int main(){
                 nextMove = {0.0f,0.0f};
                 piece_counter = 0;
                 c_index = 0;
-//                Background* background = new Background(SCREEN_WIDTH,SCREEN_HEIGHT,sf::Color::Red,font);
+                background->initObjects();
                 field = new Field();
-                pieces = gen(background->Get_play_size(),background->Get_play_pos(),100);
+                pieces = gen(background->Get_play_size(),background->Get_play_pos(),200);
                 state = State::DIFFICULTY;
             }
             

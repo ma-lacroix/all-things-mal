@@ -49,34 +49,34 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
         return EXIT_FAILURE;
     }
     
-    sf::Vector2f s_size {SCREEN_WIDTH,SCREEN_HEIGHT};
+    this->m_s_size = {SCREEN_WIDTH,SCREEN_HEIGHT};
     this->m_color=c_color;
     this->m_font=c_font;
     
-    m_intro_bg.setSize(s_size);
+    m_intro_bg.setSize(m_s_size);
     m_intro_bg.setTexture(&m_intro_texture);
     
     m_flicker_bg.setSize({483.0f,284.0f});
     m_flicker_bg.setOrigin(241.0f,196.0f);
     m_flicker_bg.setTexture(&m_flicker_texture);
     
-    m_menu_bg.setSize(s_size);
+    m_menu_bg.setSize(m_s_size);
     m_menu_bg.setTexture(&m_menu_texture);
     
     m_press_space_bg.setSize({348.0f,90.0f});
     m_press_space_bg.setOrigin(174.0f,45.0f);
     m_press_space_bg.setTexture(&m_press_space_texture);
     
-    m_background_bg.setSize(s_size);
+    m_background_bg.setSize(m_s_size);
     m_background_bg.setTexture(&m_background_texture);
     
-    m_main_bg.setSize({s_size.x*0.6f,s_size.y*0.8f});
+    m_main_bg.setSize({m_s_size.x*0.6f,m_s_size.y*0.8f});
     m_main_bg.setTexture(&m_main_texture);
     
-    m_second_bg.setSize({s_size.x*0.270f,s_size.x*0.275f});
+    m_second_bg.setSize({m_s_size.x*0.270f,m_s_size.x*0.275f});
     m_second_bg.setTexture(&m_second_texture);
     
-    m_third_bg.setSize({s_size.x*0.270f,s_size.x*0.275f});
+    m_third_bg.setSize({m_s_size.x*0.270f,m_s_size.x*0.275f});
     m_third_bg.setTexture(&m_third_texture);
     
     m_rose1.setSize({50.0f,100.0f});
@@ -95,25 +95,33 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     m_rose4.setTexture(&m_rose_texture);
     m_rose4.setRotation(230.0f);
     
+    initObjects();
+}
+
+void Background::initObjects(){
+// separate from class constructor for game reset
     m_score.setString("0");
     m_score.setOrigin(0.5f, 0.5f);
     m_score.setFont(m_font);
-    m_score.setCharacterSize(s_size.y*0.03);
+    m_score.setCharacterSize(m_s_size.y*0.03);
     m_score.setFillColor(sf::Color::Black);
     
     m_intro_bg.setPosition(0.0f,0.0f);
-    m_flicker_bg.setPosition(s_size.x*0.5, s_size.y*0.7);
-    m_press_space_bg.setPosition(s_size.x*0.51, s_size.y*0.67);
+    m_flicker_bg.setPosition(m_s_size.x*0.5, m_s_size.y*0.7);
+    m_press_space_bg.setPosition(m_s_size.x*0.51, m_s_size.y*0.67);
     
     m_background_bg.setPosition(0.0f,0.0f);
-    m_main_bg.setPosition(s_size.x*0.019, s_size.y*0.19);
-    m_second_bg.setPosition(s_size.x*0.7, s_size.y*0.35);
-    m_third_bg.setPosition(s_size.x*0.7, s_size.y*0.67);
-    m_score.setPosition(s_size.x*0.75, s_size.y*0.73);
-    m_rose1.setPosition(s_size.x*0.75, s_size.y*0.05);
-    m_rose2.setPosition(s_size.x*0.85, s_size.y*0.10);
-    m_rose3.setPosition(s_size.x*0.80, s_size.y*0.05);
-    m_rose4.setPosition(s_size.x*0.90, s_size.y*0.15);
+    m_main_bg.setPosition(m_s_size.x*0.019, m_s_size.y*0.19);
+    m_main_bg.setRotation(0.0f);
+    m_second_bg.setPosition(m_s_size.x*0.7, m_s_size.y*0.35);
+    m_second_bg.setRotation(0.0f);
+    m_third_bg.setPosition(m_s_size.x*0.7, m_s_size.y*0.67);
+    m_third_bg.setRotation(0.0f);
+    m_score.setPosition(m_s_size.x*0.75, m_s_size.y*0.73);
+    m_rose1.setPosition(m_s_size.x*0.75, m_s_size.y*0.05);
+    m_rose2.setPosition(m_s_size.x*0.85, m_s_size.y*0.10);
+    m_rose3.setPosition(m_s_size.x*0.80, m_s_size.y*0.05);
+    m_rose4.setPosition(m_s_size.x*0.90, m_s_size.y*0.15);
 }
 
 sf::Vector2f Background::Get_play_size(){
@@ -174,9 +182,9 @@ void Background::Explode(){
         m_second_bg.rotate(0.01);
         m_third_bg.rotate(0.1);
         m_score.rotate(0.12);
-        m_main_bg.move(-randv%5/10.0f,randv%5/10.0f);
-        m_third_bg.move(-randv%3/10.0f,randv%4/10.0f);
-        m_score.move(-randv%3/10.0f,randv%4/10.0f);
+        m_main_bg.move(-randv%5/30.0f,randv%5/30.0f);
+        m_third_bg.move(-randv%3/30.0f,randv%4/30.0f);
+        m_score.move(-randv%3/30.0f,randv%4/30.0f);
         m_rose1.move(-randv%3,randv%4);
         m_rose2.move(-randv%5,randv%4);
         m_rose2.rotate(0.02);
@@ -188,9 +196,9 @@ void Background::Explode(){
         m_second_bg.rotate(-0.01);
         m_third_bg.rotate(-0.1);
         m_score.rotate(-0.12);
-        m_main_bg.move(randv%5/10.0f,-randv%5/10.0f);
-        m_third_bg.move(randv%3/10.0f,-randv%4/10.0f);
-        m_score.move(randv%3/10.0f,-randv%4/10.0f);
+        m_main_bg.move(randv%5/30.0f,-randv%5/30.0f);
+        m_third_bg.move(randv%3/30.0f,-randv%4/30.0f);
+        m_score.move(randv%3/30.0f,-randv%4/30.0f);
         m_rose1.move(-randv%3,randv%5);
         m_rose1.rotate(0.3f);
         m_rose2.move(-randv%3,randv%5);

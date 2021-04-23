@@ -16,6 +16,7 @@
 
 class Background {
 private:
+    sf::Vector2f m_s_size;
     sf::RectangleShape m_intro_bg;
     sf::Texture m_intro_texture;
     sf::RectangleShape m_menu_bg;
@@ -45,6 +46,7 @@ private:
 public:
     Background(float, float,sf::Color,sf::Font);
     ~Background();
+    void initObjects();
     sf::Vector2f Get_play_size();
     sf::Vector2f Get_play_pos();
     void updateScore(int);

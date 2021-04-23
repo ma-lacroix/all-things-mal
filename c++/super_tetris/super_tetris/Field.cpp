@@ -177,7 +177,7 @@ int Field::Collision(sf::RectangleShape c_rect,sf::Vector2f c_move, sf::Vector2f
 
 bool Field::CheckEndGame(){
     for(std::map<float,int>::iterator it = m_inventory.begin();it!=m_inventory.end();++it){
-        if(it->first <= 375.0 && it->second >= 2){ // 375.0f is where pieces are spawned
+        if(it->first <= 400.0 && it->second >= 1){ // 375.0f is where pieces are spawned
             n_explode.setVolume(200.0f);
             n_explode.setPitch(0.8f);
             n_explode.play();
