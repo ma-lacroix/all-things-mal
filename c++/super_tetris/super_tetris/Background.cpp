@@ -13,39 +13,39 @@ Background::Background(float SCREEN_WIDTH, float SCREEN_HEIGHT,sf::Color c_color
     
     std::cout << "Background constructor called" << std::endl;
     
-    if(!m_intro_texture.loadFromFile(resourcePath() + "b_intro.png")){
+    if(!m_intro_texture.loadFromFile(resourcePath() + "images/b_intro.png")){
         return EXIT_FAILURE;
     }
     
-    if(!m_flicker_texture.loadFromFile(resourcePath() + "b_flickers.png")){
+    if(!m_flicker_texture.loadFromFile(resourcePath() + "images/b_flickers.png")){
         return EXIT_FAILURE;
     }
     
-    if(!m_press_space_texture.loadFromFile(resourcePath() + "b_press_space.png")){
+    if(!m_press_space_texture.loadFromFile(resourcePath() + "images/b_press_space.png")){
         return EXIT_FAILURE;
     }
     
-    if(!m_menu_texture.loadFromFile(resourcePath() + "b_menu.png")){
+    if(!m_menu_texture.loadFromFile(resourcePath() + "images/b_menu.png")){
         return EXIT_FAILURE;
     }
     
-    if(!m_background_texture.loadFromFile(resourcePath() + "b_background.png")){
+    if(!m_background_texture.loadFromFile(resourcePath() + "images/b_background.png")){
         return EXIT_FAILURE;
     }
     
-    if(!m_main_texture.loadFromFile(resourcePath() + "b_playing_area.png")){
+    if(!m_main_texture.loadFromFile(resourcePath() + "images/b_playing_area.png")){
         return EXIT_FAILURE;
     }
     
-    if(!m_second_texture.loadFromFile(resourcePath() + "b_next.png")){
+    if(!m_second_texture.loadFromFile(resourcePath() + "images/b_next.png")){
         return EXIT_FAILURE;
     }
     
-    if(!m_third_texture.loadFromFile(resourcePath() + "b_score.png")){
+    if(!m_third_texture.loadFromFile(resourcePath() + "images/b_score.png")){
         return EXIT_FAILURE;
     }
     
-    if(!m_rose_texture.loadFromFile(resourcePath() + "b_rose.png")){
+    if(!m_rose_texture.loadFromFile(resourcePath() + "images/b_rose.png")){
         return EXIT_FAILURE;
     }
     
