@@ -1,12 +1,12 @@
 #include <iostream>
 
 extern "C"
-void printSum(int numA, int numB){
+void printSum(size_t loops, int numA, int numB){
     int result {0};
-    for(size_t i {0}; i < 100; ++i){
+    for(size_t i {0}; i < loops; ++i){
         result+=numA+numB;
     }
-    std::cout << "The result is: " << result << std::endl;
+    std::cout << "      The result is: " << result << std::endl;
 }
 
 extern "C"
