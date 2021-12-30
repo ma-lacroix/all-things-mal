@@ -4,17 +4,16 @@ import tkinter as tk
 from tkinter import ttk
 
 class createButtons:
-    def __init__(self,name,col,row) -> ttk.Button:
-        self.button = ttk.Button(text=name,command=self.inputValue)
+    def __init__(self,board,name) -> ttk.Button:
+        self.button = ttk.Button(text="\n"+name+"\n",command=self.inputValue)
+        self.board = board
         self.name = name
-        self.col = col
-        self.row = row
      
-    def addToBoard(self):
-        self.button.grid(column=self.col,row=self.row,ipadx=1,ipady=1)
+    def addToBoard(self,col,row):
+        self.button.grid(column=col,row=row,ipadx=1,ipady=1)
     
     def inputValue(self):
-        print(self.name) 
+        self.board.receiveChar(self.name) 
 
 class mainWindow(tk.Tk):
     
@@ -25,25 +24,26 @@ class mainWindow(tk.Tk):
         self.name = name
         self.geometry('280x300+50+50')
         self.title(self.name)
-        self.button_names= ["\n1\n","\n2\n","\n3\n","\n+\n",
-                        "\n4\n","\n5\n","\n6\n","\n-\n",
-                        "\n7\n","\n8\n","\n9\n","\n%\n",
-                        "\n0\n","\nX\n","\n/\n","\n=\n"]
+        self.button_names= [["1","2","3","+"],
+                        ["4","5","6","-"],
+                        ["7","8","9","%"],
+                        ["0","X","/","="]]
         self.equation = ""
         self.setUpBoard()
     
     def getName(self):
         return self.name
+    
+    def receiveChar(self,char):
+        self.equation = self.equation + char
+        # add an evaluator self.evaluator
+        print(self.equation)
 
     def setUpBoard(self):
         i,j = 0,0
-        for button in self.button_names:
-            createButtons(button,i,j).addToBoard()
-            if i%3==0 and i>0:
-                i=0
-                j+=1
-            else:
-                i+=1
+        for i in range(0,4):
+            for j in range(0,4):
+                createButtons(self,self.button_names[i][j]).addToBoard(i,j)
 
 def main():
     newWindow = mainWindow("Calculator")
