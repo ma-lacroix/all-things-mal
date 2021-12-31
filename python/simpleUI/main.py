@@ -4,7 +4,9 @@ import tkinter as tk
 from tkinter import Button, Label, ttk
 
 class calculator:
-    
+
+    """Just the math logic post-button click"""
+
     def __init__(self):
         self.num1 = ""
         self.num2 = ""
@@ -13,40 +15,43 @@ class calculator:
     def split(self,aString):
         return [c for c in aString]
 
-    def parseEquation(self,equation):
-        for e in equation: # TODO deal with this flow control better
-            if e == "=" and (self.num1=="" or self.num2==""):
-                print("error")
-                self.num1 = ""
-                self.num2 = ""
-                return ""
-            elif e == '=' and self.num1 != "" and self.num2 != "":
-                self.getResults()
-            elif e in self.split("+-/X%"):
-                self.operator = e
-                self.num1 = equation.split(e)[0]
-                self.num2 = equation.split(e)[1].replace("=","") # TODO deal with the equals symbol better
-                return f"{self.num1} {self.operator} {self.num2}"
-            else:
-                # self.num1 = equation
-                # return f"{self.num1}"
-                pass
-    
+    def parseEquation(self,newChar):
+        if newChar in self.split("X/%-+"):
+            self.operator = newChar
+            return f"{self.num1} {self.operator}"
+        elif newChar == "=":
+            return self.getResult()
+        elif self.operator == "":
+            self.num1+=newChar
+            return f"{self.num1}"
+        elif self.operator != "":
+            self.num2+=newChar
+            return f"{self.num1} {self.operator} {self.num2}"
+
     def getResult(self):
+        n1 = int(self.num1)
+        n2 = int(self.num2)
         if self.operator == "+":
-            return str(self.num1 + self.num2)
+            r = n1 + n2
         elif self.operator == "-":
-            return str(self.num1 - self.num2)
+            r = n1 - n2
         elif self.operator == "X":
-            return str(self.num1 * self.num2)
+            r = n1 * n2
         elif self.operator == "/":
-            return str(self.num1 / self.num2)
+            r = n1 / n2
         elif self.operator == "%":
-            return str(self.num1 % self.num2)
-        else:
-            return ""
+            r = n1 % n2
+        return f"{r}"  
+
+    def resetCalc(self):
+        self.num1 = ""
+        self.num2 = ""
+        self.operator = ""
+        return f""
 
 class createButtons:
+    
+    """Used to handle the calculator buttons & functions"""
 
     def __init__(self,board,name) -> ttk.Button:
         self.button = ttk.Button(text="\n"+name+"\n",command=self.inputValue)
@@ -60,6 +65,8 @@ class createButtons:
         self.board.receiveChar(self.name) 
 
 class mainWindow(tk.Tk):
+
+    """Main window container"""
     
     def __init__(self,name) -> tk.Tk:
         super().__init__()
@@ -68,25 +75,30 @@ class mainWindow(tk.Tk):
         self.style.configure('TButton', font=('Helvetica', 10))
         self.style.configure('TLabel', font=('Courier New', 20))
         self.name = name
-        self.geometry('280x300+50+50')
+        self.geometry('280x230+50+50')
         self.title(self.name)
         self.button_names= [["1","2","3","+"],
                         ["4","5","6","-"],
                         ["7","8","9","%"],
                         ["0","X","/","="]]
         self.equation = ""
-        self.answer = ""
+        self.topBar = ttk.Label(text=self.equation)
         self.setUpBoard()
     
     def getName(self):
         return self.name
-    
-    def receiveChar(self,char):
-        self.equation = self.equation + char
-        # TODO add an evaluator
-        self.answer = self.calculator.parseEquation(self.equation)
-        eq = ttk.Label(text=self.answer)
-        eq.grid(column=1,row=0,columnspan=2,rowspan=2)
+
+    def resetCalc(self):
+        self.equation = self.calculator.resetCalc()
+        self.topBar.destroy()
+        self.topBar = ttk.Label(text=self.equation)
+        self.topBar.grid(column=1,row=0,columnspan=2,rowspan=2)
+
+    def receiveChar(self,newChar):
+        self.equation = self.calculator.parseEquation(newChar)
+        self.topBar.destroy()
+        self.topBar = ttk.Label(text=self.equation)
+        self.topBar.grid(column=1,row=0,columnspan=2,rowspan=2)
 
 
     def setUpBoard(self):
@@ -94,6 +106,8 @@ class mainWindow(tk.Tk):
         for i in range(0,4):
             for j in range(0,4):
                 createButtons(self,self.button_names[i][j]).addToBoard(j,i)
+        ceButton = ttk.Button(text="\nRESET\n",command=self.resetCalc)
+        ceButton.grid(column=0,row=20)
 
 def main():
     newWindow = mainWindow("Calculator")
