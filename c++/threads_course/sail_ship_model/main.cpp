@@ -41,13 +41,15 @@ public:
     }
     void move_forward() {
         std::cout << "Captain says: move forward" << std::endl;
-        cleaners.clean();
+        engineCrew.move();
     }
     void stop_moving() {
         std::cout << "Captain says: stop moving" << std::endl;
+        engineCrew.stop();
     }
     void clean_ship() {
         std::cout << "Captain says: clean ship" << std::endl;
+        cleaners.clean();
     }
     ~Captain() {
         cleaners.~Cleaners();
@@ -63,11 +65,15 @@ int main() {
     EngineCrew *engineCrew = new EngineCrew();
     Captain *captain = new Captain(cleaners, engineCrew);
     
-    int user_input = 0;
+    int user_input;
 
     while (user_input != 100) {
         
-        std::cout << "Enter input: " << std::endl;
+        std::cout << "\n1: clean the ship! \n" 
+        "2: move the ship forward! \n"
+        "3: stop the ship!\n" 
+        "100: quit\n" << std::endl;
+        std::cout << "Enter the captain's order: " << std::endl;
         std::cin >> user_input;
 
         if (user_input == 1) {
@@ -79,13 +85,12 @@ int main() {
         } else if (user_input == 3){
             std::thread thread3(&Captain::stop_moving, *captain);
             thread3.join();
+        } else if (user_input == 100) {
+            std::cout << "\nDone!\n" << std::endl;
         } else {
             std::cout << "Invalid input" << std::endl;
         }
-        
-
-        std::cout << "Understood!" << std::endl;
-
+        std::this_thread::sleep_for(std::chrono::milliseconds(50)); // for printing purposes
     }
 
     return 0;
