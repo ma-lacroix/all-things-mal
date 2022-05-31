@@ -10,7 +10,6 @@ public:
 
     void cleaningCrewActivity(std::queue<int>& tasks) {
         while (true) {
-            std::cout << "Number of tasks: " << tasks.size() << std::endl;
             if (tasks.empty()) {
                 std::cout << " Cleaning Crew - Activity Queue is empty: Waiting for 2 seconds\n";
                 std::this_thread::sleep_for(std::chrono::seconds(3));
@@ -46,7 +45,6 @@ public:
 
 	while (true) {
 		if (tasks.empty()) {
-            std::cout << "Number of tasks: " << tasks.size() << std::endl;
 			std::cout << " Engine Crew - Activity Queue is empty: Waiting for 2 seconds\n";
 			std::this_thread::sleep_for(std::chrono::seconds(3));
 		} else {
